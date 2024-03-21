@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Tertiary"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        style="@style/backButton"
+        android:contentDescription="@string/back" />
+
+    <TextView
+        android:id="@+id/groupName"
+        style="@style/headline"
+        android:text="Meno skupiny" />
+
+    <GridView
+        android:id="@+id/tasksLayout"
+        style="@style/gridView"
+        android:numColumns="3"
+        tools:listitem="@layout/grid_x_list_item" />
+
+    <ImageButton
+        android:id="@+id/addButton"
+        style="@style/addButton"
+        android:contentDescription="@string/add" />
+
+    <LinearLayout style="@style/bottomNavigationLayout">
+
+        <ImageButton
+            android:id="@+id/tasksButton"
+            style="@style/navButton"
+            android:contentDescription="@string/tasks"
+            android:src="@mipmap/tasks_highlighted" />
+
+        <ImageButton
+            android:id="@+id/studentsButton"
+            style="@style/navButton"
+            android:contentDescription="@string/students"
+            android:src="@mipmap/students" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/tasksPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/Surface"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/closeTaskPanel"
+            style="@style/backButtonDark" />
+
+        <TextView
+            android:id="@+id/textInGroup"
+            style="@style/chipTextView"
+            android:layout_marginTop="70dp"
+            android:text="V skupine" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupIn"
+            style="@style/chipGroup"
+            app:singleLine="false"
+            app:singleSelection="true"
+            android:layout_below="@+id/textInGroup" />
+
+        <TextView
+            android:id="@+id/textNotInGroup"
+            style="@style/chipTextView"
+            android:layout_below="@+id/chipGroupIn"
+            android:text="Mimo skupiny" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupNotIn"
+            style="@style/chipGroup"
+            app:singleLine="false"
+            app:singleSelection="true"
+            android:layout_below="@+id/textNotInGroup" />
+
+        <Button
+            android:id="@+id/saveButton"
+            style="@style/actionButton"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="25dp"
+            android:text="@string/save" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/deletePanel"
+        style="@style/backgroundLayout"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:background="@drawable/bottom_layout_background"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/deleteText"
+                style="@style/deletePanelText1" />
+
+            <TextView style="@style/deletePanelText2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/closeDeletePanel"
+                    style="@style/smallActionCancelButton"
+                    android:text="@string/cancel" />
+
+                <Button
+                    android:id="@+id/confirmDelete"
+                    style="@style/smallActionDeleteButton"
+                    android:text="@string/delete" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

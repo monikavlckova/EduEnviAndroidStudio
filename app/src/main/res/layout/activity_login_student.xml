@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Background"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        style="@style/backButtonDark"
+        android:contentDescription="@string/back" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:padding="25dp">
+
+        <TextView
+            android:text="@string/login"
+            style="@style/headlineVerticalLayout" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/loginCodeTextInputLayout"
+            style="@style/inputField">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/loginCode"
+                style="@style/inputFieldEditText"
+                android:hint="Prihlasovací kód"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/loginButton"
+            style="@style/actionButton"
+            android:text="@string/logIn" />
+
+    </LinearLayout>
+
+</RelativeLayout>

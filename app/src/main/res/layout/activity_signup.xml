@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Background"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        style="@style/backButtonDark"
+        android:contentDescription="@string/back" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:padding="25dp">
+
+        <TextView
+            android:text="@string/signup"
+            style="@style/headlineVerticalLayout"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nameTextInputLayout"
+            style="@style/inputField">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name"
+                style="@style/inputFieldEditText"
+                android:hint="@string/firstName"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lastNameTextInputLayout"
+            style="@style/inputField">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lastName"
+                style="@style/inputFieldEditText"
+                android:hint="@string/lastName"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/userNameTextInputLayout"
+            style="@style/inputField">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/userName"
+                style="@style/inputFieldEditText"
+                android:hint="@string/userName"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@id/emailTextInputLayout"
+            style="@style/inputField">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email"
+                style="@style/inputFieldEditText"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@id/passwordTextInputLayout"
+            style="@style/inputField"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                style="@style/inputFieldEditText"
+                android:hint="@string/password"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/login_button"
+            style="@style/actionButton"
+            android:text="@string/createAccount" />
+
+    </LinearLayout>
+
+</RelativeLayout>

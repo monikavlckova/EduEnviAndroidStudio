@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout style="@style/classroomPrefab">
+
+        <ImageView
+            android:id="@+id/classroomImage"
+            style="@style/classroomImagePrefab" />
+
+        <TextView
+            android:id="@+id/classroomName"
+            style="@style/classroomTextPrefab" />
+
+        <ImageButton
+            android:id="@+id/editClassroomButton"
+            style="@style/editButton" />
+    </RelativeLayout>
+
+</LinearLayout>

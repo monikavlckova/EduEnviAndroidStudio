@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">EduEnvi</string>
+    <string name="firstName">Meno</string>
+    <string name="lastName">Priezvisko</string>
+    <string name="userName">Používateľské meno</string>
+    <string name="email">Email</string>
+    <string name="password">Heslo</string>
+    <string name="signup">Registrácia</string>
+    <string name="createAccount">Vytvor účet</string>
+    <string name="logIn">Prihlásiť sa</string>
+    <string name="forgottenPassword">Zabudli ste heslo?</string>
+    <string name="login">Prihlásenie</string>
+    <string name="back">Naspäť</string>
+    <string name="profile">Profil</string>
+    <string name="add">vytvor</string>
+    <string name="new_password">Nové heslo</string>
+    <string name="close">Zatvoriť</string>
+    <string name="save">Uložiť</string>
+    <string name="edit">Upraviť</string>
+    <string name="delete">Odstrániť</string>
+    <string name="cancel">Zrušiť</string>
+    <string name="this_step_is_irreversible">Tento krok je nevratný</string>
+    <string name="tasks">Úlohy</string>
+    <string name="students">študenti</string>
+    <string name="groups">skupiny</string>
+    <string name="send">Odoslať</string>
+    <string name="classroomName">Meno triedy</string>
+    <string name="create">Vytvoriť</string>
+    <string name="groupName">Meno skupiny</string>
+    <string name="loginCode">Prihlasovací kód</string>
+    <string name="classroom">Trieda</string>
+
+</resources>

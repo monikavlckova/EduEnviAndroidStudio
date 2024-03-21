@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Tertiary"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        style="@style/backButton"
+        android:contentDescription="@string/back" />
+
+    <TextView
+        android:id="@+id/className"
+        style="@style/headline"
+        android:text="Meno triedy" />
+
+    <GridView
+        android:id="@+id/tasksLayout"
+        style="@style/gridView"
+        android:numColumns="3"
+        tools:listitem="@layout/grid_list_item" />
+
+    <ImageButton
+        android:id="@+id/addButton"
+        style="@style/addButton"
+        android:contentDescription="@string/add" />
+
+    <LinearLayout style="@style/bottomNavigationLayout">
+
+        <ImageButton
+            android:id="@+id/tasksButton"
+            style="@style/navButton"
+            android:contentDescription="@string/tasks"
+            android:src="@mipmap/tasks_highlighted" />
+
+        <ImageButton
+            android:id="@+id/studentsButton"
+            style="@style/navButton"
+            android:contentDescription="@string/students"
+            android:src="@mipmap/students" />
+
+        <ImageButton
+            android:id="@+id/groupsButton"
+            style="@style/navButton"
+            android:contentDescription="@string/groups"
+            android:src="@mipmap/groups" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/editPanel"
+        style="@style/backgroundLayout"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:background="@drawable/bottom_layout_background"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <ImageButton
+                    android:id="@+id/closeEditPanel"
+                    style="@style/closeButton"
+                    android:contentDescription="@string/close" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/editButton"
+                style="@style/actionButton"
+                android:layout_marginHorizontal="25dp"
+                android:text="@string/edit" />
+
+            <Button
+                android:id="@+id/deleteButton"
+                style="@style/actionButton"
+                android:layout_marginHorizontal="25dp"
+                android:text="@string/delete" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/deletePanel"
+        style="@style/backgroundLayout"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:background="@drawable/bottom_layout_background"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/deleteText"
+                style="@style/deletePanelText1" />
+
+            <TextView style="@style/deletePanelText2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/closeDeletePanel"
+                    style="@style/smallActionCancelButton"
+                    android:text="@string/cancel" />
+
+                <Button
+                    android:id="@+id/confirmDelete"
+                    style="@style/smallActionDeleteButton"
+                    android:text="@string/delete" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

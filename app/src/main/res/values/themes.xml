@@ -1,0 +1,273 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.EduEnvi" parent="Theme.Material3.Light">
+        <!-- <<style name="Base.Theme.EduEnvi" parent="Theme.AppCompat.Light.NoActionBar"> -->
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item>-->
+        <item name="colorPrimary">@color/Primary</item>
+        <item name="colorPrimaryContainer">@color/Primary</item>
+        <item name="colorOnPrimary">@color/OnPrimary</item>
+        <item name="colorOnPrimaryContainer">@color/OnPrimary</item>
+        <item name="colorSecondary">@color/Secondary</item>
+        <item name="colorSecondaryContainer">@color/Secondary</item>
+        <item name="colorOnSecondary">@color/OnSecondary</item>
+        <item name="colorOnSecondaryContainer">@color/OnSecondary</item>
+        <item name="colorTertiary">@color/Tertiary</item>
+        <item name="colorTertiaryContainer">@color/Tertiary</item>
+        <item name="colorOnTertiary">@color/OnTertiary</item>
+        <item name="colorOnTertiaryContainer">@color/OnTertiary</item>
+        <item name="colorSurface">@color/Surface</item>
+        <item name="colorOnSurface">@color/OnSurface</item>
+        <item name="colorSurfaceContainer">@color/Surface</item>
+        <item name="colorOnBackground">@color/OnBackground</item>
+        <item name="colorAccent">@color/Accent</item>
+    </style>
+
+    <style name="Theme.EduEnvi" parent="Base.Theme.EduEnvi" />
+
+    <style name="firstButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">130dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:paddingLeft">40dp</item>
+        <item name="android:paddingRight">50dp</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textAlignment">textEnd</item>
+    </style>
+
+    <style name="classroomPrefab">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:background">@drawable/oval_30_surface</item>
+
+    </style>
+
+    <style name="classroomImagePrefab">
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:src">@mipmap/classroom</item>
+    </style>
+
+    <style name="classroomTextPrefab">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_toEndOf">@+id/classroomImage</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:text">Meno</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="simpleButton">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+    <style name="backButton" parent="simpleButton">
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:src">@drawable/baseline_arrow_back_24</item>
+    </style>
+
+    <style name="backButtonDark" parent="simpleButton">
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:src">@drawable/baseline_arrow_back_dark_24</item>
+    </style>
+
+    <style name="profileButton" parent="simpleButton">
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:src">@drawable/baseline_account_circle_24</item>
+        <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
+    <style name="editButton" parent="simpleButton">
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:src">@drawable/baseline_more_horiz_24</item>
+        <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
+    <style name="closeButtonLeft" parent="simpleButton">
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:src">@drawable/baseline_close_24</item>
+    </style>
+
+    <style name="closeButton" parent="simpleButton">
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:src">@drawable/baseline_close_24</item>
+        <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
+    <style name="addButton">
+        <item name="android:layout_width">56dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_marginBottom">86dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:src">@drawable/baseline_add_24</item>
+        <item name="android:background">@drawable/oval_50_primary</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
+    <style name="navButton">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
+    <style name="actionButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">64dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="actionButtonEdit" parent="actionButton">
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
+        <item name="android:backgroundTint">@color/gray</item>
+        <item name="android:text">@string/edit</item>
+    </style>
+
+    <style name="actionButtonDelete" parent="actionButton">
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
+        <item name="android:backgroundTint">@color/Error</item>
+        <item name="android:text">@string/delete</item>
+    </style>
+
+    <style name="smallActionButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">58dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:backgroundTint">@color/Accent</item>
+    </style>
+
+    <style name="smallActionDeleteButton" parent="smallActionButton">
+        <item name="android:backgroundTint">@color/Error</item>
+    </style>
+
+    <style name="smallActionCancelButton" parent="smallActionButton">
+        <item name="android:backgroundTint">@color/gray</item>
+    </style>
+
+    <style name="inputField">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:background">@drawable/oval_50_surface</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+
+    <style name="inputFieldEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:background">@color/OnPrimary</item>
+    </style>
+
+    <style name="inputFieldColor" parent="inputField">
+        <item name="android:background">@drawable/oval_50_background</item>
+    </style>
+
+    <style name="inputFieldEditTextColor" parent="inputFieldEditText">
+        <item name="android:background">@color/Background</item>
+    </style>
+
+    <style name="headline">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginStart">70dp</item>
+        <item name="android:layout_marginEnd">70dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/OnAccent</item>
+    </style>
+
+    <style name="bottomNavigationLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">70dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/Secondary</item>
+    </style>
+
+    <style name="gridView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginTop">70dp</item>
+        <item name="android:layout_marginBottom">70dp</item>
+        <item name="android:isScrollContainer">true</item>
+        <item name="android:background">@color/Background</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingStart">3dp</item>
+        <item name="android:paddingEnd">3dp</item>
+    </style>
+
+    <style name="backgroundLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/semitransparent</item>
+    </style>
+
+    <style name="deletePanelText1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">25dp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:text">Naozaj chcete odstrániť študenta/skupinu/triedu/... XY?</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="deletePanelText2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
+        <item name="android:layout_marginBottom">25dp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:text">Tento krok je nevratný</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="chipTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
+        <item name="android:layout_marginTop">25dp</item>
+        <item name="android:layout_marginBottom">25dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="chipGroup">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
+    </style>
+
+    <style name="headlineVerticalLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
+
+</resources>
