@@ -29,6 +29,7 @@ class GroupTasksAdapter (private val context: Activity, private val list: List<T
 
         delete.setOnClickListener {
             (context as GroupTasksActivity).binding.deletePanel.visibility = View.VISIBLE
+            context.binding.deleteText.text = Constants.getDeleteTaskFromGroupString(task)
             Constants.Task = task
         }
         view?.setOnClickListener {

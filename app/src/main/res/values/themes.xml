@@ -162,26 +162,19 @@
 
     <style name="inputField">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">60dp</item>
-        <item name="android:background">@drawable/oval_50_surface</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingRight">20dp</item>
-        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">10dp</item>
     </style>
 
     <style name="inputFieldEditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:maxLines">1</item>
-        <item name="android:background">@color/OnPrimary</item>
-    </style>
-
-    <style name="inputFieldColor" parent="inputField">
-        <item name="android:background">@drawable/oval_50_background</item>
+        <item name="android:background">@drawable/oval_50_surface</item>
     </style>
 
     <style name="inputFieldEditTextColor" parent="inputFieldEditText">
-        <item name="android:background">@color/Background</item>
+        <item name="android:background">@drawable/oval_50_background</item>
     </style>
 
     <style name="headline">

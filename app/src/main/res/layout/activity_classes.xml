@@ -60,7 +60,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/classNameTextInputLayout"
-                style="@style/inputFieldColor"
+                style="@style/inputField"
                 android:layout_marginHorizontal="25dp">
 
                 <com.google.android.material.textfield.TextInputEditText

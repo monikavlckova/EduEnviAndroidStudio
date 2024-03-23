@@ -23,7 +23,7 @@ class ProfileActivity : AppCompatActivity() {
         val teacher = Constants.Teacher
         setValuesInEditPanel()
 
-        binding.firstNameLastName.text = "${teacher!!.name} ${teacher.lastName}"
+        binding.firstNameLastName.text = "${teacher.name} ${teacher.lastName}"
 
         binding.backButton.setOnClickListener {
             val intent = Intent(this, ClassesActivity::class.java)
@@ -88,7 +88,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setValuesInEditPanel() {
-        val teacher = Constants.Teacher!!
+        val teacher = Constants.Teacher
         binding.editFirstName.setText(teacher.name)
         binding.editLastName.setText(teacher.lastName)
         binding.editUserName.setText(teacher.userName)
@@ -122,7 +122,7 @@ class ProfileActivity : AppCompatActivity() {
                 val teacher = ApiHelper.getTeacherByUserName(userName)
 
                 withContext(Dispatchers.Main) {
-                    if (teacher != null && teacher.id != Constants.Teacher!!.id) {
+                    if (teacher != null && teacher.id != Constants.Teacher.id) {
                         binding.editUserNameTextInputLayout.error = Constants.WrongUserNameAlreadyExistMessage
                         isValid = false
                     }
@@ -143,7 +143,7 @@ class ProfileActivity : AppCompatActivity() {
                 val teacher = ApiHelper.getTeacherByEmail(email)
 
                 withContext(Dispatchers.Main) {
-                    if (teacher != null && teacher.id != Constants.Teacher!!.id) {
+                    if (teacher != null && teacher.id != Constants.Teacher.id) {
                         binding.editEmailTextInputLayout.error = Constants.WrongEmailAlreadyExistMessage
                         isValid = false
                     }

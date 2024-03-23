@@ -9,73 +9,51 @@ import com.example.eduenvi.models.Teacher
 
 object Constants {
 
-    private fun GetWrongFormatMassage(min: Int): String {
+    private fun getWrongFormatMassage(min: Int): String {
         if (min == 1) return String.format("Musí obsahovať aspoň %d znak!", min)
         if (min <= 4) return String.format("Musí obsahovať aspoň %d znaky!", min)
         return String.format("Musí obsahovať aspoň %d znakov!", min)
     }
 
-    val MinimalFirstNameLength = 2
-    val MinimalLastNameLength = 2
-    val MinimalUserNameLength = 4
-    val MinimalPasswordLength = 4
-    val MinimalLoginCodeLength = 4
-    val MinimalClassroomNameLength = 2
-    val MinimalGroupNameLength = 2
-    val MinimalTaskNameLength = 2
+    const val MinimalFirstNameLength = 2
+    const val MinimalLastNameLength = 2
+    const val MinimalUserNameLength = 4
+    const val MinimalPasswordLength = 4
+    const val MinimalLoginCodeLength = 4
+    const val MinimalClassroomNameLength = 2
+    const val MinimalGroupNameLength = 2
+    const val MinimalTaskNameLength = 2
 
-    val SaveButtonTextUpdate = "Uložiť"
-    val SaveButtonTextCreate = "Vytvoriť"
-    val WrongFirstNameFormatMessage = GetWrongFormatMassage(MinimalFirstNameLength)
-    val WrongLastNameFormatMessage = GetWrongFormatMassage(MinimalLastNameLength)
-    val WrongUserNameFormatMessage = GetWrongFormatMassage(MinimalUserNameLength)
-    val WrongUserNameAlreadyExistMessage = "Obsadený login!"
-    val WrongLoginCodeAlreadyExistMessage = "Obsadený prihlasovací kód!"
-    val WrongEmailFormatMessage = "Nesprávny formát!"
-    val WrongEmailAlreadyExistMessage = "Konto s e-mailom uz existuje!"
-    val WrongEmailDoesNotExistMessage = "Konto s e-mailom neexistuje!"
-    val WrongPasswordFormatMessage = GetWrongFormatMassage(MinimalPasswordLength)
-    val WrongLoginCodeFormatMessage = GetWrongFormatMassage(MinimalLoginCodeLength)
-    val WrongPasswordsNotSameMessage = "Heslá sa nezhodujú!"
-    val WrongClassroomNameFormatMessage = GetWrongFormatMassage(MinimalClassroomNameLength)
-    val WrongGroupNameFormatMessage = GetWrongFormatMassage(MinimalGroupNameLength)
-    val WrongTaskNameFormatMessage = GetWrongFormatMassage(MinimalTaskNameLength)
-    val WrongUserNameOrPasswordMessage = "Nesprávny login alebo heslo!"
-    val WrongLoginCodeMessage = "Nesprávny prihlasovací kód!"
+    const val SaveButtonTextUpdate = "Uložiť"
+    const val SaveButtonTextCreate = "Vytvoriť"
+    val WrongFirstNameFormatMessage = getWrongFormatMassage(MinimalFirstNameLength)
+    val WrongLastNameFormatMessage = getWrongFormatMassage(MinimalLastNameLength)
+    val WrongUserNameFormatMessage = getWrongFormatMassage(MinimalUserNameLength)
+    const val WrongUserNameAlreadyExistMessage = "Obsadený login!"
+    const val WrongLoginCodeAlreadyExistMessage = "Obsadený prihlasovací kód!"
+    const val WrongEmailFormatMessage = "Nesprávny formát!"
+    const val WrongEmailAlreadyExistMessage = "Konto s e-mailom uz existuje!"
+    const val WrongEmailDoesNotExistMessage = "Konto s e-mailom neexistuje!"
+    val WrongPasswordFormatMessage = getWrongFormatMassage(MinimalPasswordLength)
+    val WrongLoginCodeFormatMessage = getWrongFormatMassage(MinimalLoginCodeLength)
+    const val WrongPasswordsNotSameMessage = "Heslá sa nezhodujú!"
+    val WrongClassroomNameFormatMessage = getWrongFormatMassage(MinimalClassroomNameLength)
+    val WrongGroupNameFormatMessage = getWrongFormatMassage(MinimalGroupNameLength)
+    val WrongTaskNameFormatMessage = getWrongFormatMassage(MinimalTaskNameLength)
+    const val WrongUserNameOrPasswordMessage = "Nesprávny login alebo heslo!"
+    const val WrongLoginCodeMessage = "Nesprávny prihlasovací kód!"
 
     val LastSceneName = "First"
 
-    fun GetDeleteClassroomString(classroom: Classroom): String {
-        return "Odstrániť triedu " + classroom.name + "?"
-    }
+    fun getDeleteClassroomString(c: Classroom) = "Odstrániť triedu " + c.name + "?"
+    fun getDeleteStudentString(s: Student) = "Odstrániť žiaka " + s.name + " " + s.lastName + "?"
+    fun getDeleteGroupString(g: Group): String = "Odstrániť skupinu " + g.name + "?"
+    fun getDeleteTaskString(t: Task) = "Odstrániť úlohu " + t.name + "?"
+    fun getDeleteStudentFromGroupString(s: Student) = "Odstrániť žiaka " + s.name + " " + s.lastName + " zo skupiny?"
+    fun getDeleteGroupFromStudentString(g: Group) = "Odstrániť žiaka zo skupiny " + g.name + "?"
+    fun getDeleteTaskFromGroupString(t: Task) = "Odstrániť úlohu " + t.name + " zo skupiny?"
+    fun getDeleteTaskFromStudentString(t: Task) = "Odstrániť žiakovi úlohu " + t.name + "?"
 
-    fun GetDeleteStudentString(student: Student): String {
-        return "Odstrániť žiaka " + student.name + " " + student.lastName + "?"
-    }
-
-    fun GetDeleteGroupString(group: Group): String {
-        return "Odstrániť skupinu " + group.name + "?"
-    }
-
-    fun GetDeleteTaskString(task: Task): String {
-        return "Odstrániť úlohu " + task.name + "?"
-    }
-
-    fun GetDeleteStudentFromGroupString(student: Student): String {
-        return "Odstrániť žiaka " + student.name + " " + student.lastName + " zo skupiny?"
-    }
-
-    fun GetDeleteGroupFromStudentString(group: Group): String {
-        return "Odstrániť žiaka zo skupiny " + group.name + "?"
-    }
-
-    fun GetDeleteTaskFromGroupString(task: Task): String {
-        return "Odstrániť úlohu " + task.name + " zo skupiny?"
-    }
-
-    fun GetDeleteTaskFromStudentString(task: Task): String {
-        return "Odstrániť žiakovi úlohu " + task.name + "?"
-    }
     /*
         public static Sprite GetSprite(path:String):String
         {
@@ -99,10 +77,10 @@ object Constants {
     val emailSender = EmailSender()
     val dbImageManager = DBImageManager()
 
-    var Classroom: Classroom = Classroom(0, 0, "", null)
-    var Group: Group = Group(0, 0, "", null)
-    var Student: Student = Student(0, 0, "", "", "",null)
-    var Task: Task = Task(0, 0, 0, "", "", null)
-    var Teacher: Teacher = Teacher(0, "", "", "", "", "", null)
+    var Classroom = Classroom(0, 0, "", null)
+    var Group = Group(0, 0, "", null)
+    var Student = Student(0, 0, "", "", "", null)
+    var Task = Task(0, 0, 0, "", "", null)
+    var Teacher = Teacher(0, "", "", "", "", "", null)
 
 }

@@ -23,7 +23,7 @@ class StudentTasksActivity : AppCompatActivity() {
 
     private var _delFromStudent: HashSet<Task> = HashSet()
     private var _addToStudent: HashSet<Task> = HashSet()
-    private var tasks :MutableList<Task>? = null
+    private var tasks: MutableList<Task>? = null
     private lateinit var adapter: StudentsTasksAdapter
 
 
@@ -33,7 +33,7 @@ class StudentTasksActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val myContext = this
-        val student = Constants.Student!!
+        val student = Constants.Student
         CoroutineScope(Dispatchers.IO).launch {
             tasks = ApiHelper.getStudentsTasks(student.id) as MutableList<Task>?
 
@@ -44,11 +44,14 @@ class StudentTasksActivity : AppCompatActivity() {
                 }
             }
         }
+
         binding.studentName.text = "${student.name} ${student.lastName}"
+
         binding.backButton.setOnClickListener {
-            val intent = Intent(this, ClassStudentsActivity::class.java) //TODO zmen na lastscene
+            val intent = Intent(this, ClassStudentsActivity::class.java)
             startActivity(intent)
         }
+
         binding.groupsButton.setOnClickListener {
             val intent = Intent(this, StudentGroupsActivity::class.java)
             startActivity(intent)
@@ -56,8 +59,11 @@ class StudentTasksActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteStudentTask(student.id, Constants.Task!!.id)
+                ApiHelper.deleteStudentTask(student.id, Constants.Task.id)
                 tasks!!.remove(Constants.Task)
+                withContext(Dispatchers.Main) {
+                    adapter.notifyDataChenged()
+                }
             }
         }
 
@@ -67,8 +73,7 @@ class StudentTasksActivity : AppCompatActivity() {
 
         binding.saveButton.setOnClickListener {
             manageTasks()
-            val intent = Intent(this, StudentTasksActivity::class.java)
-            startActivity(intent)
+            closeTaskPanel()
         }
 
         binding.closeTaskPanel.setOnClickListener { closeTaskPanel() }
@@ -82,24 +87,24 @@ class StudentTasksActivity : AppCompatActivity() {
     }
 
     private fun empty() {
-        for (i in binding.chipGroupIn.childCount-1 downTo  0) {
+        for (i in binding.chipGroupIn.childCount - 1 downTo 0) {
             val chip = binding.chipGroupIn.getChildAt(i)
             binding.chipGroupIn.removeView(chip)
         }
 
-        for (i in binding.chipGroupNotIn.childCount-1 downTo  0) {
+        for (i in binding.chipGroupNotIn.childCount - 1 downTo 0) {
             val chip = binding.chipGroupNotIn.getChildAt(i)
             binding.chipGroupNotIn.removeView(chip)
         }
     }
 
-    fun setActiveTasksPanel() {
+    private fun setActiveTasksPanel() {
         binding.tasksPanel.visibility = View.VISIBLE
         CoroutineScope(Dispatchers.IO).launch {
-            val tasksInStudent = ApiHelper.getStudentsTasks(Constants.Student!!.id)
+            val tasksInStudent = ApiHelper.getStudentsTasks(Constants.Student.id)
             val tasksNotInStudent = ApiHelper.getTasksFromTeacherNotInStudent(
-                Constants.Teacher!!.id,
-                Constants.Student!!.id
+                Constants.Teacher.id,
+                Constants.Student.id
             )
 
             withContext(Dispatchers.Main) {
@@ -130,7 +135,6 @@ class StudentTasksActivity : AppCompatActivity() {
         else chip.setCloseIconResource(R.drawable.baseline_add_24)
         chip.isCloseIconVisible = true
         chip.setOnCloseIconClickListener {
-            //Constants.Student = student
             if (addedInStudent) {
                 chip.setCloseIconResource(R.drawable.baseline_add_24)
                 binding.chipGroupIn.removeView(chip)
@@ -151,16 +155,20 @@ class StudentTasksActivity : AppCompatActivity() {
     }
 
     private fun manageTasks() {
-        for (task in _addToStudent)
-            CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.createStudentTask(StudentTask(Constants.Student!!.id, task.id))
+        CoroutineScope(Dispatchers.IO).launch {
+            for (task in _addToStudent) {
+                val newTask = ApiHelper.createStudentTask(StudentTask(Constants.Student.id, task.id))
+                if (newTask != null) tasks!!.add(task) //TODO else toast nepodarilo sa
             }
-        for (task in _delFromStudent)
-            CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteStudentTask(Constants.Student!!.id, task.id)
+            for (task in _delFromStudent) {
+                ApiHelper.deleteStudentTask(Constants.Student.id, task.id)
+                tasks!!.remove(task) //TODO if delete successful then... else toast neepodarilo sa
             }
-
-        _delFromStudent = HashSet()
-        _addToStudent = HashSet()
+            withContext(Dispatchers.Main) {
+                adapter.notifyDataChenged()
+                _delFromStudent = HashSet()
+                _addToStudent = HashSet()
+            }
+        }
     }
 }

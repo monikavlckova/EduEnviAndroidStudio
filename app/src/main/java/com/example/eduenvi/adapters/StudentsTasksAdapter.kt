@@ -29,6 +29,7 @@ class StudentsTasksAdapter(private val context: Activity, private val list: List
 
         delete.setOnClickListener {
             (context as StudentTasksActivity).binding.deletePanel.visibility = View.VISIBLE
+            context.binding.deleteText.text = Constants.getDeleteTaskFromStudentString(task)
             Constants.Task = task
         }
         view?.setOnClickListener {

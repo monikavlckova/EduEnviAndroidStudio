@@ -78,13 +78,13 @@ class EmailSender {
              Dobrý deň $login,
              toto je vaše nové heslo: $newPassword
              Po prihlásení si ho zmeňte!
-             """.trimIndent() //TODO zmen
+             """.trimIndent()
         sendEmail(receiverEmail, text, subject)
     }
 
     fun sendWelcome(receiverEmail: String, login: String) {
         val subject = "Vitajte v EduEnvi"
-        val text = "Dobrý deň $login,\nVitajte v EduEnvi!" //TODO zmen
+        val text = "Dobrý deň $login,\nVitajte v EduEnvi!"
         sendEmail(receiverEmail, text, subject)
     }
 }

@@ -31,6 +31,7 @@ class GroupStudentsAdapter (private val context: Activity, private val list: Lis
 
         delete.setOnClickListener {
             (context as GroupStudentsActivity).binding.deletePanel.visibility = View.VISIBLE
+            context.binding.deleteText.text = Constants.getDeleteStudentFromGroupString(student)
             Constants.Student = student
         }
         view?.setOnClickListener {

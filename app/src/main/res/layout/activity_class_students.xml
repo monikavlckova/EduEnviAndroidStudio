@@ -54,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/Surface"
-        android:visibility="gone">
+        android:visibility="">
 
         <ImageButton
             android:id="@+id/closeStudentPanel"
@@ -93,7 +93,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/firstNameTextInputLayout"
-                style="@style/inputFieldColor">
+                style="@style/inputField">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/firstName"
@@ -104,7 +104,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/lastNameTextInputLayout"
-                style="@style/inputFieldColor">
+                style="@style/inputField">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/lastName"
@@ -113,37 +113,53 @@
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/loginCodeTextInputLayout"
-                style="@style/inputFieldColor">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/loginCode"
-                    style="@style/inputFieldEditTextColor"
-                    android:hint="@string/loginCode"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/loginCodeTextInputLayout"
+                    style="@style/inputField"
+                    android:layout_marginTop="0dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/loginCode"
+                        style="@style/inputFieldEditTextColor"
+                        android:hint="@string/loginCode"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageButton
+                    android:id="@+id/generateLoginCode"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:backgroundTint="@color/transparent"
+                    android:src="@drawable/baseline_renew_24"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp" />
+            </RelativeLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/classroomTextInputLayout"
-                android:visibility="gone"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/oval_50_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="false"
+                android:inputType="none"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:clickable = "true"
-                android:focusable = "true"
-                android:focusableInTouchMode = "false"
-                android:inputType = "none" >
-            <!--style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
+                android:visibility="gone">
 
                 <AutoCompleteTextView
                     android:id="@+id/classroom"
                     style="@style/inputFieldEditTextColor"
                     android:hint="@string/classroom"
-                    android:inputType="none"/>
+                    android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

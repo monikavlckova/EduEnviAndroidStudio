@@ -27,7 +27,7 @@ class ClassTasksActivity : AppCompatActivity() {
 
         val myContext = this
         CoroutineScope(Dispatchers.IO).launch {
-            tasks = ApiHelper.getTasksInClassroom(Constants.Classroom!!.id) as MutableList<Task>?
+            tasks = ApiHelper.getTasksInClassroom(Constants.Classroom.id) as MutableList<Task>?
 
             withContext(Dispatchers.Main) {
                 if (tasks != null) {
@@ -36,7 +36,7 @@ class ClassTasksActivity : AppCompatActivity() {
                 }
             }
         }
-        val classroom = Constants.Classroom!!
+        val classroom = Constants.Classroom
         binding.className.text = classroom.name
 
         binding.backButton.setOnClickListener {
@@ -66,12 +66,12 @@ class ClassTasksActivity : AppCompatActivity() {
         binding.deleteButton.setOnClickListener {
             binding.deletePanel.visibility = View.VISIBLE
             binding.editPanel.visibility = View.GONE
-            binding.deleteText.text = Constants.GetDeleteGroupString(Constants.Group!!)
+            binding.deleteText.text = Constants.getDeleteGroupString(Constants.Group)
         }
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteTask(Constants.Task!!.id)
+                ApiHelper.deleteTask(Constants.Task.id)
                 tasks!!.remove(Constants.Task)
                 withContext(Dispatchers.Main) {
                     adapter.notifyDataChenged()

@@ -33,7 +33,7 @@ class GroupTasksActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val myContext = this
-        val group = Constants.Group!!
+        val group = Constants.Group
         CoroutineScope(Dispatchers.IO).launch {
             tasks = ApiHelper.getGroupsTasks(group.id) as MutableList<Task>?
 
@@ -44,20 +44,26 @@ class GroupTasksActivity : AppCompatActivity() {
                 }
             }
         }
+
         binding.groupName.text = group.name
 
         binding.backButton.setOnClickListener {
-            val intent = Intent(this, ClassGroupsActivity::class.java) //TODO zmen na lastscene
+            val intent = Intent(this, ClassGroupsActivity::class.java)
             startActivity(intent)
         }
+
         binding.studentsButton.setOnClickListener {
             val intent = Intent(this, GroupStudentsActivity::class.java)
             startActivity(intent)
         }
+
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteGroupTask(group.id, Constants.Task!!.id)
+                ApiHelper.deleteGroupTask(group.id, Constants.Task.id)
                 tasks!!.remove(Constants.Task)
+                withContext(Dispatchers.Main) {
+                    adapter.notifyDataChenged()
+                }
             }
         }
 
@@ -67,8 +73,9 @@ class GroupTasksActivity : AppCompatActivity() {
 
         binding.saveButton.setOnClickListener {
             manageTasks()
-            val intent = Intent(this, GroupTasksActivity::class.java)
-            startActivity(intent)
+            closeTaskPanel()
+            //val intent = Intent(this, GroupTasksActivity::class.java)
+            //startActivity(intent)
         }
 
         binding.closeTaskPanel.setOnClickListener { closeTaskPanel() }
@@ -93,13 +100,13 @@ class GroupTasksActivity : AppCompatActivity() {
         }
     }
 
-    fun setActiveTasksPanel() {
+    private fun setActiveTasksPanel() {
         binding.tasksPanel.visibility = View.VISIBLE
         CoroutineScope(Dispatchers.IO).launch {
-            val tasksInGroup = ApiHelper.getGroupsTasks(Constants.Group!!.id)
+            val tasksInGroup = ApiHelper.getGroupsTasks(Constants.Group.id)
             val tasksNotInGroup = ApiHelper.getTasksFromTeacherNotInGroup(
-                Constants.Teacher!!.id,
-                Constants.Group!!.id
+                Constants.Teacher.id,
+                Constants.Group.id
             )
 
             withContext(Dispatchers.Main) {
@@ -130,7 +137,6 @@ class GroupTasksActivity : AppCompatActivity() {
         else chip.setCloseIconResource(R.drawable.baseline_add_24)
         chip.isCloseIconVisible = true
         chip.setOnCloseIconClickListener {
-            //Constants.Task = task
             if (addedInGroup) {
                 chip.setCloseIconResource(R.drawable.baseline_add_24)
                 binding.chipGroupIn.removeView(chip)
@@ -151,16 +157,20 @@ class GroupTasksActivity : AppCompatActivity() {
     }
 
     private fun manageTasks() {
-        for (task in _addToGroup)
-            CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.createGroupTask(GroupTask(Constants.Group!!.id, task.id))
+        CoroutineScope(Dispatchers.IO).launch {
+            for (task in _addToGroup) {
+                val newTask = ApiHelper.createGroupTask(GroupTask(Constants.Group.id, task.id))
+                if (newTask != null) tasks!!.add(task)//TODO else toast nepodarilo sa
             }
-        for (task in _delFromGroup)
-            CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteGroupTask(Constants.Group!!.id, task.id)
+            for (task in _delFromGroup) {
+                ApiHelper.deleteGroupTask(Constants.Group.id, task.id)
+                tasks!!.remove(task)//TODO if delete successful then... else toast neepodarilo sa
             }
-
-        _delFromGroup = HashSet()
-        _addToGroup = HashSet()
+            withContext(Dispatchers.Main) {
+                adapter.notifyDataChenged()
+                _delFromGroup = HashSet()
+                _addToGroup = HashSet()
+            }
+        }
     }
 }

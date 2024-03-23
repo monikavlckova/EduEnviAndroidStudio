@@ -65,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun submitLoginForm(context: Context) {
+    private fun submitLoginForm(context: Context) {
         CoroutineScope(Dispatchers.IO).launch {
             val teacher = ApiHelper.getTeacherByLogin(
                 binding.userName.text.toString(),
@@ -79,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
                     val intent = Intent(context, ClassesActivity::class.java)
                     startActivity(intent)
                 } else {
-                    binding.passwordTextInputLayout.error = Constants.WrongUserNameOrPasswordMessage //TODO prekryva sa visible a error
+                    binding.passwordTextInputLayout.error = Constants.WrongUserNameOrPasswordMessage
                     binding.password.requestFocus()
                 }
             }
@@ -87,23 +87,23 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    fun closeForgottenPasswordPanel() {
+    private fun closeForgottenPasswordPanel() {
         binding.forgottenPasswordPanel.visibility = View.GONE
         resetEamilForm()
     }
 
-    fun generateNewPassword(): String {
+    private fun generateNewPassword(): String {
         val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
         return List(8) { charPool.random() }.joinToString("")
     }
 
-    fun resetLoginForm() {
+    private fun resetLoginForm() {
         binding.userName.text = null
         binding.password.text = null
         binding.passwordTextInputLayout.error = null
     }
 
-    fun resetEamilForm() {
+    private fun resetEamilForm() {
         binding.email.text = null
         binding.emailTextInputLayout.error = null
     }

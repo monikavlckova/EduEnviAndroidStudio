@@ -29,7 +29,7 @@ class ClassesActivity : AppCompatActivity() {
 
         val myContext = this
         CoroutineScope(Dispatchers.IO).launch {
-            classes = ApiHelper.getTeachersClassrooms(Constants.Teacher!!.id) as MutableList<Classroom>?
+            classes = ApiHelper.getTeachersClassrooms(Constants.Teacher.id) as MutableList<Classroom>?
 
             withContext(Dispatchers.Main) {
                 if (classes != null) {
@@ -58,7 +58,7 @@ class ClassesActivity : AppCompatActivity() {
         binding.editButton.setOnClickListener {
             _creatingNew = false
             binding.saveButton.text = Constants.SaveButtonTextUpdate
-            binding.className.setText(Constants.Classroom!!.name)
+            binding.className.setText(Constants.Classroom.name)
             binding.classPanel.visibility = View.VISIBLE
             binding.editPanel.visibility = View.GONE
         }
@@ -66,9 +66,9 @@ class ClassesActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             if (validClassroomName()) {
                 val classroom =
-                    Classroom(0, Constants.Teacher!!.id, binding.className.text.toString(), null)
+                    Classroom(0, Constants.Teacher.id, binding.className.text.toString(), null)
                 if (_creatingNew == false) {
-                    classroom.id = Constants.Classroom!!.id
+                    classroom.id = Constants.Classroom.id
                     CoroutineScope(Dispatchers.IO).launch {
                         ApiHelper.updateClassroom(classroom.id, classroom)
                         Log.v("DB", "trieda " + Constants.Classroom.name)
@@ -94,15 +94,15 @@ class ClassesActivity : AppCompatActivity() {
         binding.deleteButton.setOnClickListener {
             binding.deletePanel.visibility = View.VISIBLE
             binding.editPanel.visibility = View.GONE
-            binding.deleteText.text = Constants.GetDeleteClassroomString(Constants.Classroom!!)
+            binding.deleteText.text = Constants.getDeleteClassroomString(Constants.Classroom)
         }
 
         binding.confirmDelete.setOnClickListener {
             switchClassroomTasksToStudentTasks()
             switchGroupTasksToStudentTasks()
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteClassroom(Constants.Classroom!!.id)
-                classes!!.remove(Constants.Classroom!!)
+                ApiHelper.deleteClassroom(Constants.Classroom.id)
+                classes!!.remove(Constants.Classroom)
                 withContext(Dispatchers.Main) {
                     adapter.notifyDataChenged()
                 }
@@ -126,8 +126,8 @@ class ClassesActivity : AppCompatActivity() {
 
     private fun switchClassroomTasksToStudentTasks() {
         CoroutineScope(Dispatchers.IO).launch {
-            val students = ApiHelper.getStudentsInClassroom(Constants.Classroom!!.id)
-            val classroomTasks = ApiHelper.getTasksInClassroom(Constants.Classroom!!.id)
+            val students = ApiHelper.getStudentsInClassroom(Constants.Classroom.id)
+            val classroomTasks = ApiHelper.getTasksInClassroom(Constants.Classroom.id)
 
             if (students != null && classroomTasks != null)
                 for (student in students) for (task in classroomTasks) {
@@ -139,7 +139,7 @@ class ClassesActivity : AppCompatActivity() {
 
     private fun switchGroupTasksToStudentTasks() {
         CoroutineScope(Dispatchers.IO).launch {
-            val groups = ApiHelper.getGroupsInClassroom(Constants.Classroom!!.id)
+            val groups = ApiHelper.getGroupsInClassroom(Constants.Classroom.id)
 
             if (groups != null)
                 for (group in groups) {

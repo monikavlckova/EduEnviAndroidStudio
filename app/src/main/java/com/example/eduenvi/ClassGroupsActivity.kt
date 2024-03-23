@@ -35,7 +35,7 @@ class ClassGroupsActivity : AppCompatActivity() {
 
         val myContext = this
         CoroutineScope(Dispatchers.IO).launch {
-            groups = ApiHelper.getGroupsInClassroom(Constants.Classroom!!.id) as MutableList<Group>?
+            groups = ApiHelper.getGroupsInClassroom(Constants.Classroom.id) as MutableList<Group>?
 
             withContext(Dispatchers.Main) {
                 if (groups != null) {
@@ -44,7 +44,7 @@ class ClassGroupsActivity : AppCompatActivity() {
                 }
             }
         }
-        val classroom = Constants.Classroom!!
+        val classroom = Constants.Classroom
         binding.className.text = classroom.name
 
         binding.backButton.setOnClickListener {
@@ -69,7 +69,7 @@ class ClassGroupsActivity : AppCompatActivity() {
         binding.editButton.setOnClickListener {
             _creatingNewGroup = false
             binding.saveButton.text = Constants.SaveButtonTextUpdate
-            binding.groupName.setText(Constants.Group!!.name)
+            binding.groupName.setText(Constants.Group.name)
             setActiveGroupPanel()
             binding.editPanel.visibility = View.GONE
         }
@@ -77,18 +77,18 @@ class ClassGroupsActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             if (validName()) {
                 val group =
-                    Group(0, Constants.Classroom!!.id, binding.groupName.text.toString(), null)
+                    Group(0, Constants.Classroom.id, binding.groupName.text.toString(), null)
                 var res: Group?
                 CoroutineScope(Dispatchers.IO).launch {
                     if (_creatingNewGroup == false) {
-                        group.id = Constants.Group!!.id
+                        group.id = Constants.Group.id
                         res = ApiHelper.updateGroup(group.id, group)
                         groups!!.remove(Constants.Group)
                     } else {
                         res = ApiHelper.createGroup(group)
                     }
                     Constants.Group = res!!
-                    groups!!.add(Constants.Group!!)
+                    groups!!.add(Constants.Group)
                     withContext(Dispatchers.Main) {
                         adapter.notifyDataChenged()
                     }
@@ -101,13 +101,13 @@ class ClassGroupsActivity : AppCompatActivity() {
         binding.deleteButton.setOnClickListener {
             binding.deletePanel.visibility = View.VISIBLE
             binding.editPanel.visibility = View.GONE
-            binding.deleteText.text = Constants.GetDeleteGroupString(Constants.Group!!)
+            binding.deleteText.text = Constants.getDeleteGroupString(Constants.Group)
         }
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteGroup(Constants.Group!!.id)
-                groups!!.remove(Constants.Group!!)
+                ApiHelper.deleteGroup(Constants.Group.id)
+                groups!!.remove(Constants.Group)
                 withContext(Dispatchers.Main) {
                     adapter.notifyDataChenged()
                 }
@@ -147,12 +147,12 @@ class ClassGroupsActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             var studentsInGroup: List<Student>? = null
             var studentsNotInGroup: List<Student>? =
-                ApiHelper.getStudentsInClassroom(Constants.Classroom!!.id)
+                ApiHelper.getStudentsInClassroom(Constants.Classroom.id)
             if (_creatingNewGroup == false) {
-                studentsInGroup = ApiHelper.getStudentsInGroup(Constants.Group!!.id)
+                studentsInGroup = ApiHelper.getStudentsInGroup(Constants.Group.id)
                 studentsNotInGroup = ApiHelper.getStudentsFromClassroomNotInGroup(
-                    Constants.Classroom!!.id,
-                    Constants.Group!!.id
+                    Constants.Classroom.id,
+                    Constants.Group.id
                 )
             }
             withContext(Dispatchers.Main) {
@@ -208,11 +208,11 @@ class ClassGroupsActivity : AppCompatActivity() {
     private fun manageStudents() {
         for (student in _addToGroup)
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.createStudentGroup(StudentGroup(Constants.Group!!.id, student.id))
+                ApiHelper.createStudentGroup(StudentGroup(Constants.Group.id, student.id))
             }
         for (student in _delFromGroup)
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteStudentGroup(student.id, Constants.Group!!.id)
+                ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
             }
 
         _delFromGroup = HashSet()
