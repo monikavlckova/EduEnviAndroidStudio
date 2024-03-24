@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.adapters.ClassroomGroupsAdapter
 import com.example.eduenvi.databinding.ActivityClassGroupsBinding
 import com.example.eduenvi.models.Group
@@ -83,12 +84,12 @@ class ClassGroupsActivity : AppCompatActivity() {
                     if (_creatingNewGroup == false) {
                         group.id = Constants.Group.id
                         res = ApiHelper.updateGroup(group.id, group)
-                        groups!!.remove(Constants.Group)
+                        groups!!.remove(Constants.Group)//TODO ak sa podaril update else toast nepodarilo sa
                     } else {
                         res = ApiHelper.createGroup(group)
                     }
                     Constants.Group = res!!
-                    groups!!.add(Constants.Group)
+                    groups!!.add(Constants.Group)//TODO ak res nie je null else toast nepodarilo sa vytvorit/updatnut
                     withContext(Dispatchers.Main) {
                         adapter.notifyDataChenged()
                     }
@@ -107,7 +108,7 @@ class ClassGroupsActivity : AppCompatActivity() {
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 ApiHelper.deleteGroup(Constants.Group.id)
-                groups!!.remove(Constants.Group)
+                groups!!.remove(Constants.Group)//TODO ak sa podaril delete else toast nepodarilo sa
                 withContext(Dispatchers.Main) {
                     adapter.notifyDataChenged()
                 }
@@ -121,6 +122,8 @@ class ClassGroupsActivity : AppCompatActivity() {
         binding.editPanel.setOnClickListener { binding.editPanel.visibility = View.GONE }
         binding.closeDeletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
+
+        binding.groupName.addTextChangedListener { binding.groupNameTextInputLayout.error = null }
     }
 
     private fun closeGroupPanel() {
@@ -220,7 +223,6 @@ class ClassGroupsActivity : AppCompatActivity() {
     }
 
     private fun validName(): Boolean {
-
         if (binding.groupName.text.toString().length < Constants.MinimalGroupNameLength) {
             binding.groupNameTextInputLayout.error = Constants.WrongGroupNameFormatMessage
             return false

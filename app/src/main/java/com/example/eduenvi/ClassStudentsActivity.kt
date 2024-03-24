@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.adapters.ClassroomStudentsAdapter
 import com.example.eduenvi.databinding.ActivityClassStudentsBinding
 import com.example.eduenvi.models.Classroom
@@ -97,12 +98,12 @@ class ClassStudentsActivity : AppCompatActivity() {
                     if (_creatingNew == false) {
                         student.id = Constants.Student.id
                         res = ApiHelper.updateStudent(student.id, student)
-                        students!!.remove(Constants.Student)
+                        students!!.remove(Constants.Student)//TODO ak sa podaril update else toast nepodarilo sa
                     } else {
                         res = ApiHelper.createStudent(student)
                     }
                     Constants.Student = student
-                    students!!.add(student)
+                    students!!.add(student)//TODO ak res nie je null else toast nepodarilo sa vytvorit/updatnut
                     withContext(Dispatchers.Main) {
                         adapter.notifyDataChenged()
                     }
@@ -120,7 +121,7 @@ class ClassStudentsActivity : AppCompatActivity() {
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 ApiHelper.deleteStudent(Constants.Student.id)
-                students!!.remove(Constants.Student)
+                students!!.remove(Constants.Student)//TODO ak sa podaril delete else toast nepodarilo sa
                 withContext(Dispatchers.Main) {
                     adapter.notifyDataChenged()
                 }
@@ -136,6 +137,10 @@ class ClassStudentsActivity : AppCompatActivity() {
         binding.editPanel.setOnClickListener { binding.editPanel.visibility = View.GONE }
         binding.closeDeletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
+
+        binding.firstName.addTextChangedListener { binding.firstNameTextInputLayout.error = null }
+        binding.lastName.addTextChangedListener { binding.lastNameTextInputLayout.error = null }
+        binding.loginCode.addTextChangedListener { binding.loginCode.error = null }
     }
 
     private fun closeStudentPanel() {
@@ -174,7 +179,6 @@ class ClassStudentsActivity : AppCompatActivity() {
     }
 
     private fun validName(): Boolean {
-
         if (binding.firstName.text.toString().length < Constants.MinimalFirstNameLength) {
             binding.firstNameTextInputLayout.error = Constants.WrongFirstNameFormatMessage
             return false
@@ -184,7 +188,6 @@ class ClassStudentsActivity : AppCompatActivity() {
     }
 
     private fun validLastName(): Boolean {
-
         if (binding.lastName.text.toString().length < Constants.MinimalLastNameLength) {
             binding.lastNameTextInputLayout.error = Constants.WrongLastNameFormatMessage
             return false

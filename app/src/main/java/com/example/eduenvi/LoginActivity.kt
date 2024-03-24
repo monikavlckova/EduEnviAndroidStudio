@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.databinding.ActivityLoginBinding
 
 import kotlinx.coroutines.CoroutineScope
@@ -49,12 +50,12 @@ class LoginActivity : AppCompatActivity() {
                     if (teacher != null) {
                         val newPassword = generateNewPassword()
                         teacher.password = newPassword
-                        RetrofitInstance.api.updateTeacher(teacher.id, teacher)
+                        ApiHelper.updateTeacher(teacher.id, teacher)
                         Constants.emailSender.sendPassword(
-                        teacher.email,
-                        teacher.userName,
-                        newPassword
-                    )
+                            teacher.email,
+                            teacher.userName,
+                            newPassword
+                        )
                         closeForgottenPasswordPanel()
                     } else {
                         binding.emailTextInputLayout.error = Constants.WrongEmailDoesNotExistMessage
@@ -63,6 +64,12 @@ class LoginActivity : AppCompatActivity() {
             }
 
         }
+
+        binding.email.addTextChangedListener {
+            binding.emailTextInputLayout.error = null
+            binding.passwordTextInputLayout.error = null
+        }
+        binding.password.addTextChangedListener { binding.passwordTextInputLayout.error = null }
     }
 
     private fun submitLoginForm(context: Context) {
@@ -89,7 +96,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun closeForgottenPasswordPanel() {
         binding.forgottenPasswordPanel.visibility = View.GONE
-        resetEamilForm()
+        resetEmailForm()
     }
 
     private fun generateNewPassword(): String {
@@ -103,7 +110,7 @@ class LoginActivity : AppCompatActivity() {
         binding.passwordTextInputLayout.error = null
     }
 
-    private fun resetEamilForm() {
+    private fun resetEmailForm() {
         binding.email.text = null
         binding.emailTextInputLayout.error = null
     }

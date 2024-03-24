@@ -3,6 +3,7 @@ package com.example.eduenvi
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.databinding.ActivityLoginStudentBinding
 import com.example.eduenvi.models.Student
 import kotlinx.coroutines.CoroutineScope
@@ -37,7 +38,10 @@ class LoginStudentActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent) }
+            startActivity(intent)
+        }
+
+        binding.loginCode.addTextChangedListener { binding.loginCodeTextInputLayout.error = null }
     }
 
     private fun validLoginCode(student: Student?): Boolean {

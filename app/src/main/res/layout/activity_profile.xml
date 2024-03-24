@@ -52,14 +52,14 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="60dp"
                     android:gravity="center"
                     android:text="Heslo" />
 
                 <Button
                     android:id="@+id/changePassword"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="60dp"
                     android:layout_alignParentEnd="true"
                     android:background="@color/transparent"
                     android:text="Zmeniť heslo"
@@ -199,7 +199,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="260dp"
+            android:layout_height="300dp"
             android:background="@drawable/bottom_layout_background"
             android:orientation="vertical">
 

@@ -72,7 +72,7 @@ class ClassTasksActivity : AppCompatActivity() {
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 ApiHelper.deleteTask(Constants.Task.id)
-                tasks!!.remove(Constants.Task)
+                tasks!!.remove(Constants.Task)//TODO ak sa podaril delete else toast nepodarilo sa
                 withContext(Dispatchers.Main) {
                     adapter.notifyDataChenged()
                 }

@@ -80,7 +80,7 @@ object Constants {
     var Classroom = Classroom(0, 0, "", null)
     var Group = Group(0, 0, "", null)
     var Student = Student(0, 0, "", "", "", null)
-    var Task = Task(0, 0, 0, "", "", null)
+    var Task = Task(0, 0, 0, "", "", null, null)
     var Teacher = Teacher(0, "", "", "", "", "", null)
 
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.adapters.ClassroomAdapter
 import com.example.eduenvi.databinding.ActivityClassesBinding
 import com.example.eduenvi.models.Classroom
@@ -19,8 +20,8 @@ class ClassesActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityClassesBinding
     private var _creatingNew: Boolean? = null
-    private var classes :MutableList<Classroom>? = null
-    private lateinit var adapter:ClassroomAdapter
+    private var classes: MutableList<Classroom>? = null
+    private lateinit var adapter: ClassroomAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +30,8 @@ class ClassesActivity : AppCompatActivity() {
 
         val myContext = this
         CoroutineScope(Dispatchers.IO).launch {
-            classes = ApiHelper.getTeachersClassrooms(Constants.Teacher.id) as MutableList<Classroom>?
+            classes =
+                ApiHelper.getTeachersClassrooms(Constants.Teacher.id) as MutableList<Classroom>?
 
             withContext(Dispatchers.Main) {
                 if (classes != null) {
@@ -72,7 +74,7 @@ class ClassesActivity : AppCompatActivity() {
                     CoroutineScope(Dispatchers.IO).launch {
                         ApiHelper.updateClassroom(classroom.id, classroom)
                         Log.v("DB", "trieda " + Constants.Classroom.name)
-                        classes!!.remove(Constants.Classroom)
+                        classes!!.remove(Constants.Classroom)//TODO aj riadok pod, ak sa podaril update else toast nepodarilo sa
                         classes!!.add(classroom)
                         withContext(Dispatchers.Main) {
                             adapter.notifyDataChenged()
@@ -81,7 +83,7 @@ class ClassesActivity : AppCompatActivity() {
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
                         ApiHelper.createClassroom(classroom)
-                        classes!!.add(classroom)
+                        classes!!.add(classroom)//TODO ak sa podaril create else toast nepodarilo sa
                         withContext(Dispatchers.Main) {
                             adapter.notifyDataChenged()
                         }
@@ -102,7 +104,7 @@ class ClassesActivity : AppCompatActivity() {
             switchGroupTasksToStudentTasks()
             CoroutineScope(Dispatchers.IO).launch {
                 ApiHelper.deleteClassroom(Constants.Classroom.id)
-                classes!!.remove(Constants.Classroom)
+                classes!!.remove(Constants.Classroom)//TODO ak sa podaril delete else toast nepodarilo sa
                 withContext(Dispatchers.Main) {
                     adapter.notifyDataChenged()
                 }
@@ -116,11 +118,14 @@ class ClassesActivity : AppCompatActivity() {
         binding.editPanel.setOnClickListener { binding.editPanel.visibility = View.GONE }
         binding.closeDeletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
+
+        binding.className.addTextChangedListener { binding.classNameTextInputLayout.error = null }
     }
 
-    private fun closeClassPanel(){
+    private fun closeClassPanel() {
         binding.classPanel.visibility = View.GONE
-        binding.classNameTextInputLayout.error = null
+        binding.classNameTextInputLayout.error =
+            null //TODO zmenit na iserrorenabled false? potom to uskakuje, ako chcela som ale chcem?
         binding.className.text = null
     }
 

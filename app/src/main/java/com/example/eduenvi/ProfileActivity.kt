@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Patterns
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.databinding.ActivityProfileBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -79,6 +80,13 @@ class ProfileActivity : AppCompatActivity() {
 
         binding.passwordPanel.setOnClickListener { closePasswordPanel() }
         binding.closePasswordPanel.setOnClickListener { closePasswordPanel() }
+
+        binding.editFirstName.addTextChangedListener { binding.editFirstNameTextInputLayout.error = null }
+        binding.editLastName.addTextChangedListener { binding.editLastNameTextInputLayout.error = null }
+        binding.editUserName.addTextChangedListener { binding.editUserNameTextInputLayout.error = null }
+        binding.editEmail.addTextChangedListener { binding.editEmailTextInputLayout.error = null }
+        binding.password1.addTextChangedListener { binding.password1TextInputLayout.error = null }
+        binding.password2.addTextChangedListener { binding.password2TextInputLayout.error = null }
     }
 
     private fun closePasswordPanel() {

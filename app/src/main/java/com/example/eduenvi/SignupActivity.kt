@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.databinding.ActivitySignupBinding
 import com.example.eduenvi.models.Teacher
 import kotlinx.coroutines.CoroutineScope
@@ -28,6 +29,11 @@ class SignupActivity : AppCompatActivity() {
 
         binding.loginButton.setOnClickListener { submitForm(this) }
 
+        binding.name.addTextChangedListener { binding.nameTextInputLayout.error = null }
+        binding.lastName.addTextChangedListener { binding.lastNameTextInputLayout.error = null }
+        binding.userName.addTextChangedListener { binding.userNameTextInputLayout.error = null }
+        binding.email.addTextChangedListener { binding.emailTextInputLayout.error = null }
+        binding.password.addTextChangedListener { binding.passwordTextInputLayout.error = null }
     }
 
     private fun submitForm(context: Context) {
