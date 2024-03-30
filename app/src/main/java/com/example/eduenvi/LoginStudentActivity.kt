@@ -29,7 +29,10 @@ class LoginStudentActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     if (validLoginCode(student)) {
                         Constants.Student = student!!
-                        val intent = Intent(myContext, StudentTasksActivity::class.java) //TODO zmen StudentTaskActivity
+                        val intent = Intent(
+                            myContext,
+                            StudentTasksActivity::class.java
+                        ) //TODO zmen StudentTaskActivity
                         startActivity(intent)
                     }
                 }

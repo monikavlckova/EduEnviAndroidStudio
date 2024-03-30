@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eduenvi.adapters.GroupStudentsAdapter
 import com.example.eduenvi.databinding.ActivityGroupStudentsBinding
@@ -59,9 +60,10 @@ class GroupStudentsActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteStudentGroup(Constants.Student.id, group.id)
-                students!!.remove(Constants.Student)
+                val result = ApiHelper.deleteStudentGroup(Constants.Student.id, group.id)
                 withContext(Dispatchers.Main) {
+                    if (result != null) if (students != null) students!!.remove(Constants.Student)
+                    else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
                 }
             }
@@ -115,7 +117,10 @@ class GroupStudentsActivity : AppCompatActivity() {
         }
     }
 
-    private fun addStudentsToLists( studentsInGroup: List<Student>?, studentsNotInGroup: List<Student>?) {
+    private fun addStudentsToLists(
+        studentsInGroup: List<Student>?,
+        studentsNotInGroup: List<Student>?
+    ) {
         studentsInGroup?.forEach { student ->
             addStudentToList(student, binding.chipGroupIn, true)
         }
@@ -159,12 +164,20 @@ class GroupStudentsActivity : AppCompatActivity() {
     private fun manageStudents() {
         CoroutineScope(Dispatchers.IO).launch {
             for (student in _addToGroup) {
-                val newStudent = ApiHelper.createStudentGroup(StudentGroup(student.id, Constants.Group.id))
-                if (newStudent != null) students!!.add(student)//TODO else toast nepodarilo sa
+                val newStudent =
+                    ApiHelper.createStudentGroup(StudentGroup(student.id, Constants.Group.id))
+                withContext(Dispatchers.Main) {
+                    if (newStudent != null) if (students != null) students!!.add(student)
+                    else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
+                        .show() //TODO napisat konkretne kt student, davat to sem? co ak to bude vyskakovat 10krat
+                }
             }
             for (student in _delFromGroup) {
-                ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
-                students!!.remove(student)//TODO if delete successful then... else toast neepodarilo sa
+                val result = ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
+                withContext(Dispatchers.Main) {
+                    if (result != null) if (students != null) students!!.remove(student)
+                    else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
+                }
             }
             withContext(Dispatchers.Main) {
                 adapter.notifyDataChanged()

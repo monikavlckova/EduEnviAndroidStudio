@@ -71,7 +71,7 @@ object ApiHelper {
     }
 
 
-    suspend fun deleteClassroom(id: Int): Void? {
+    suspend fun deleteClassroom(id: Int): Classroom? {
         return performApiCall { RetrofitInstance.api.deleteClassroom(id) }
     }
 
@@ -85,11 +85,21 @@ object ApiHelper {
         return performApiCall { RetrofitInstance.api.createClassroomTask(classroomTask) }
     }
 
-    suspend fun updateAllClassroomTask( classroomId: Int, taskId: Int, classroomTask: ClassroomTask): ClassroomTask? {
-        return performApiCall { RetrofitInstance.api.updateAllClassroomTask(classroomId, taskId, classroomTask ) }
+    suspend fun updateAllClassroomTask(
+        classroomId: Int,
+        taskId: Int,
+        classroomTask: ClassroomTask
+    ): ClassroomTask? {
+        return performApiCall {
+            RetrofitInstance.api.updateAllClassroomTask(
+                classroomId,
+                taskId,
+                classroomTask
+            )
+        }
     }
 
-    suspend fun deleteClassroomTask(classroomId: Int, taskId: Int,): Void? {
+    suspend fun deleteClassroomTask(classroomId: Int, taskId: Int): ClassroomTask? {
         return performApiCall { RetrofitInstance.api.deleteClassroomTask(classroomId, taskId) }
     }
 
@@ -114,8 +124,16 @@ object ApiHelper {
     }
 
 
-    suspend fun getGroupsFromInClassroomNotInStudent(classroomId: Int, studentId: Int): List<Group>? {
-        return performApiCall { RetrofitInstance.api.getGroupsFromInClassroomNotInStudent(classroomId, studentId) }
+    suspend fun getGroupsFromInClassroomNotInStudent(
+        classroomId: Int,
+        studentId: Int
+    ): List<Group>? {
+        return performApiCall {
+            RetrofitInstance.api.getGroupsFromInClassroomNotInStudent(
+                classroomId,
+                studentId
+            )
+        }
     }
 
 
@@ -133,7 +151,7 @@ object ApiHelper {
     }
 
 
-    suspend fun deleteGroup(id: Int): Void? {
+    suspend fun deleteGroup(id: Int): Group? {
         return performApiCall { RetrofitInstance.api.deleteGroup(id) }
     }
 
@@ -148,12 +166,18 @@ object ApiHelper {
     }
 
 
-    suspend fun updateAllGroupTask(groupId: Int, taskId: Int, groupTask: GroupTask ): GroupTask? {
-        return performApiCall { RetrofitInstance.api.updateAllGroupTask(groupId, taskId, groupTask) }
+    suspend fun updateAllGroupTask(groupId: Int, taskId: Int, groupTask: GroupTask): GroupTask? {
+        return performApiCall {
+            RetrofitInstance.api.updateAllGroupTask(
+                groupId,
+                taskId,
+                groupTask
+            )
+        }
     }
 
 
-    suspend fun deleteGroupTask(groupId: Int, taskId: Int): Void? {
+    suspend fun deleteGroupTask(groupId: Int, taskId: Int): GroupTask? {
         return performApiCall { RetrofitInstance.api.deleteGroupTask(groupId, taskId) }
     }
 
@@ -210,7 +234,7 @@ object ApiHelper {
     }
 
 
-    suspend fun deleteStudent(id: Int): Void? {
+    suspend fun deleteStudent(id: Int): Student? {
         return performApiCall { RetrofitInstance.api.deleteStudent(id) }
     }
 
@@ -240,7 +264,7 @@ object ApiHelper {
     }
 
 
-    suspend fun deleteStudentGroup(studentId: Int, groupId: Int): Void? {
+    suspend fun deleteStudentGroup(studentId: Int, groupId: Int): StudentGroup? {
         return performApiCall { RetrofitInstance.api.deleteStudentGroup(studentId, groupId) }
     }
 
@@ -270,7 +294,7 @@ object ApiHelper {
     }
 
 
-    suspend fun deleteStudentTask(studentId: Int, taskId: Int): Void? {
+    suspend fun deleteStudentTask(studentId: Int, taskId: Int): StudentTask? {
         return performApiCall { RetrofitInstance.api.deleteStudentTask(studentId, taskId) }
     }
 
@@ -329,7 +353,7 @@ object ApiHelper {
     }
 
 
-    suspend fun deleteTask(id: Int): Void? {
+    suspend fun deleteTask(id: Int): Task? {
         return performApiCall { RetrofitInstance.api.deleteTask(id) }
     }
 
@@ -353,7 +377,7 @@ object ApiHelper {
     }
 
 
-    suspend fun deleteTaskType(id: Int): Void? {
+    suspend fun deleteTaskType(id: Int): TaskType? {
         return performApiCall { RetrofitInstance.api.deleteTaskType(id) }
     }
 
@@ -396,7 +420,7 @@ object ApiHelper {
     }
 
 
-    suspend fun deleteTeacher(id: Int): Void? {
+    suspend fun deleteTeacher(id: Int): Teacher? {
         return performApiCall { RetrofitInstance.api.deleteTeacher(id) }
     }
 
@@ -430,7 +454,7 @@ object ApiHelper {
     }
 
 
-    suspend fun deleteEdge(id: Int): Void? {
+    suspend fun deleteEdge(id: Int): Edge? {
         return performApiCall { RetrofitInstance.api.deleteEdge(id) }
     }
 
@@ -464,7 +488,7 @@ object ApiHelper {
     }
 
 
-    suspend fun deleteVertex(id: Int): Void? {
+    suspend fun deleteVertex(id: Int): Vertex? {
         return performApiCall { RetrofitInstance.api.deleteVertex(id) }
     }
 
@@ -489,7 +513,7 @@ object ApiHelper {
     }
 
 
-    suspend fun deleteImage(id: Int): Void? {
+    suspend fun deleteImage(id: Int): Image? {
         return performApiCall { RetrofitInstance.api.deleteImage(id) }
     }
 

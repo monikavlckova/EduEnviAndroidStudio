@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.databinding.ActivitySignupBinding
@@ -16,6 +17,7 @@ import kotlinx.coroutines.withContext
 class SignupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupBinding
+    private val myContext = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +64,8 @@ class SignupActivity : AppCompatActivity() {
                         Constants.emailSender.sendWelcome(newTeacher.email, newTeacher.userName)
                         val intent = Intent(context, ClassesActivity::class.java)
                         startActivity(intent)
-                    }
+                    } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+
                 }
             }
         }
@@ -98,7 +101,8 @@ class SignupActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (teacher != null) {
-                        binding.userNameTextInputLayout.error = Constants.WrongUserNameAlreadyExistMessage
+                        binding.userNameTextInputLayout.error =
+                            Constants.WrongUserNameAlreadyExistMessage
                         isValid = false
                     }
                 }

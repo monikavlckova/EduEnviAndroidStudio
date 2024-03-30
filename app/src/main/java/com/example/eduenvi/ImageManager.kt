@@ -6,7 +6,7 @@ import com.bumptech.glide.Glide
 
 class ImageManager {
 
-    fun setImage(url:String, context :Activity, imageView : ImageView){
+    fun setImage(url: String, context: Activity, imageView: ImageView) {
         Glide.with(context)
             .load(url)
             .into(imageView)

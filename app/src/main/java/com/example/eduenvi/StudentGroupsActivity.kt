@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eduenvi.adapters.StudentsGroupsAdapter
 import com.example.eduenvi.databinding.ActivityStudentGroupsBinding
@@ -59,9 +60,10 @@ class StudentGroupsActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
-                groups!!.remove(Constants.Group)
+                val result = ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
                 withContext(Dispatchers.Main) {
+                    if (result != null) if (groups != null) groups!!.remove(Constants.Group)
+                    else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
                 }
             }
@@ -160,12 +162,19 @@ class StudentGroupsActivity : AppCompatActivity() {
     private fun manageGroups() {
         CoroutineScope(Dispatchers.IO).launch {
             for (group in _addToStudent) {
-                val newGroup = ApiHelper.createStudentGroup(StudentGroup(Constants.Student.id, group.id))
-                if (newGroup != null)groups!!.add(group) //TODO else toast nepodarilo sa
+                val newGroup =
+                    ApiHelper.createStudentGroup(StudentGroup(Constants.Student.id, group.id))
+                withContext(Dispatchers.Main) {
+                    if (newGroup != null) if (groups != null) groups!!.add(group)
+                    else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                }
             }
             for (group in _delFromStudent) {
-                ApiHelper.deleteStudentGroup(Constants.Student.id, group.id)
-                groups!!.remove(group)//TODO if delete successful then... else toast neepodarilo sa
+                val result = ApiHelper.deleteStudentGroup(Constants.Student.id, group.id)
+                withContext(Dispatchers.Main) {
+                    if (result != null) if (groups != null) groups!!.remove(group)
+                    else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
+                }
             }
             withContext(Dispatchers.Main) {
                 adapter.notifyDataChanged()

@@ -27,7 +27,7 @@ class ClassGroupsActivity : AppCompatActivity() {
     private var _creatingNewGroup: Boolean? = null
     private var _delFromGroup: HashSet<Student> = HashSet()
     private var _addToGroup: HashSet<Student> = HashSet()
-    private var groups :MutableList<Group>? = null
+    private var groups: MutableList<Group>? = null
     private lateinit var adapter: ClassroomGroupsAdapter
     private val myContext = this
 
@@ -79,20 +79,29 @@ class ClassGroupsActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             if (validName()) {
                 val group =
-                    Group(0, Constants.Classroom.id, binding.groupName.text.toString(), null)//TODO zmenit null
+                    Group(
+                        0,
+                        Constants.Classroom.id,
+                        binding.groupName.text.toString(),
+                        null
+                    )//TODO zmenit null
                 var res: Group?
                 CoroutineScope(Dispatchers.IO).launch {
                     if (_creatingNewGroup == false) {
                         group.id = Constants.Group.id
                         res = ApiHelper.updateGroup(group.id, group)
-                        groups!!.remove(Constants.Group)//TODO ak sa podaril update else toast nepodarilo sa
+                        if (groups != null) groups!!.remove(Constants.Group)
                     } else {
                         res = ApiHelper.createGroup(group)
                     }
-                    Constants.Group = res!!
+
                     withContext(Dispatchers.Main) {
-                        if (groups != null) groups!!.add(Constants.Group)//TODO ak res nie je null else toast nepodarilo sa vytvorit/updatnut
-                        else Toast.makeText(myContext, "Skupinu sa nepodarilo uložiť", Toast.LENGTH_LONG).show();
+                        if (res != null) {
+                            Constants.Group = res!!
+                            if (groups != null) groups!!.add(Constants.Group)
+                        } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
+                            .show()
+
                         adapter.notifyDataChanged()
                     }
                 }
@@ -109,9 +118,12 @@ class ClassGroupsActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteGroup(Constants.Group.id)
-                groups!!.remove(Constants.Group)//TODO ak sa podaril delete else toast nepodarilo sa
+                val result = ApiHelper.deleteGroup(Constants.Group.id)
                 withContext(Dispatchers.Main) {
+                    if (result != null) {
+                        if (groups != null) groups!!.remove(Constants.Group)
+                    } else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG)
+                        .show()
                     adapter.notifyDataChanged()
                 }
             }
@@ -136,12 +148,12 @@ class ClassGroupsActivity : AppCompatActivity() {
     }
 
     private fun empty() {
-        for (i in binding.chipGroupIn.childCount-1 downTo  0) {
+        for (i in binding.chipGroupIn.childCount - 1 downTo 0) {
             val chip = binding.chipGroupIn.getChildAt(i)
             binding.chipGroupIn.removeView(chip)
         }
 
-        for (i in binding.chipGroupNotIn.childCount-1 downTo  0) {
+        for (i in binding.chipGroupNotIn.childCount - 1 downTo 0) {
             val chip = binding.chipGroupNotIn.getChildAt(i)
             binding.chipGroupNotIn.removeView(chip)
         }
@@ -166,7 +178,10 @@ class ClassGroupsActivity : AppCompatActivity() {
         }
     }
 
-    private fun addStudentsToLists(studentsInGroup: List<Student>?, studentsNotInGroup: List<Student>?) {
+    private fun addStudentsToLists(
+        studentsInGroup: List<Student>?,
+        studentsNotInGroup: List<Student>?
+    ) {
         studentsInGroup?.forEach { student ->
             addStudentToList(student, binding.chipGroupIn, true)
         }
@@ -213,10 +228,25 @@ class ClassGroupsActivity : AppCompatActivity() {
     private fun manageStudents() {
         CoroutineScope(Dispatchers.IO).launch {
             for (student in _addToGroup) {
-                ApiHelper.createStudentGroup(StudentGroup(student.id, Constants.Group.id))
+                val result =
+                    ApiHelper.createStudentGroup(StudentGroup(student.id, Constants.Group.id))
+                withContext(Dispatchers.Main) {
+                    if (result == null) Toast.makeText(
+                        myContext,
+                        Constants.SaveError,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
             for (student in _delFromGroup) {
-                ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
+                val result = ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
+                withContext(Dispatchers.Main) {
+                    if (result == null) Toast.makeText(
+                        myContext,
+                        Constants.DeleteError,
+                        Toast.LENGTH_LONG
+                    ).show() //TOO konkretne
+                }
             }
             withContext(Dispatchers.Main) {
                 adapter.notifyDataChanged()

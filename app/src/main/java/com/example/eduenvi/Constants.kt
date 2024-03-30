@@ -43,13 +43,18 @@ object Constants {
     const val WrongUserNameOrPasswordMessage = "Nesprávny login alebo heslo!"
     const val WrongLoginCodeMessage = "Nesprávny prihlasovací kód!"
 
+    const val SaveError = "Ups, niečo sa pokazilo, zmeny sa nepodarilo uložiť"
+    const val DeleteError = "Ups, niečo sa pokazilo, odstránenie sa nepodarilo"
+
     val LastSceneName = "First"
 
     fun getDeleteClassroomString(c: Classroom) = "Odstrániť triedu " + c.name + "?"
     fun getDeleteStudentString(s: Student) = "Odstrániť žiaka " + s.name + " " + s.lastName + "?"
     fun getDeleteGroupString(g: Group): String = "Odstrániť skupinu " + g.name + "?"
     fun getDeleteTaskString(t: Task) = "Odstrániť úlohu " + t.name + "?"
-    fun getDeleteStudentFromGroupString(s: Student) = "Odstrániť žiaka " + s.name + " " + s.lastName + " zo skupiny?"
+    fun getDeleteStudentFromGroupString(s: Student) =
+        "Odstrániť žiaka " + s.name + " " + s.lastName + " zo skupiny?"
+
     fun getDeleteGroupFromStudentString(g: Group) = "Odstrániť žiaka zo skupiny " + g.name + "?"
     fun getDeleteTaskFromGroupString(t: Task) = "Odstrániť úlohu " + t.name + " zo skupiny?"
     fun getDeleteTaskFromStudentString(t: Task) = "Odstrániť žiakovi úlohu " + t.name + "?"

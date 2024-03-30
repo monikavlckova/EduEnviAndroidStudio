@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.adapters.ClassroomStudentsAdapter
@@ -74,11 +75,12 @@ class ClassStudentsActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.IO).launch {
                     val dbImage: Image? = ApiHelper.getImage(Constants.Student.imageId!!)
                     withContext(Dispatchers.Main) {
-                        Constants.imageManager.setImage(
-                            dbImage!!.url,
-                            context,
-                            binding.editProfileImage
-                        )
+                        if (dbImage != null)
+                            Constants.imageManager.setImage(
+                                dbImage.url,
+                                context,
+                                binding.editProfileImage
+                            )
                     }
                 }
             }
@@ -112,16 +114,22 @@ class ClassStudentsActivity : AppCompatActivity() {
                     if (_creatingNew == false) {
                         student.id = Constants.Student.id
                         res = ApiHelper.updateStudent(student.id, student)
-                        students!!.remove(Constants.Student)//TODO ak sa podaril update else toast nepodarilo sa
-                    } else {
-                        res = ApiHelper.createStudent(student)
-                    }
-                    Constants.Student = student
-                    if (changeToClassroom == Constants.Classroom)students!!.add(student)//TODO ak res nie je null else toast nepodarilo sa vytvorit/updatnut
+                        if (res != null)
+                            if (students != null) students!!.remove(Constants.Student)
+                    } else res = ApiHelper.createStudent(student)
+
                     withContext(Dispatchers.Main) {
+                        if (res == null)
+                            Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                        else {
+                            Constants.Student = student
+                            if (changeToClassroom == Constants.Classroom)
+                                if (students != null) students!!.add(student)
+                        }
                         adapter.notifyDataChanged()
                         closeStudentPanel()
                     }
+
                 }
             }
         }
@@ -134,9 +142,12 @@ class ClassStudentsActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteStudent(Constants.Student.id)
-                students!!.remove(Constants.Student)//TODO ak sa podaril delete else toast nepodarilo sa
+                val result = ApiHelper.deleteStudent(Constants.Student.id)
                 withContext(Dispatchers.Main) {
+                    if (result != null)
+                        if (students != null) students!!.remove(Constants.Student)
+                        else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG)
+                            .show()
                     adapter.notifyDataChanged()
                 }
             }
@@ -144,7 +155,7 @@ class ClassStudentsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        binding.generateLoginCode.setOnClickListener { binding.loginCode.setText(generateLoginCode())}
+        binding.generateLoginCode.setOnClickListener { binding.loginCode.setText(generateLoginCode()) }
 
         binding.closeStudentPanel.setOnClickListener { closeStudentPanel() }
         binding.closeEditPanel.setOnClickListener { binding.editPanel.visibility = View.GONE }
@@ -174,7 +185,8 @@ class ClassStudentsActivity : AppCompatActivity() {
             val classrooms = ApiHelper.getTeachersClassrooms(Constants.Teacher.id)
             withContext(Dispatchers.Main) {
                 if (classrooms != null) {
-                    val listAdapter = ArrayAdapter(myContext,  R.layout.dropdown_list_item, classrooms)
+                    val listAdapter =
+                        ArrayAdapter(myContext, R.layout.dropdown_list_item, classrooms)
                     binding.classroom.setAdapter(listAdapter)//TODO mozno zmenit a robit to v on create? lebo vzdy su triedy rovnake
                     binding.classroom.setOnItemClickListener { adapterView, _, i, _ ->
                         changeToClassroom = adapterView.getItemAtPosition(i) as Classroom
@@ -188,8 +200,8 @@ class ClassStudentsActivity : AppCompatActivity() {
         //TODO
     }
 
-    private fun generateLoginCode() :String{
-        val charPool : List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+    private fun generateLoginCode(): String {
+        val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
         return List(8) { charPool.random() }.joinToString("")
     }
 

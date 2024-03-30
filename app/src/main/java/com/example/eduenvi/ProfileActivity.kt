@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.databinding.ActivityProfileBinding
@@ -64,7 +65,11 @@ class ProfileActivity : AppCompatActivity() {
                         val image = ApiHelper.createImage(Image(0, ""))//TODO
                         if (image != null) teacher.imageId = image.id
                     }
-                    ApiHelper.updateTeacher(teacher.id, teacher)
+                    val result = ApiHelper.updateTeacher(teacher.id, teacher)
+                    withContext(Dispatchers.Main) {
+                        if (result == null)
+                            Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                    }
                 }
                 binding.mainPanel.visibility = View.VISIBLE
                 binding.editPanel.visibility = View.GONE
@@ -93,7 +98,11 @@ class ProfileActivity : AppCompatActivity() {
             if (isValidPassword()) {
                 teacher.password = binding.password1.text.toString()
                 CoroutineScope(Dispatchers.IO).launch {
-                    ApiHelper.updateTeacher(teacher.id, teacher)
+                    val result = ApiHelper.updateTeacher(teacher.id, teacher)
+                    withContext(Dispatchers.Main) {
+                        if (result == null)
+                            Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                    }
                 }
                 closePasswordPanel()
             }

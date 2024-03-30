@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eduenvi.adapters.StudentsTasksAdapter
 import com.example.eduenvi.databinding.ActivityStudentTasksBinding
@@ -59,9 +60,11 @@ class StudentTasksActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteStudentTask(student.id, Constants.Task.id)
-                tasks!!.remove(Constants.Task)
+                val result = ApiHelper.deleteStudentTask(student.id, Constants.Task.id)
+
                 withContext(Dispatchers.Main) {
+                    if (result != null) if (tasks != null) tasks!!.remove(Constants.Task)
+                    else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
                 }
             }
@@ -157,12 +160,19 @@ class StudentTasksActivity : AppCompatActivity() {
     private fun manageTasks() {
         CoroutineScope(Dispatchers.IO).launch {
             for (task in _addToStudent) {
-                val newTask = ApiHelper.createStudentTask(StudentTask(Constants.Student.id, task.id))
-                if (newTask != null) tasks!!.add(task) //TODO else toast nepodarilo sa
+                val newTask =
+                    ApiHelper.createStudentTask(StudentTask(Constants.Student.id, task.id))
+                withContext(Dispatchers.Main) {
+                    if (newTask != null) if (tasks != null) tasks!!.add(task)
+                    else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                }
             }
             for (task in _delFromStudent) {
-                ApiHelper.deleteStudentTask(Constants.Student.id, task.id)
-                tasks!!.remove(task) //TODO if delete successful then... else toast neepodarilo sa
+                val result = ApiHelper.deleteStudentTask(Constants.Student.id, task.id)
+                withContext(Dispatchers.Main) {
+                    if (result != null) if (tasks != null) tasks!!.remove(task)
+                    else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
+                }
             }
             withContext(Dispatchers.Main) {
                 adapter.notifyDataChanged()

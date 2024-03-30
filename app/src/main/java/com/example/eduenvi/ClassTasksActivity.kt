@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.adapters.ClassroomTasksAdapter
@@ -96,9 +97,22 @@ class ClassTasksActivity : AppCompatActivity() {
 
         binding.setTime.setOnClickListener {
             closeDateTimePanel()
-            val hour = if (binding.timePicker.hour.toString().length == 1) String.format("0%d", binding.timePicker.hour) else binding.timePicker.hour
-            val minute = if (binding.timePicker.minute.toString().length == 1) String.format("0%d", binding.timePicker.minute) else binding.timePicker.minute
-            val datetime = String.format("%d:%d %d.%d.%d", hour, minute, binding.datePicker.dayOfMonth, binding.datePicker.month, binding.datePicker.year)
+            val hour = if (binding.timePicker.hour.toString().length == 1) String.format(
+                "0%d",
+                binding.timePicker.hour
+            ) else binding.timePicker.hour
+            val minute = if (binding.timePicker.minute.toString().length == 1) String.format(
+                "0%d",
+                binding.timePicker.minute
+            ) else binding.timePicker.minute
+            val datetime = String.format(
+                "%d:%d %d.%d.%d",
+                hour,
+                minute,
+                binding.datePicker.dayOfMonth,
+                binding.datePicker.month,
+                binding.datePicker.year
+            )
             if (settingDeadline) binding.dateTimeTaskDeadline.text = datetime
             else binding.dateTimeTaskVisibleFrom.text = datetime
             //todo zapis vybraty datum a cas, zapamataj si ho v premennej
@@ -124,13 +138,15 @@ class ClassTasksActivity : AppCompatActivity() {
                     if (_creatingNew == false) {
                         task.id = Constants.Task.id
                         res = ApiHelper.updateTask(task.id, task)
-                        tasks!!.remove(Constants.Task)//TODO ak sa podaril update else toast nepodarilo sa
+                        if (res != null) if (tasks != null) tasks!!.remove(Constants.Task)
                     } else {
                         res = ApiHelper.createTask(task)
                     }
                     Constants.Task = task
-                    tasks!!.add(task)//TODO ak res nie je null else toast nepodarilo sa vytvorit/updatnut
                     withContext(Dispatchers.Main) {
+                        if (res != null) if (tasks != null) tasks!!.add(task)
+                        else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
+                            .show()
                         adapter.notifyDataChanged()
                     }
                 }
@@ -146,9 +162,10 @@ class ClassTasksActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteTask(Constants.Task.id)
-                tasks!!.remove(Constants.Task)//TODO ak sa podaril delete else toast nepodarilo sa
+                val result = ApiHelper.deleteTask(Constants.Task.id)
                 withContext(Dispatchers.Main) {
+                    if (result != null) if (tasks != null) tasks!!.remove(Constants.Task)
+                    else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
                 }
             }
@@ -157,7 +174,7 @@ class ClassTasksActivity : AppCompatActivity() {
         }
 
         binding.closeTaskPanel.setOnClickListener { binding.tasksPanel.visibility = View.GONE }
-        binding.dateTimePickerPanel.setOnClickListener{ closeDateTimePanel() }
+        binding.dateTimePickerPanel.setOnClickListener { closeDateTimePanel() }
         binding.closeEditPanel.setOnClickListener { binding.editPanel.visibility = View.GONE }
         binding.editPanel.setOnClickListener { binding.editPanel.visibility = View.GONE }
         binding.closeDeletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
@@ -172,7 +189,7 @@ class ClassTasksActivity : AppCompatActivity() {
             val taskTypes = ApiHelper.getAllTaskTypes()
             withContext(Dispatchers.Main) {
                 //TODO pridat aj plusko? pridanie nahranie noveho typu, aj niekde inde? len tu alebo len niekde inde
-                taskTypes?.forEach{ taskType ->
+                taskTypes?.forEach { taskType ->
                     val tagName = taskType.name
                     val chip = Chip(context)
                     chip.isCheckable = true
@@ -198,7 +215,7 @@ class ClassTasksActivity : AppCompatActivity() {
         //TODO vyprazdnit typy uloh...
     }
 
-    private fun closeDateTimePanel(){
+    private fun closeDateTimePanel() {
         binding.dateTimePickerPanel.visibility = View.GONE
         binding.setDate.visibility = View.VISIBLE
         binding.setTime.visibility = View.GONE
@@ -215,7 +232,7 @@ class ClassTasksActivity : AppCompatActivity() {
         return true
     }
 
-    private fun validType(): Boolean{
+    private fun validType(): Boolean {
         return true //zisti, ci je vybraty nejaky chip
     }
 }

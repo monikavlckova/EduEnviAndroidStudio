@@ -39,7 +39,8 @@ class ClassroomAdapter(private val context: Activity, private val list: List<Cla
             CoroutineScope(Dispatchers.IO).launch {
                 val dbImage : Image? = ApiHelper.getImage(classroom.imageId!!)
                 withContext(Dispatchers.Main) {
-                    Constants.imageManager.setImage(dbImage!!.url, context, image)
+                    if (dbImage != null)
+                        Constants.imageManager.setImage(dbImage.url, context, image)
                 }
             }
         }

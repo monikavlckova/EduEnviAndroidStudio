@@ -2,8 +2,8 @@ package com.example.eduenvi
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.adapters.ClassroomAdapter
@@ -68,23 +68,37 @@ class ClassesActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             if (validClassroomName()) {
                 val classroom =
-                    Classroom(0, Constants.Teacher.id, binding.className.text.toString(), null)//TODO zmenit null
+                    Classroom(
+                        0,
+                        Constants.Teacher.id,
+                        binding.className.text.toString(),
+                        null
+                    )//TODO zmenit null
                 if (_creatingNew == false) {
                     classroom.id = Constants.Classroom.id
                     CoroutineScope(Dispatchers.IO).launch {
-                        ApiHelper.updateClassroom(classroom.id, classroom)
-                        Log.v("DB", "trieda " + Constants.Classroom.name)
-                        classes!!.remove(Constants.Classroom)//TODO aj riadok pod, ak sa podaril update else toast nepodarilo sa
-                        classes!!.add(classroom)
+                        val result = ApiHelper.updateClassroom(classroom.id, classroom)
                         withContext(Dispatchers.Main) {
+                            if (result != null) {
+                                if (classes != null) {
+                                    classes!!.remove(Constants.Classroom)
+                                    classes!!.add(classroom)
+                                }
+                            } else Toast.makeText(
+                                myContext,
+                                Constants.SaveError,
+                                Toast.LENGTH_LONG
+                            ).show()
                             adapter.notifyDataChanged()
                         }
                     }
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
-                        ApiHelper.createClassroom(classroom)
-                        classes!!.add(classroom)//TODO ak sa podaril create else toast nepodarilo sa
+                        val result = ApiHelper.createClassroom(classroom)
                         withContext(Dispatchers.Main) {
+                            if (result != null) if (classes != null) classes!!.add(classroom)
+                            else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
+                                .show()
                             adapter.notifyDataChanged()
                         }
                     }
@@ -103,9 +117,10 @@ class ClassesActivity : AppCompatActivity() {
             switchClassroomTasksToStudentTasks()
             switchGroupTasksToStudentTasks()
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteClassroom(Constants.Classroom.id)
-                classes!!.remove(Constants.Classroom)//TODO ak sa podaril delete else toast nepodarilo sa
+                val result = ApiHelper.deleteClassroom(Constants.Classroom.id)
                 withContext(Dispatchers.Main) {
+                    if (result != null) if (classes != null) classes!!.remove(Constants.Classroom)
+                    else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
                 }
             }
@@ -124,8 +139,7 @@ class ClassesActivity : AppCompatActivity() {
 
     private fun closeClassPanel() {
         binding.classPanel.visibility = View.GONE
-        binding.classNameTextInputLayout.error =
-            null //TODO zmenit na iserrorenabled false? potom to uskakuje, ako chcela som ale chcem?
+        binding.classNameTextInputLayout.error = null
         binding.className.text = null
     }
 

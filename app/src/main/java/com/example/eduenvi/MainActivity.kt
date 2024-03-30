@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eduenvi.databinding.ActivityMainBinding
-//TODO vsade kde je inputfield error, najst ako smenit nech vidno spravu kedze som to zmrnila kvoli heslu a dala do parenta tak teraz nezobrazuje text, mozno iny style zorazi text pod inputfieldom
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

@@ -37,7 +37,8 @@ class ClassroomTasksAdapter (private val context: Activity, private val list: Li
             CoroutineScope(Dispatchers.IO).launch {
                 val dbImage : Image? = ApiHelper.getImage(task.imageId!!)
                 withContext(Dispatchers.Main) {
-                    Constants.imageManager.setImage(dbImage!!.url, context, image)
+                    if (dbImage != null)
+                        Constants.imageManager.setImage(dbImage.url, context, image)
                 }
             }
         }

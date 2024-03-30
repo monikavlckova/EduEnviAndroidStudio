@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eduenvi.adapters.GroupTasksAdapter
 import com.example.eduenvi.databinding.ActivityGroupTasksBinding
@@ -59,9 +60,10 @@ class GroupTasksActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.deleteGroupTask(group.id, Constants.Task.id)
-                tasks!!.remove(Constants.Task)
+                val result = ApiHelper.deleteGroupTask(group.id, Constants.Task.id)
                 withContext(Dispatchers.Main) {
+                    if (result != null) if (tasks != null) tasks!!.remove(Constants.Task)
+                    else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
                 }
             }
@@ -160,11 +162,17 @@ class GroupTasksActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             for (task in _addToGroup) {
                 val newTask = ApiHelper.createGroupTask(GroupTask(Constants.Group.id, task.id))
-                if (newTask != null) tasks!!.add(task)//TODO else toast nepodarilo sa
+                withContext(Dispatchers.Main) {
+                    if (newTask != null) if (tasks != null) tasks!!.add(task)
+                    else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                }
             }
             for (task in _delFromGroup) {
-                ApiHelper.deleteGroupTask(Constants.Group.id, task.id)
-                tasks!!.remove(task)//TODO if delete successful then... else toast neepodarilo sa
+                val result = ApiHelper.deleteGroupTask(Constants.Group.id, task.id)
+                withContext(Dispatchers.Main) {
+                    if (result != null) if (tasks != null) tasks!!.remove(task)
+                    else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                }
             }
             withContext(Dispatchers.Main) {
                 adapter.notifyDataChanged()
