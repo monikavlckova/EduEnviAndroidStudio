@@ -4,10 +4,10 @@ package com.example.eduenvi
 import android.util.Log
 import com.example.eduenvi.models.Classroom
 import com.example.eduenvi.models.ClassroomTask
-import com.example.eduenvi.models.DBImage
 import com.example.eduenvi.models.Edge
 import com.example.eduenvi.models.Group
 import com.example.eduenvi.models.GroupTask
+import com.example.eduenvi.models.Image
 import com.example.eduenvi.models.Student
 import com.example.eduenvi.models.StudentGroup
 import com.example.eduenvi.models.StudentTask
@@ -62,6 +62,10 @@ object ApiHelper {
     }
 
 
+    suspend fun updateAllClassroom(id: Int, classroom: Classroom): Classroom? {
+        return performApiCall { RetrofitInstance.api.updateAllClassroom(id, classroom) }
+    }
+
     suspend fun updateClassroom(id: Int, classroom: Classroom): Classroom? {
         return performApiCall { RetrofitInstance.api.updateClassroom(id, classroom) }
     }
@@ -81,8 +85,8 @@ object ApiHelper {
         return performApiCall { RetrofitInstance.api.createClassroomTask(classroomTask) }
     }
 
-    suspend fun updateClassroomTask( classroomId: Int, taskId: Int, classroomTask: ClassroomTask): ClassroomTask? {
-        return performApiCall { RetrofitInstance.api.updateClassroomTask(classroomId, taskId, classroomTask ) }
+    suspend fun updateAllClassroomTask( classroomId: Int, taskId: Int, classroomTask: ClassroomTask): ClassroomTask? {
+        return performApiCall { RetrofitInstance.api.updateAllClassroomTask(classroomId, taskId, classroomTask ) }
     }
 
     suspend fun deleteClassroomTask(classroomId: Int, taskId: Int,): Void? {
@@ -120,6 +124,10 @@ object ApiHelper {
     }
 
 
+    suspend fun updateAllGroup(id: Int, group: Group): Group? {
+        return performApiCall { RetrofitInstance.api.updateAllGroup(id, group) }
+    }
+
     suspend fun updateGroup(id: Int, group: Group): Group? {
         return performApiCall { RetrofitInstance.api.updateGroup(id, group) }
     }
@@ -140,8 +148,8 @@ object ApiHelper {
     }
 
 
-    suspend fun updateGroupTask(groupId: Int, taskId: Int, groupTask: GroupTask ): GroupTask? {
-        return performApiCall { RetrofitInstance.api.updateGroupTask(groupId, taskId, groupTask) }
+    suspend fun updateAllGroupTask(groupId: Int, taskId: Int, groupTask: GroupTask ): GroupTask? {
+        return performApiCall { RetrofitInstance.api.updateAllGroupTask(groupId, taskId, groupTask) }
     }
 
 
@@ -193,6 +201,10 @@ object ApiHelper {
     }
 
 
+    suspend fun updateAllStudent(id: Int, student: Student): Student? {
+        return performApiCall { RetrofitInstance.api.updateAllStudent(id, student) }
+    }
+
     suspend fun updateStudent(id: Int, student: Student): Student? {
         return performApiCall { RetrofitInstance.api.updateStudent(id, student) }
     }
@@ -213,13 +225,13 @@ object ApiHelper {
     }
 
 
-    suspend fun updateStudentGroup(
+    suspend fun updateAllStudentGroup(
         studentId: Int,
         groupId: Int,
         studentGroup: StudentGroup
     ): StudentGroup? {
         return performApiCall {
-            RetrofitInstance.api.updateStudentGroup(
+            RetrofitInstance.api.updateAllStudentGroup(
                 studentId,
                 groupId,
                 studentGroup
@@ -243,13 +255,13 @@ object ApiHelper {
     }
 
 
-    suspend fun updateStudentTask(
+    suspend fun updateAllStudentTask(
         studentId: Int,
         taskId: Int,
         studentTask: StudentTask
     ): StudentTask? {
         return performApiCall {
-            RetrofitInstance.api.updateStudentTask(
+            RetrofitInstance.api.updateAllStudentTask(
                 studentId,
                 taskId,
                 studentTask
@@ -308,6 +320,10 @@ object ApiHelper {
     }
 
 
+    suspend fun updateAllTask(id: Int, task: Task): Task? {
+        return performApiCall { RetrofitInstance.api.updateAllTask(id, task) }
+    }
+
     suspend fun updateTask(id: Int, task: Task): Task? {
         return performApiCall { RetrofitInstance.api.updateTask(id, task) }
     }
@@ -327,6 +343,10 @@ object ApiHelper {
         return performApiCall { RetrofitInstance.api.createTaskType(taskType) }
     }
 
+
+    suspend fun updateAllTaskType(id: Int, taskType: TaskType): TaskType? {
+        return performApiCall { RetrofitInstance.api.updateAllTaskType(id, taskType) }
+    }
 
     suspend fun updateTaskType(id: Int, taskType: TaskType): TaskType? {
         return performApiCall { RetrofitInstance.api.updateTaskType(id, taskType) }
@@ -367,6 +387,10 @@ object ApiHelper {
         return performApiCall { RetrofitInstance.api.createTeacher(teacher) }
     }
 
+    suspend fun updateAllTeacher(id: Int, teacher: Teacher): Teacher? {
+        return performApiCall { RetrofitInstance.api.updateAllTeacher(id, teacher) }
+    }
+
     suspend fun updateTeacher(id: Int, teacher: Teacher): Teacher? {
         return performApiCall { RetrofitInstance.api.updateTeacher(id, teacher) }
     }
@@ -396,6 +420,10 @@ object ApiHelper {
         return performApiCall { RetrofitInstance.api.createEdge(edge) }
     }
 
+
+    suspend fun updateAllEdge(id: Int, edge: Edge): Edge? {
+        return performApiCall { RetrofitInstance.api.updateAllEdge(id, edge) }
+    }
 
     suspend fun updateEdge(id: Int, edge: Edge): Edge? {
         return performApiCall { RetrofitInstance.api.updateEdge(id, edge) }
@@ -427,6 +455,10 @@ object ApiHelper {
     }
 
 
+    suspend fun updateAllVertex(id: Int, vertex: Vertex): Vertex? {
+        return performApiCall { RetrofitInstance.api.updateAllVertex(id, vertex) }
+    }
+
     suspend fun updateVertex(id: Int, vertex: Vertex): Vertex? {
         return performApiCall { RetrofitInstance.api.updateVertex(id, vertex) }
     }
@@ -437,28 +469,28 @@ object ApiHelper {
     }
 
 
-    suspend fun geDBImage(id: Int): DBImage? {
-        return performApiCall { RetrofitInstance.api.geDBImage(id) }
+    suspend fun getImage(id: Int): Image? {
+        return performApiCall { RetrofitInstance.api.getImage(id) }
     }
 
 
-    suspend fun getAlImages(): List<DBImage>? {
-        return performApiCall { RetrofitInstance.api.getAlImages() }
+    suspend fun getAllImages(): List<Image>? {
+        return performApiCall { RetrofitInstance.api.getAllImages() }
     }
 
 
-    suspend fun createDBImage(dbImage: DBImage): DBImage? {
-        return performApiCall { RetrofitInstance.api.createDBImage(dbImage) }
+    suspend fun createImage(dbImage: Image): Image? {
+        return performApiCall { RetrofitInstance.api.createImage(dbImage) }
     }
 
 
-    suspend fun updateDBImage(id: Int, dbImage: DBImage): DBImage? {
-        return performApiCall { RetrofitInstance.api.updateDBImage(id, dbImage) }
+    suspend fun updateAllImage(id: Int, dbImage: Image): Image? {
+        return performApiCall { RetrofitInstance.api.updateAllImage(id, dbImage) }
     }
 
 
-    suspend fun deleteDBImage(id: Int): Void? {
-        return performApiCall { RetrofitInstance.api.deleteDBImage(id) }
+    suspend fun deleteImage(id: Int): Void? {
+        return performApiCall { RetrofitInstance.api.deleteImage(id) }
     }
 
 

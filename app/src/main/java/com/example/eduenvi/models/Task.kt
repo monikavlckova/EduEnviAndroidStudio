@@ -2,6 +2,7 @@ package com.example.eduenvi.models
 
 import java.util.Date
 
+
 class Task(
     var id: Int,
     var teacherId: Int,
@@ -9,5 +10,6 @@ class Task(
     var name: String,
     var text: String,
     var imageId: Int?,
-    var deadline:  Date?
+    var deadline:  Date?,
+    var visibleFrom:  Date?
 )

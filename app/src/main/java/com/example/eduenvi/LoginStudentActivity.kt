@@ -14,6 +14,7 @@ import kotlinx.coroutines.withContext
 class LoginStudentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginStudentBinding
+    private val myContext = this
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,14 +23,13 @@ class LoginStudentActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.loginButton.setOnClickListener {
-            val context = this
             CoroutineScope(Dispatchers.IO).launch {
                 val student = ApiHelper.getStudentByLoginCode(binding.loginCode.text.toString())
 
                 withContext(Dispatchers.Main) {
                     if (validLoginCode(student)) {
                         Constants.Student = student!!
-                        val intent = Intent(context, StudentTasksActivity::class.java) //TODO zmen StudentTaskActivity
+                        val intent = Intent(myContext, StudentTasksActivity::class.java) //TODO zmen StudentTaskActivity
                         startActivity(intent)
                     }
                 }

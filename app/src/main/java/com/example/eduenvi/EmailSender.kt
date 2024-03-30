@@ -18,12 +18,12 @@ class EmailSender {
         try {
             // Defining sender's email and password
             val senderEmail = "eduenvifmfi@gmail.com"
-            val password = "pkhcikrheeespoyu"
+            val password = "unjogqgqkrwyyena"
 
             // Seting up email properties
-            val properties = System.getProperties()//TODO probem s pripojenim, preco?
+            val properties = System.getProperties()
             properties["mail.smtp.host"] = "smtp.gmail.com"
-            properties["mail.smtp.port"] = "587"
+            properties["mail.smtp.port"] = "465"
             properties["mail.smtp.ssl.enable"] = "true"
             properties["mail.smtp.auth"] = "true"
 

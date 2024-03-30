@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -47,6 +48,140 @@
             android:contentDescription="@string/groups"
             android:src="@mipmap/groups" />
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/tasksPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/Surface"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/closeTaskPanel"
+            style="@style/backButtonDark" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="70dp"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/taskNameTextInputLayout"
+                style="@style/inputField"
+                android:layout_marginHorizontal="20dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/taskName"
+                    style="@style/inputFieldEditTextColor"
+                    android:hint="@string/taskName"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/chipTextView"
+                android:text="Typ" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipTaskType"
+                style="@style/chipGroup"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:singleLine="false"
+                app:singleSelection="true" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp">
+
+                <TextView
+                    style="@style/textViewRight"
+                    android:text="Viditeľná od" />
+
+                <TextView
+                    android:id="@+id/dateTimeTaskVisibleFrom"
+                    style="@style/textViewLeft"
+                    android:text="@string/set" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp">
+
+                <TextView
+                    style="@style/textViewRight"
+                    android:text="Deadline" />
+
+                <TextView
+                    android:id="@+id/dateTimeTaskDeadline"
+                    style="@style/textViewLeft"
+                    android:text="@string/set"/>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/saveButton"
+                style="@style/actionButton"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="25dp"
+                android:text="@string/create" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/dateTimePickerPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/semitransparent"
+        android:visibility="gone">
+
+        <DatePicker
+            android:id="@+id/datePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/Background"
+            android:datePickerMode="calendar" />
+
+        <Button
+            android:id="@+id/setDate"
+            style="@style/actionButton"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="25dp"
+            android:text="@string/set" />
+
+
+        <TimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/Background"
+            android:timePickerMode="spinner"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/setTime"
+            style="@style/actionButton"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="25dp"
+            android:text="@string/set"
+            android:visibility="gone"/>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/editPanel"

@@ -9,11 +9,17 @@ import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.eduenvi.ApiHelper
 import com.example.eduenvi.ClassStudentsActivity
 import com.example.eduenvi.ClassesActivity
 import com.example.eduenvi.Constants
 import com.example.eduenvi.R
 import com.example.eduenvi.models.Classroom
+import com.example.eduenvi.models.Image
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ClassroomAdapter(private val context: Activity, private val list: List<Classroom>) :
     ArrayAdapter<Classroom>(context, R.layout.classroom_list_item, list) {
@@ -29,6 +35,15 @@ class ClassroomAdapter(private val context: Activity, private val list: List<Cla
         val classroom = list[position]
         classroomName.text = classroom.name
 
+        if (classroom.imageId != null) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val dbImage : Image? = ApiHelper.getImage(classroom.imageId!!)
+                withContext(Dispatchers.Main) {
+                    Constants.imageManager.setImage(dbImage!!.url, context, image)
+                }
+            }
+        }
+
         edit.setOnClickListener {
             Constants.Classroom = classroom
             (context as ClassesActivity).binding.editPanel.visibility = View.VISIBLE
@@ -42,7 +57,7 @@ class ClassroomAdapter(private val context: Activity, private val list: List<Cla
         return view
     }
 
-    fun notifyDataChenged(){
+    fun notifyDataChanged(){
         notifyDataSetChanged()
     }
 }

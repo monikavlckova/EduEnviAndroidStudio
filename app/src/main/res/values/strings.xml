@@ -29,5 +29,7 @@
     <string name="groupName">Meno skupiny</string>
     <string name="loginCode">Prihlasovací kód</string>
     <string name="classroom">Trieda</string>
+    <string name="taskName">Meno úlohy</string>
+    <string name="set">Nastaviť</string>
 
 </resources>

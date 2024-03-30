@@ -9,11 +9,17 @@ import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.eduenvi.ApiHelper
 import com.example.eduenvi.Constants
 import com.example.eduenvi.GroupStudentsActivity
 import com.example.eduenvi.R
 import com.example.eduenvi.StudentTasksActivity
+import com.example.eduenvi.models.Image
 import com.example.eduenvi.models.Student
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GroupStudentsAdapter (private val context: Activity, private val list: List<Student>) :
     ArrayAdapter<Student>(context, R.layout.classroom_list_item, list) {
@@ -29,6 +35,15 @@ class GroupStudentsAdapter (private val context: Activity, private val list: Lis
         val student = list[position]
         name.text = student.name
 
+        if (student.imageId != null) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val dbImage : Image? = ApiHelper.getImage(student.imageId!!)
+                withContext(Dispatchers.Main) {
+                    Constants.imageManager.setImage(dbImage!!.url, context, image)
+                }
+            }
+        }
+
         delete.setOnClickListener {
             (context as GroupStudentsActivity).binding.deletePanel.visibility = View.VISIBLE
             context.binding.deleteText.text = Constants.getDeleteStudentFromGroupString(student)
@@ -43,7 +58,7 @@ class GroupStudentsAdapter (private val context: Activity, private val list: Lis
         return view
     }
 
-    fun notifyDataChenged(){
+    fun notifyDataChanged(){
         notifyDataSetChanged()
     }
 }

@@ -15,20 +15,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
+//TODO pridet obrazok do classpanel co je zaroven aj edit, ak edit nacitat ho ak ho ma
 class ClassesActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityClassesBinding
     private var _creatingNew: Boolean? = null
     private var classes: MutableList<Classroom>? = null
     private lateinit var adapter: ClassroomAdapter
+    private val myContext = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClassesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val myContext = this
         CoroutineScope(Dispatchers.IO).launch {
             classes =
                 ApiHelper.getTeachersClassrooms(Constants.Teacher.id) as MutableList<Classroom>?
@@ -68,7 +68,7 @@ class ClassesActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             if (validClassroomName()) {
                 val classroom =
-                    Classroom(0, Constants.Teacher.id, binding.className.text.toString(), null)
+                    Classroom(0, Constants.Teacher.id, binding.className.text.toString(), null)//TODO zmenit null
                 if (_creatingNew == false) {
                     classroom.id = Constants.Classroom.id
                     CoroutineScope(Dispatchers.IO).launch {
@@ -77,7 +77,7 @@ class ClassesActivity : AppCompatActivity() {
                         classes!!.remove(Constants.Classroom)//TODO aj riadok pod, ak sa podaril update else toast nepodarilo sa
                         classes!!.add(classroom)
                         withContext(Dispatchers.Main) {
-                            adapter.notifyDataChenged()
+                            adapter.notifyDataChanged()
                         }
                     }
                 } else {
@@ -85,7 +85,7 @@ class ClassesActivity : AppCompatActivity() {
                         ApiHelper.createClassroom(classroom)
                         classes!!.add(classroom)//TODO ak sa podaril create else toast nepodarilo sa
                         withContext(Dispatchers.Main) {
-                            adapter.notifyDataChenged()
+                            adapter.notifyDataChanged()
                         }
                     }
                 }
@@ -106,7 +106,7 @@ class ClassesActivity : AppCompatActivity() {
                 ApiHelper.deleteClassroom(Constants.Classroom.id)
                 classes!!.remove(Constants.Classroom)//TODO ak sa podaril delete else toast nepodarilo sa
                 withContext(Dispatchers.Main) {
-                    adapter.notifyDataChenged()
+                    adapter.notifyDataChanged()
                 }
             }
             binding.deletePanel.visibility = View.GONE

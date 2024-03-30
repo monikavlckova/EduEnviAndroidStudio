@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.adapters.ClassroomGroupsAdapter
@@ -19,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
+//TODO pridet obrazok do grouppanel co je zaroven aj edit, ak edit nacitat ho ak ho ma
 class ClassGroupsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityClassGroupsBinding
@@ -28,13 +29,13 @@ class ClassGroupsActivity : AppCompatActivity() {
     private var _addToGroup: HashSet<Student> = HashSet()
     private var groups :MutableList<Group>? = null
     private lateinit var adapter: ClassroomGroupsAdapter
+    private val myContext = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClassGroupsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val myContext = this
         CoroutineScope(Dispatchers.IO).launch {
             groups = ApiHelper.getGroupsInClassroom(Constants.Classroom.id) as MutableList<Group>?
 
@@ -78,7 +79,7 @@ class ClassGroupsActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             if (validName()) {
                 val group =
-                    Group(0, Constants.Classroom.id, binding.groupName.text.toString(), null)
+                    Group(0, Constants.Classroom.id, binding.groupName.text.toString(), null)//TODO zmenit null
                 var res: Group?
                 CoroutineScope(Dispatchers.IO).launch {
                     if (_creatingNewGroup == false) {
@@ -89,9 +90,10 @@ class ClassGroupsActivity : AppCompatActivity() {
                         res = ApiHelper.createGroup(group)
                     }
                     Constants.Group = res!!
-                    groups!!.add(Constants.Group)//TODO ak res nie je null else toast nepodarilo sa vytvorit/updatnut
                     withContext(Dispatchers.Main) {
-                        adapter.notifyDataChenged()
+                        if (groups != null) groups!!.add(Constants.Group)//TODO ak res nie je null else toast nepodarilo sa vytvorit/updatnut
+                        else Toast.makeText(myContext, "Skupinu sa nepodarilo uložiť", Toast.LENGTH_LONG).show();
+                        adapter.notifyDataChanged()
                     }
                 }
                 manageStudents()
@@ -110,7 +112,7 @@ class ClassGroupsActivity : AppCompatActivity() {
                 ApiHelper.deleteGroup(Constants.Group.id)
                 groups!!.remove(Constants.Group)//TODO ak sa podaril delete else toast nepodarilo sa
                 withContext(Dispatchers.Main) {
-                    adapter.notifyDataChenged()
+                    adapter.notifyDataChanged()
                 }
             }
             //val intent = Intent(this, ClassGroupsActivity::class.java)
@@ -209,17 +211,19 @@ class ClassGroupsActivity : AppCompatActivity() {
     }
 
     private fun manageStudents() {
-        for (student in _addToGroup)
-            CoroutineScope(Dispatchers.IO).launch {
-                ApiHelper.createStudentGroup(StudentGroup(Constants.Group.id, student.id))
+        CoroutineScope(Dispatchers.IO).launch {
+            for (student in _addToGroup) {
+                ApiHelper.createStudentGroup(StudentGroup(student.id, Constants.Group.id))
             }
-        for (student in _delFromGroup)
-            CoroutineScope(Dispatchers.IO).launch {
+            for (student in _delFromGroup) {
                 ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
             }
-
-        _delFromGroup = HashSet()
-        _addToGroup = HashSet()
+            withContext(Dispatchers.Main) {
+                adapter.notifyDataChanged()
+                _delFromGroup = HashSet()
+                _addToGroup = HashSet()
+            }
+        }
     }
 
     private fun validName(): Boolean {

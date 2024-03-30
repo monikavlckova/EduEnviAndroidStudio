@@ -25,6 +25,7 @@ class StudentTasksActivity : AppCompatActivity() {
     private var _addToStudent: HashSet<Task> = HashSet()
     private var tasks: MutableList<Task>? = null
     private lateinit var adapter: StudentsTasksAdapter
+    private val myContext = this
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +33,6 @@ class StudentTasksActivity : AppCompatActivity() {
         binding = ActivityStudentTasksBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val myContext = this
         val student = Constants.Student
         CoroutineScope(Dispatchers.IO).launch {
             tasks = ApiHelper.getStudentsTasks(student.id) as MutableList<Task>?
@@ -62,7 +62,7 @@ class StudentTasksActivity : AppCompatActivity() {
                 ApiHelper.deleteStudentTask(student.id, Constants.Task.id)
                 tasks!!.remove(Constants.Task)
                 withContext(Dispatchers.Main) {
-                    adapter.notifyDataChenged()
+                    adapter.notifyDataChanged()
                 }
             }
         }
@@ -165,7 +165,7 @@ class StudentTasksActivity : AppCompatActivity() {
                 tasks!!.remove(task) //TODO if delete successful then... else toast neepodarilo sa
             }
             withContext(Dispatchers.Main) {
-                adapter.notifyDataChenged()
+                adapter.notifyDataChanged()
                 _delFromStudent = HashSet()
                 _addToStudent = HashSet()
             }

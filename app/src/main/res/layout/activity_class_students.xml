@@ -22,7 +22,6 @@
         android:numColumns="3"
         tools:listitem="@layout/grid_list_item" />
 
-
     <ImageButton
         android:id="@+id/addButton"
         style="@style/addButton"
@@ -115,13 +114,11 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/loginCodeTextInputLayout"
-                    style="@style/inputField"
-                    android:layout_marginTop="0dp">
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginCode"
@@ -145,14 +142,11 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="20dp"
                 android:background="@drawable/oval_50_background"
                 android:clickable="true"
                 android:focusable="true"
                 android:focusableInTouchMode="false"
                 android:inputType="none"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:visibility="gone">
 
                 <AutoCompleteTextView

@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="70dp"
         android:background="@color/Background"
-        android:paddingHorizontal="25dp"
+        android:paddingHorizontal="5dp"
         tools:listitem="@layout/classroom_list_item" />
 
     <ImageButton

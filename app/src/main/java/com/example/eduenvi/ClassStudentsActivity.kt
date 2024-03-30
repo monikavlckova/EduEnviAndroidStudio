@@ -9,6 +9,7 @@ import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.adapters.ClassroomStudentsAdapter
 import com.example.eduenvi.databinding.ActivityClassStudentsBinding
 import com.example.eduenvi.models.Classroom
+import com.example.eduenvi.models.Image
 import com.example.eduenvi.models.Student
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,13 +23,13 @@ class ClassStudentsActivity : AppCompatActivity() {
     private var students: MutableList<Student>? = null
     private lateinit var adapter: ClassroomStudentsAdapter
     private var changeToClassroom = Constants.Classroom
+    private val myContext = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClassStudentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val myContext = this
         CoroutineScope(Dispatchers.IO).launch {
             students =
                 ApiHelper.getStudentsInClassroom(Constants.Classroom.id) as MutableList<Student>?
@@ -68,6 +69,19 @@ class ClassStudentsActivity : AppCompatActivity() {
 
         binding.editButton.setOnClickListener {
             _creatingNew = false
+            val context = this
+            if (Constants.Student.imageId != null) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val dbImage: Image? = ApiHelper.getImage(Constants.Student.imageId!!)
+                    withContext(Dispatchers.Main) {
+                        Constants.imageManager.setImage(
+                            dbImage!!.url,
+                            context,
+                            binding.editProfileImage
+                        )
+                    }
+                }
+            }
             binding.saveButton.text = Constants.SaveButtonTextUpdate
             binding.firstName.setText(Constants.Student.name)
             binding.lastName.setText(Constants.Student.lastName)
@@ -91,7 +105,7 @@ class ClassStudentsActivity : AppCompatActivity() {
                         binding.firstName.text.toString(),
                         binding.lastName.text.toString(),
                         binding.loginCode.text.toString(),
-                        null
+                        null//TODO zmenit
                     )
                 var res: Student?
                 CoroutineScope(Dispatchers.IO).launch {
@@ -103,12 +117,12 @@ class ClassStudentsActivity : AppCompatActivity() {
                         res = ApiHelper.createStudent(student)
                     }
                     Constants.Student = student
-                    students!!.add(student)//TODO ak res nie je null else toast nepodarilo sa vytvorit/updatnut
+                    if (changeToClassroom == Constants.Classroom)students!!.add(student)//TODO ak res nie je null else toast nepodarilo sa vytvorit/updatnut
                     withContext(Dispatchers.Main) {
-                        adapter.notifyDataChenged()
+                        adapter.notifyDataChanged()
+                        closeStudentPanel()
                     }
                 }
-                closeStudentPanel()
             }
         }
 
@@ -123,7 +137,7 @@ class ClassStudentsActivity : AppCompatActivity() {
                 ApiHelper.deleteStudent(Constants.Student.id)
                 students!!.remove(Constants.Student)//TODO ak sa podaril delete else toast nepodarilo sa
                 withContext(Dispatchers.Main) {
-                    adapter.notifyDataChenged()
+                    adapter.notifyDataChanged()
                 }
             }
             val intent = Intent(this, ClassStudentsActivity::class.java)
@@ -151,6 +165,7 @@ class ClassStudentsActivity : AppCompatActivity() {
         binding.lastName.text = null
         binding.loginCodeTextInputLayout.error = null
         binding.loginCode.text = null
+        changeToClassroom = Constants.Classroom
     }
 
     private fun setClassroomsDropdown() {

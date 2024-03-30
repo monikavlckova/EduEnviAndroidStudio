@@ -28,17 +28,18 @@
     <style name="firstButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">130dp</item>
-        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginTop">10dp</item>
         <item name="android:paddingLeft">40dp</item>
         <item name="android:paddingRight">50dp</item>
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">26sp</item>
         <item name="android:textAlignment">textEnd</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="classroomPrefab">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">100dp</item>
-        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginTop">5dp</item>
         <item name="android:background">@drawable/oval_30_surface</item>
 
     </style>
@@ -171,6 +172,8 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:maxLines">1</item>
         <item name="android:background">@drawable/oval_50_surface</item>
+        <item name="android:paddingStart">30dp</item>
+        <item name="android:paddingEnd">30dp</item>
     </style>
 
     <style name="inputFieldEditTextColor" parent="inputFieldEditText">
@@ -184,8 +187,9 @@
         <item name="android:layout_marginStart">70dp</item>
         <item name="android:layout_marginEnd">70dp</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">26sp</item>
         <item name="android:textColor">@color/OnAccent</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="bottomNavigationLayout">
@@ -237,13 +241,32 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="textViewLeft">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="textViewRight">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="chipTextView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">25dp</item>
         <item name="android:layout_marginRight">25dp</item>
-        <item name="android:layout_marginTop">25dp</item>
-        <item name="android:layout_marginBottom">25dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
         <item name="android:textSize">16sp</item>
     </style>
 
@@ -259,7 +282,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">20dp</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:gravity">center</item>
     </style>
 
 

@@ -25,6 +25,7 @@ class GroupStudentsActivity : AppCompatActivity() {
     private var _addToGroup: HashSet<Student> = HashSet()
     private var students: MutableList<Student>? = null
     private lateinit var adapter: GroupStudentsAdapter
+    private val myContext = this
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +33,6 @@ class GroupStudentsActivity : AppCompatActivity() {
         binding = ActivityGroupStudentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val myContext = this
         val group = Constants.Group
         CoroutineScope(Dispatchers.IO).launch {
             students = ApiHelper.getStudentsInGroup(group.id) as MutableList<Student>?
@@ -62,7 +62,7 @@ class GroupStudentsActivity : AppCompatActivity() {
                 ApiHelper.deleteStudentGroup(Constants.Student.id, group.id)
                 students!!.remove(Constants.Student)
                 withContext(Dispatchers.Main) {
-                    adapter.notifyDataChenged()
+                    adapter.notifyDataChanged()
                 }
             }
         }
@@ -167,7 +167,7 @@ class GroupStudentsActivity : AppCompatActivity() {
                 students!!.remove(student)//TODO if delete successful then... else toast neepodarilo sa
             }
             withContext(Dispatchers.Main) {
-                adapter.notifyDataChenged()
+                adapter.notifyDataChanged()
                 _delFromGroup = HashSet()
                 _addToGroup = HashSet()
             }

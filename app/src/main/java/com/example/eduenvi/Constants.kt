@@ -6,7 +6,6 @@ import com.example.eduenvi.models.Student
 import com.example.eduenvi.models.Task
 import com.example.eduenvi.models.Teacher
 
-
 object Constants {
 
     private fun getWrongFormatMassage(min: Int): String {
@@ -24,6 +23,7 @@ object Constants {
     const val MinimalGroupNameLength = 2
     const val MinimalTaskNameLength = 2
 
+    const val SetButtonText = "Nastaviť"
     const val SaveButtonTextUpdate = "Uložiť"
     const val SaveButtonTextCreate = "Vytvoriť"
     val WrongFirstNameFormatMessage = getWrongFormatMassage(MinimalFirstNameLength)
@@ -54,33 +54,15 @@ object Constants {
     fun getDeleteTaskFromGroupString(t: Task) = "Odstrániť úlohu " + t.name + " zo skupiny?"
     fun getDeleteTaskFromStudentString(t: Task) = "Odstrániť žiakovi úlohu " + t.name + "?"
 
-    /*
-        public static Sprite GetSprite(path:String):String
-        {
-            return Resources.Load<Sprite>(path)
-        }
-
-            public static readonly Sprite XSprite = Resources.Load<Sprite>("Sprites/close")
-            public static readonly Sprite DotsSprite = Resources.Load<Sprite>("Sprites/more")
-            public static readonly Sprite PlusSprite = Resources.Load<Sprite>("Sprites/plus")
-            public static readonly Sprite GroupSprite = Resources.Load<Sprite>("Sprites/groupHighlighted")
-            public static readonly Sprite StudentsSprite = Resources.Load<Sprite>("Sprites/studentsHighlighted")
-            public static readonly Sprite TaskSprite = Resources.Load<Sprite>("Sprites/taskHighlighted")
-            public static readonly Sprite ShowSprite = Resources.Load<Sprite>("Sprites/show")
-            public static readonly Sprite HideSprite = Resources.Load<Sprite>("Sprites/hide")
-            public static readonly Sprite EdgeValueType1Sprite = Resources.Load<Sprite>("Sprites/TaskType1/rocket")
-            public static readonly Sprite EdgeValueType2Sprite = Resources.Load<Sprite>("Sprites/TaskType1/spaceship")
-            public static readonly Sprite EdgeValueType3Sprite = Resources.Load<Sprite>("Sprites/TaskType1/ufo")
-
-         */
+    //fun getSprite(path:String) = Resources.Load<Sprite>(path)
 
     val emailSender = EmailSender()
-    val dbImageManager = DBImageManager()
+    val imageManager = ImageManager()
 
     var Classroom = Classroom(0, 0, "", null)
     var Group = Group(0, 0, "", null)
     var Student = Student(0, 0, "", "", "", null)
-    var Task = Task(0, 0, 0, "", "", null, null)
+    var Task = Task(0, 0, 0, "", "", null, null, null)
     var Teacher = Teacher(0, "", "", "", "", "", null)
 
 }

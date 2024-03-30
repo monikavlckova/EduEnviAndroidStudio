@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.databinding.ActivityProfileBinding
+import com.example.eduenvi.models.Image
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,7 +16,9 @@ import kotlinx.coroutines.withContext
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileBinding
-
+    private val IMAGE_REQUEST_CODE = 100
+    private var changedImage = false
+    private val myContext = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +28,21 @@ class ProfileActivity : AppCompatActivity() {
         setValuesInEditPanel()
 
         binding.firstNameLastName.text = "${teacher.name} ${teacher.lastName}"
+
+        if (teacher.imageId != null) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val image = ApiHelper.getImage(teacher.imageId!!)
+                if (image != null) {
+                    withContext(Dispatchers.Main) {
+                        Constants.imageManager.setImage(
+                            image.url,
+                            myContext,
+                            binding.profileImage
+                        )
+                    }
+                }
+            }
+        }
 
         binding.backButton.setOnClickListener {
             val intent = Intent(this, ClassesActivity::class.java)
@@ -42,6 +60,10 @@ class ProfileActivity : AppCompatActivity() {
                 teacher.userName = binding.editUserName.text.toString()
                 teacher.email = binding.editEmail.text.toString()
                 CoroutineScope(Dispatchers.IO).launch {
+                    if (changedImage) {
+                        val image = ApiHelper.createImage(Image(0, ""))//TODO
+                        if (image != null) teacher.imageId = image.id
+                    }
                     ApiHelper.updateTeacher(teacher.id, teacher)
                 }
                 binding.mainPanel.visibility = View.VISIBLE
@@ -53,6 +75,10 @@ class ProfileActivity : AppCompatActivity() {
             setValuesInEditPanel()
             binding.mainPanel.visibility = View.GONE
             binding.editPanel.visibility = View.VISIBLE
+        }
+
+        binding.changeProfileImage.setOnClickListener {
+            pickImageGallery()//TODO zmenit
         }
 
         binding.changePassword.setOnClickListener {
@@ -81,12 +107,32 @@ class ProfileActivity : AppCompatActivity() {
         binding.passwordPanel.setOnClickListener { closePasswordPanel() }
         binding.closePasswordPanel.setOnClickListener { closePasswordPanel() }
 
-        binding.editFirstName.addTextChangedListener { binding.editFirstNameTextInputLayout.error = null }
-        binding.editLastName.addTextChangedListener { binding.editLastNameTextInputLayout.error = null }
-        binding.editUserName.addTextChangedListener { binding.editUserNameTextInputLayout.error = null }
+        binding.editFirstName.addTextChangedListener {
+            binding.editFirstNameTextInputLayout.error = null
+        }
+        binding.editLastName.addTextChangedListener {
+            binding.editLastNameTextInputLayout.error = null
+        }
+        binding.editUserName.addTextChangedListener {
+            binding.editUserNameTextInputLayout.error = null
+        }
         binding.editEmail.addTextChangedListener { binding.editEmailTextInputLayout.error = null }
         binding.password1.addTextChangedListener { binding.password1TextInputLayout.error = null }
         binding.password2.addTextChangedListener { binding.password2TextInputLayout.error = null }
+    }
+
+    private fun pickImageGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
+            binding.editProfileImage.setImageURI(data?.data)
+            changedImage = true
+        }
     }
 
     private fun closePasswordPanel() {
@@ -101,6 +147,20 @@ class ProfileActivity : AppCompatActivity() {
         binding.editLastName.setText(teacher.lastName)
         binding.editUserName.setText(teacher.userName)
         binding.editEmail.setText(teacher.email)
+        if (teacher.imageId != null) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val image = ApiHelper.getImage(teacher.imageId!!)
+                if (image != null) {
+                    withContext(Dispatchers.Main) {
+                        Constants.imageManager.setImage(
+                            image.url,
+                            this@ProfileActivity,
+                            binding.editProfileImage
+                        )
+                    }
+                }
+            }
+        }
     }
 
     private fun validFirstName(): Boolean {
@@ -131,7 +191,8 @@ class ProfileActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (teacher != null && teacher.id != Constants.Teacher.id) {
-                        binding.editUserNameTextInputLayout.error = Constants.WrongUserNameAlreadyExistMessage
+                        binding.editUserNameTextInputLayout.error =
+                            Constants.WrongUserNameAlreadyExistMessage
                         isValid = false
                     }
                 }
@@ -152,7 +213,8 @@ class ProfileActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (teacher != null && teacher.id != Constants.Teacher.id) {
-                        binding.editEmailTextInputLayout.error = Constants.WrongEmailAlreadyExistMessage
+                        binding.editEmailTextInputLayout.error =
+                            Constants.WrongEmailAlreadyExistMessage
                         isValid = false
                     }
                 }
