@@ -8,16 +8,10 @@ import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.eduenvi.ApiHelper
 import com.example.eduenvi.Constants
 import com.example.eduenvi.GroupTasksActivity
 import com.example.eduenvi.R
-import com.example.eduenvi.models.Image
 import com.example.eduenvi.models.Task
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class GroupTasksAdapter (private val context: Activity, private val list: List<Task>) :
     ArrayAdapter<Task>(context, R.layout.classroom_list_item, list) {
@@ -33,15 +27,7 @@ class GroupTasksAdapter (private val context: Activity, private val list: List<T
         val task = list[position]
         name.text = task.name
 
-        if (task.imageId != null) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val dbImage : Image? = ApiHelper.getImage(task.imageId!!)
-                withContext(Dispatchers.Main) {
-                    if (dbImage != null)
-                        Constants.imageManager.setImage(dbImage.url, context, image)
-                }
-            }
-        }
+        Constants.imageManager.setImage(task.imageId, context, image)
 
         delete.setOnClickListener {
             (context as GroupTasksActivity).binding.deletePanel.visibility = View.VISIBLE

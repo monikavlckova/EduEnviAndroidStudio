@@ -19,8 +19,8 @@
         android:padding="25dp">
 
         <TextView
-            android:text="@string/login"
-            style="@style/headlineVerticalLayout" />
+            style="@style/headlineVerticalLayout"
+            android:text="@string/login" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/userNameTextInputLayout"
@@ -42,7 +42,7 @@
                 android:id="@+id/password"
                 style="@style/inputFieldEditText"
                 android:hint="@string/password"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -105,7 +105,7 @@
                     android:id="@+id/email"
                     style="@style/inputFieldEditTextColor"
                     android:hint="@string/email"
-                    android:inputType="textEmailAddress"/>
+                    android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

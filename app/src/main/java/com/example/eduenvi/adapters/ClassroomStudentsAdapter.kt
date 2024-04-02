@@ -9,17 +9,11 @@ import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.eduenvi.ApiHelper
-import com.example.eduenvi.ClassStudentsActivity
+import com.example.eduenvi.ClassroomStudentsActivity
 import com.example.eduenvi.Constants
 import com.example.eduenvi.R
 import com.example.eduenvi.StudentTasksActivity
-import com.example.eduenvi.models.Image
 import com.example.eduenvi.models.Student
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ClassroomStudentsAdapter (private val context: Activity, private val list: List<Student>) :
     ArrayAdapter<Student>(context, R.layout.classroom_list_item, list) {
@@ -33,25 +27,17 @@ class ClassroomStudentsAdapter (private val context: Activity, private val list:
         val edit = view.findViewById<ImageButton>(R.id.edit)
 
         val student = list[position]
-        name.text = student.name
+        name.text = student.firstName
 
-        if (student.imageId != null) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val dbImage : Image? = ApiHelper.getImage(student.imageId!!)
-                withContext(Dispatchers.Main) {
-                    if (dbImage != null)
-                        Constants.imageManager.setImage(dbImage.url, context, image)
-                }
-            }
-        }
+        Constants.imageManager.setImage(student.imageId, context, image)
 
         edit.setOnClickListener {
             Constants.Student = student
-            (context as ClassStudentsActivity).binding.editPanel.visibility = View.VISIBLE
+            (context as ClassroomStudentsActivity).binding.editPanel.visibility = View.VISIBLE
         }
         view?.setOnClickListener {
             Constants.Student = student
-            val intent = Intent((context as ClassStudentsActivity), StudentTasksActivity::class.java)
+            val intent = Intent((context as ClassroomStudentsActivity), StudentTasksActivity::class.java)
             context.startActivity(intent)
         }
         return view

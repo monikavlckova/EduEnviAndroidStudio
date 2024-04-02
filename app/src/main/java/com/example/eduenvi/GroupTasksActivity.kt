@@ -49,7 +49,7 @@ class GroupTasksActivity : AppCompatActivity() {
         binding.groupName.text = group.name
 
         binding.backButton.setOnClickListener {
-            val intent = Intent(this, ClassGroupsActivity::class.java)
+            val intent = Intent(this, ClassroomGroupsActivity::class.java)
             startActivity(intent)
         }
 
@@ -65,6 +65,7 @@ class GroupTasksActivity : AppCompatActivity() {
                     if (result != null) if (tasks != null) tasks!!.remove(Constants.Task)
                     else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
+                    binding.deletePanel.visibility = View.GONE
                 }
             }
         }
@@ -75,18 +76,19 @@ class GroupTasksActivity : AppCompatActivity() {
 
         binding.saveButton.setOnClickListener {
             manageTasks()
-            closeTaskPanel()
+            closeTasksPanel()
             //val intent = Intent(this, GroupTasksActivity::class.java)
             //startActivity(intent)
         }
 
-        binding.closeTaskPanel.setOnClickListener { closeTaskPanel() }
+        binding.closeTasksPanel.setOnClickListener { closeTasksPanel() }
         binding.closeDeletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
     }
 
-    private fun closeTaskPanel() {
+    private fun closeTasksPanel() {
         binding.tasksPanel.visibility = View.GONE
+        binding.mainPanel.visibility = View.VISIBLE
         empty()
     }
 
@@ -104,6 +106,7 @@ class GroupTasksActivity : AppCompatActivity() {
 
     private fun setActiveTasksPanel() {
         binding.tasksPanel.visibility = View.VISIBLE
+        binding.mainPanel.visibility = View.GONE
         CoroutineScope(Dispatchers.IO).launch {
             val tasksInGroup = ApiHelper.getGroupsTasks(Constants.Group.id)
             val tasksNotInGroup = ApiHelper.getTasksFromTeacherNotInGroup(

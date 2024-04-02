@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.databinding.ActivityProfileBinding
-import com.example.eduenvi.models.Image
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,8 +17,8 @@ class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileBinding
     private val IMAGE_REQUEST_CODE = 100
-    private var changedImage = false
     private val myContext = this
+    private var imageId :Int? = Constants.Teacher.imageId
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,25 +27,12 @@ class ProfileActivity : AppCompatActivity() {
         val teacher = Constants.Teacher
         setValuesInEditPanel()
 
-        binding.firstNameLastName.text = "${teacher.name} ${teacher.lastName}"
+        binding.firstNameLastName.text = "${teacher.firstName} ${teacher.lastName}"
 
-        if (teacher.imageId != null) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val image = ApiHelper.getImage(teacher.imageId!!)
-                if (image != null) {
-                    withContext(Dispatchers.Main) {
-                        Constants.imageManager.setImage(
-                            image.url,
-                            myContext,
-                            binding.profileImage
-                        )
-                    }
-                }
-            }
-        }
+        Constants.imageManager.setImage(teacher.imageId, myContext, binding.profileImage)
 
         binding.backButton.setOnClickListener {
-            val intent = Intent(this, ClassesActivity::class.java)
+            val intent = Intent(this, ClassroomsActivity::class.java)
             startActivity(intent)
         }
 
@@ -56,15 +42,12 @@ class ProfileActivity : AppCompatActivity() {
             val validUserName = validUserName()
             val validEmail = validEmail()
             if (validName && validLastName && validUserName && validEmail) {
-                teacher.name = binding.editFirstName.text.toString()
+                teacher.firstName = binding.editFirstName.text.toString()
                 teacher.lastName = binding.editLastName.text.toString()
                 teacher.userName = binding.editUserName.text.toString()
                 teacher.email = binding.editEmail.text.toString()
+                teacher.imageId = imageId//TODO funkciu nech vytvori obrazok ak je novy, nie z db
                 CoroutineScope(Dispatchers.IO).launch {
-                    if (changedImage) {
-                        val image = ApiHelper.createImage(Image(0, ""))//TODO
-                        if (image != null) teacher.imageId = image.id
-                    }
                     val result = ApiHelper.updateTeacher(teacher.id, teacher)
                     withContext(Dispatchers.Main) {
                         if (result == null)
@@ -82,7 +65,7 @@ class ProfileActivity : AppCompatActivity() {
             binding.editPanel.visibility = View.VISIBLE
         }
 
-        binding.changeProfileImage.setOnClickListener {
+        binding.editProfileImage.setOnClickListener {
             pickImageGallery()//TODO zmenit
         }
 
@@ -139,8 +122,7 @@ class ProfileActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
-            binding.editProfileImage.setImageURI(data?.data)
-            changedImage = true
+            binding.profileImageEditPanel.setImageURI(data?.data)
         }
     }
 
@@ -152,24 +134,11 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun setValuesInEditPanel() {
         val teacher = Constants.Teacher
-        binding.editFirstName.setText(teacher.name)
+        binding.editFirstName.setText(teacher.firstName)
         binding.editLastName.setText(teacher.lastName)
         binding.editUserName.setText(teacher.userName)
         binding.editEmail.setText(teacher.email)
-        if (teacher.imageId != null) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val image = ApiHelper.getImage(teacher.imageId!!)
-                if (image != null) {
-                    withContext(Dispatchers.Main) {
-                        Constants.imageManager.setImage(
-                            image.url,
-                            this@ProfileActivity,
-                            binding.editProfileImage
-                        )
-                    }
-                }
-            }
-        }
+        Constants.imageManager.setImage(teacher.imageId, this, binding.profileImageEditPanel)
     }
 
     private fun validFirstName(): Boolean {

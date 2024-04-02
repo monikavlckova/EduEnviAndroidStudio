@@ -6,81 +6,96 @@
     android:background="@color/Tertiary"
     android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/backButton"
-        style="@style/backButton"
-        android:contentDescription="@string/back" />
-
     <TextView
-        android:id="@+id/className"
         style="@style/headline"
-        android:text="Meno triedy" />
+        android:text="Moje triedy" />
 
-    <GridView
-        android:id="@+id/studentsLayout"
-        style="@style/gridView"
-        android:numColumns="3"
-        tools:listitem="@layout/grid_list_item" />
+    <ImageButton
+        android:id="@+id/menuButton"
+        style="@style/menuButton"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <ListView
+        android:id="@+id/classroomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        android:background="@color/Background"
+        android:paddingHorizontal="5dp"
+        tools:listitem="@layout/classroom_list_item" />
 
     <ImageButton
         android:id="@+id/addButton"
         style="@style/addButton"
+        android:layout_marginBottom="16dp"
         android:contentDescription="@string/add" />
 
-    <LinearLayout style="@style/bottomNavigationLayout">
-
-        <ImageButton
-            android:id="@+id/tasksButton"
-            style="@style/navButton"
-            android:contentDescription="@string/tasks"
-            android:src="@mipmap/tasks" />
-
-        <ImageButton
-            android:id="@+id/studentsButton"
-            style="@style/navButton"
-            android:contentDescription="@string/students"
-            android:src="@mipmap/students_highlighted" />
-
-        <ImageButton
-            android:id="@+id/groupsButton"
-            style="@style/navButton"
-            android:contentDescription="@string/groups"
-            android:src="@mipmap/groups" />
-    </LinearLayout>
-
     <RelativeLayout
-        android:id="@+id/studentPanel"
+        android:id="@+id/menuPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/Surface"
         android:visibility="gone">
 
-        <ImageButton
-            android:id="@+id/closeStudentPanel"
-            style="@style/backButtonDark"
-            android:contentDescription="@string/close" />
+        <LinearLayout
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="70dp"
+            android:background="@color/semitransparent"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/profileButton"
+                style="@style/profileButton"
+                android:contentDescription="@string/profile" />
+
+            <ImageButton
+                android:id="@+id/logoutButton"
+                style="@style/logoutButton"
+                android:contentDescription="@string/back" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/classroomPanel"
+        style="@style/backgroundLayout"
+        android:gravity="center"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="70dp"
-            android:gravity="top"
-            android:orientation="vertical"
-            android:padding="25dp">
+            android:layout_height="380dp"
+            android:layout_margin="25dp"
+            android:background="@drawable/center_layout_background"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <ImageButton
+                    android:id="@+id/closeClassroomPanel"
+                    style="@style/backButtonDark"
+                    android:contentDescription="@string/back" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp">
 
                 <ImageView
-                    android:id="@+id/editProfileImage"
+                    android:id="@+id/ClassroomImage"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:src="@drawable/baseline_account_circle_dark_24" />
 
                 <ImageButton
+                    android:id="@+id/editClassroomImage"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_alignParentEnd="true"
@@ -91,78 +106,25 @@
             </RelativeLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/firstNameTextInputLayout"
-                style="@style/inputField">
+                android:id="@+id/classroomNameTextInputLayout"
+                style="@style/inputField"
+                android:layout_marginHorizontal="25dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/firstName"
+                    android:id="@+id/classroomName"
                     style="@style/inputFieldEditTextColor"
-                    android:hint="@string/firstName"
+                    android:hint="@string/classroomName"
                     android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/lastNameTextInputLayout"
-                style="@style/inputField">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/lastName"
-                    style="@style/inputFieldEditTextColor"
-                    android:hint="@string/lastName"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/loginCodeTextInputLayout"
-                    style="@style/inputField">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/loginCode"
-                        style="@style/inputFieldEditTextColor"
-                        android:hint="@string/loginCode"
-                        android:inputType="text" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <ImageButton
-                    android:id="@+id/generateLoginCode"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:backgroundTint="@color/transparent"
-                    android:src="@drawable/baseline_renew_24"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="5dp" />
-            </RelativeLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/classroomTextInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/oval_50_background"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="false"
-                android:inputType="none"
-                android:visibility="gone">
-
-                <AutoCompleteTextView
-                    android:id="@+id/classroom"
-                    style="@style/inputFieldEditTextColor"
-                    android:hint="@string/classroom"
-                    android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/saveButton"
                 style="@style/actionButton"
+                android:layout_marginHorizontal="25dp"
                 android:text="@string/create" />
 
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/editPanel"
@@ -235,4 +197,5 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
 </RelativeLayout>

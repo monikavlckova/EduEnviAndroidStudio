@@ -31,7 +31,7 @@ class SignupActivity : AppCompatActivity() {
 
         binding.loginButton.setOnClickListener { submitForm(this) }
 
-        binding.name.addTextChangedListener { binding.nameTextInputLayout.error = null }
+        binding.firstName.addTextChangedListener { binding.firstNameTextInputLayout.error = null }
         binding.lastName.addTextChangedListener { binding.lastNameTextInputLayout.error = null }
         binding.userName.addTextChangedListener { binding.userNameTextInputLayout.error = null }
         binding.email.addTextChangedListener { binding.emailTextInputLayout.error = null }
@@ -39,7 +39,7 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun submitForm(context: Context) {
-        val validName = validName()
+        val validName = validFirstName()
         val validLastName = validLastName()
         val validUserName = validUserName()
         val validPassword = validPassword()
@@ -48,7 +48,7 @@ class SignupActivity : AppCompatActivity() {
             val teacher = Teacher(
                 0,
                 binding.email.text.toString(),
-                binding.name.text.toString(),
+                binding.firstName.text.toString(),
                 binding.lastName.text.toString(),
                 binding.userName.text.toString(),
                 binding.password.text.toString(),
@@ -62,7 +62,7 @@ class SignupActivity : AppCompatActivity() {
                         Constants.Teacher = newTeacher
                         resetForm()
                         Constants.emailSender.sendWelcome(newTeacher.email, newTeacher.userName)
-                        val intent = Intent(context, ClassesActivity::class.java)
+                        val intent = Intent(context, ClassroomsActivity::class.java)
                         startActivity(intent)
                     } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
 
@@ -71,10 +71,10 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-    private fun validName(): Boolean {
-        val name = binding.name.text.toString()
+    private fun validFirstName(): Boolean {
+        val name = binding.firstName.text.toString()
         if (name.length < Constants.MinimalFirstNameLength) {
-            binding.nameTextInputLayout.error = Constants.WrongFirstNameFormatMessage
+            binding.firstNameTextInputLayout.error = Constants.WrongFirstNameFormatMessage
             return false
         }
         return true
@@ -142,12 +142,12 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun resetForm() {
-        binding.name.text = null
+        binding.firstName.text = null
         binding.lastName.text = null
         binding.userName.text = null
         binding.email.text = null
         binding.password.text = null
-        binding.nameTextInputLayout.error = null
+        binding.firstNameTextInputLayout.error = null
         binding.lastNameTextInputLayout.error = null
         binding.userNameTextInputLayout.error = null
         binding.emailTextInputLayout.error = null

@@ -15,18 +15,15 @@
         <Button
             android:id="@+id/teacher_login_button"
             style="@style/firstButton"
+            android:backgroundTint="@color/Secondary"
             android:drawableLeft="@drawable/teacher_button_wrapper"
-            android:text=" Učiteľ"
-            android:backgroundTint="@color/Secondary"/>
+            android:text=" Učiteľ" />
 
         <Button
             android:id="@+id/student_login_button"
             style="@style/firstButton"
+            android:backgroundTint="@color/Primary"
             android:drawableLeft="@drawable/student_button_wrapper"
-            android:text="Žiak"
-            android:backgroundTint="@color/Primary"/>
-
-
+            android:text="Žiak" />
     </LinearLayout>
-
 </RelativeLayout>

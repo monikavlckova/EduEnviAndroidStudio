@@ -46,10 +46,10 @@ class StudentGroupsActivity : AppCompatActivity() {
             }
         }
 
-        binding.studentName.text = "${student.name} ${student.lastName}"
+        binding.studentName.text = "${student.firstName} ${student.lastName}"
 
         binding.backButton.setOnClickListener {
-            val intent = Intent(this, ClassStudentsActivity::class.java)
+            val intent = Intent(this, ClassroomStudentsActivity::class.java)
             startActivity(intent)
         }
 
@@ -65,6 +65,7 @@ class StudentGroupsActivity : AppCompatActivity() {
                     if (result != null) if (groups != null) groups!!.remove(Constants.Group)
                     else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
+                    binding.deletePanel.visibility = View.GONE
                 }
             }
         }
@@ -75,18 +76,19 @@ class StudentGroupsActivity : AppCompatActivity() {
 
         binding.saveButton.setOnClickListener {
             manageGroups()
-            closeGroupPanel()
+            closeGroupsPanel()
             //val intent = Intent(this, StudentGroupsActivity::class.java)
             //startActivity(intent)
         }
 
-        binding.closeGroupPanel.setOnClickListener { closeGroupPanel() }
+        binding.closeGroupsPanel.setOnClickListener { closeGroupsPanel() }
         binding.closeDeletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
     }
 
-    private fun closeGroupPanel() {
+    private fun closeGroupsPanel() {
         binding.groupsPanel.visibility = View.GONE
+        binding.mainPanel.visibility = View.VISIBLE
         empty()
     }
 
@@ -104,6 +106,7 @@ class StudentGroupsActivity : AppCompatActivity() {
 
     private fun setActiveGroupsPanel() {
         binding.groupsPanel.visibility = View.VISIBLE
+        binding.mainPanel.visibility = View.GONE
         CoroutineScope(Dispatchers.IO).launch {
             val groupsInStudent = ApiHelper.getStudentsGroups(Constants.Student.id)
             val groupsNotInStudent = ApiHelper.getGroupsFromInClassroomNotInStudent(

@@ -23,11 +23,11 @@
             style="@style/headlineVerticalLayout"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/nameTextInputLayout"
+            android:id="@+id/firstNameTextInputLayout"
             style="@style/inputField">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/name"
+                android:id="@+id/firstName"
                 style="@style/inputFieldEditText"
                 android:hint="@string/firstName"
                 android:inputType="text" />

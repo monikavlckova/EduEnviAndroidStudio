@@ -18,8 +18,8 @@
         android:padding="25dp">
 
         <TextView
-            android:text="@string/login"
-            style="@style/headlineVerticalLayout" />
+            style="@style/headlineVerticalLayout"
+            android:text="@string/login" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/loginCodeTextInputLayout"

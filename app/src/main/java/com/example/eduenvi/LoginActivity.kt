@@ -83,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
                 if (teacher != null) {
                     Constants.Teacher = teacher
                     resetLoginForm()
-                    val intent = Intent(context, ClassesActivity::class.java)
+                    val intent = Intent(context, ClassroomsActivity::class.java)
                     startActivity(intent)
                 } else {
                     binding.passwordTextInputLayout.error = Constants.WrongUserNameOrPasswordMessage

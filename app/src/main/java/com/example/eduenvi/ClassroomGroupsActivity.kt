@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.adapters.ClassroomGroupsAdapter
-import com.example.eduenvi.databinding.ActivityClassGroupsBinding
+import com.example.eduenvi.databinding.ActivityClassroomGroupsBinding
 import com.example.eduenvi.models.Group
 import com.example.eduenvi.models.Student
 import com.example.eduenvi.models.StudentGroup
@@ -19,21 +19,22 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+//TODO pohladat buttony co su fixne na spodku obrazovky, spravit scrollable tam kde su chipy a
+// buttony dat na spodok nie na spodok obrazovky nalepit, nech sa to vestko pekne hybe
+class ClassroomGroupsActivity : AppCompatActivity() {
 
-//TODO pridet obrazok do grouppanel co je zaroven aj edit, ak edit nacitat ho ak ho ma
-class ClassGroupsActivity : AppCompatActivity() {
-
-    lateinit var binding: ActivityClassGroupsBinding
+    lateinit var binding: ActivityClassroomGroupsBinding
     private var _creatingNewGroup: Boolean? = null
     private var _delFromGroup: HashSet<Student> = HashSet()
     private var _addToGroup: HashSet<Student> = HashSet()
     private var groups: MutableList<Group>? = null
     private lateinit var adapter: ClassroomGroupsAdapter
     private val myContext = this
+    private var imageId :Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityClassGroupsBinding.inflate(layoutInflater)
+        binding = ActivityClassroomGroupsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -47,18 +48,18 @@ class ClassGroupsActivity : AppCompatActivity() {
             }
         }
         val classroom = Constants.Classroom
-        binding.className.text = classroom.name
+        binding.classroomName.text = classroom.name
 
         binding.backButton.setOnClickListener {
-            val intent = Intent(this, ClassesActivity::class.java)
+            val intent = Intent(this, ClassroomsActivity::class.java)
             startActivity(intent)
         }
         binding.tasksButton.setOnClickListener {
-            val intent = Intent(this, ClassTasksActivity::class.java)
+            val intent = Intent(this, ClassroomTasksActivity::class.java)
             startActivity(intent)
         }
         binding.studentsButton.setOnClickListener {
-            val intent = Intent(this, ClassStudentsActivity::class.java)
+            val intent = Intent(this, ClassroomStudentsActivity::class.java)
             startActivity(intent)
         }
 
@@ -70,10 +71,16 @@ class ClassGroupsActivity : AppCompatActivity() {
 
         binding.editButton.setOnClickListener {
             _creatingNewGroup = false
+            imageId = Constants.Group.imageId
             binding.saveButton.text = Constants.SaveButtonTextUpdate
             binding.groupName.setText(Constants.Group.name)
+            Constants.imageManager.setImage(Constants.Group.imageId, this, binding.GroupImage)
             setActiveGroupPanel()
             binding.editPanel.visibility = View.GONE
+        }
+
+        binding.editGroupImage.setOnClickListener {
+            //TODO otvor panel na vyberanie obrazkov, tam bude nejake tlacidlo uloz a v nom spravit ak nove vytvor a nastav imageId na nove ak vybera uz z db tak tiez nastav imageId
         }
 
         binding.saveButton.setOnClickListener {
@@ -83,8 +90,8 @@ class ClassGroupsActivity : AppCompatActivity() {
                         0,
                         Constants.Classroom.id,
                         binding.groupName.text.toString(),
-                        null
-                    )//TODO zmenit null
+                        imageId
+                    )
                 var res: Group?
                 CoroutineScope(Dispatchers.IO).launch {
                     if (_creatingNewGroup == false) {
@@ -125,9 +132,10 @@ class ClassGroupsActivity : AppCompatActivity() {
                     } else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG)
                         .show()
                     adapter.notifyDataChanged()
+                    binding.deletePanel.visibility = View.GONE
                 }
             }
-            //val intent = Intent(this, ClassGroupsActivity::class.java)
+            //val intent = Intent(this, ClassroomGroupsActivity::class.java)
             //startActivity(intent)
         }
 
@@ -142,6 +150,7 @@ class ClassGroupsActivity : AppCompatActivity() {
 
     private fun closeGroupPanel() {
         binding.groupPanel.visibility = View.GONE
+        binding.mainPanel.visibility = View.VISIBLE
         binding.groupNameTextInputLayout.error = null
         binding.groupName.text = null
         empty()
@@ -161,6 +170,7 @@ class ClassGroupsActivity : AppCompatActivity() {
 
     private fun setActiveGroupPanel() {
         binding.groupPanel.visibility = View.VISIBLE
+        binding.mainPanel.visibility = View.GONE
         CoroutineScope(Dispatchers.IO).launch {
             var studentsInGroup: List<Student>? = null
             var studentsNotInGroup: List<Student>? =
@@ -192,7 +202,7 @@ class ClassGroupsActivity : AppCompatActivity() {
 
     private fun addStudentToList(student: Student, chipGroup: ChipGroup, isInGroup: Boolean) {
         var addedInGroup = isInGroup
-        val tagName = student.name + " " + student.lastName
+        val tagName = student.firstName + " " + student.lastName
         val chip = Chip(this)
         /*val paddingDp = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP, 10f,
@@ -245,7 +255,7 @@ class ClassGroupsActivity : AppCompatActivity() {
                         myContext,
                         Constants.DeleteError,
                         Toast.LENGTH_LONG
-                    ).show() //TOO konkretne
+                    ).show() //TODO konkretne
                 }
             }
             withContext(Dispatchers.Main) {

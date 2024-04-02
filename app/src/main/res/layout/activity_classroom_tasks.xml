@@ -7,50 +7,56 @@
     android:background="@color/Tertiary"
     android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/backButton"
-        style="@style/backButton"
-        android:contentDescription="@string/back" />
-
-    <TextView
-        android:id="@+id/className"
-        style="@style/headline"
-        android:text="Meno triedy" />
-
-    <GridView
-        android:id="@+id/tasksLayout"
-        style="@style/gridView"
-        android:numColumns="3"
-        tools:listitem="@layout/grid_list_item" />
-
-    <ImageButton
-        android:id="@+id/addButton"
-        style="@style/addButton"
-        android:contentDescription="@string/add" />
-
-    <LinearLayout style="@style/bottomNavigationLayout">
+    <RelativeLayout
+        android:id="@+id/mainPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageButton
-            android:id="@+id/tasksButton"
-            style="@style/navButton"
-            android:contentDescription="@string/tasks"
-            android:src="@mipmap/tasks_highlighted" />
+            android:id="@+id/backButton"
+            style="@style/backButton"
+            android:contentDescription="@string/back" />
+
+        <TextView
+            android:id="@+id/classroomName"
+            style="@style/headline"
+            android:text="Meno triedy" />
+
+        <GridView
+            android:id="@+id/tasksLayout"
+            style="@style/gridView"
+            android:numColumns="3"
+            tools:listitem="@layout/grid_list_item" />
 
         <ImageButton
-            android:id="@+id/studentsButton"
-            style="@style/navButton"
-            android:contentDescription="@string/students"
-            android:src="@mipmap/students" />
+            android:id="@+id/addButton"
+            style="@style/addButton"
+            android:contentDescription="@string/add" />
 
-        <ImageButton
-            android:id="@+id/groupsButton"
-            style="@style/navButton"
-            android:contentDescription="@string/groups"
-            android:src="@mipmap/groups" />
-    </LinearLayout>
+        <LinearLayout style="@style/bottomNavigationLayout">
+
+            <ImageButton
+                android:id="@+id/tasksButton"
+                style="@style/navButton"
+                android:contentDescription="@string/tasks"
+                android:src="@mipmap/tasks_highlighted" />
+
+            <ImageButton
+                android:id="@+id/studentsButton"
+                style="@style/navButton"
+                android:contentDescription="@string/students"
+                android:src="@mipmap/students" />
+
+            <ImageButton
+                android:id="@+id/groupsButton"
+                style="@style/navButton"
+                android:contentDescription="@string/groups"
+                android:src="@mipmap/groups" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/tasksPanel"
+        android:id="@+id/taskPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/Surface"
@@ -65,6 +71,30 @@
             android:layout_height="match_parent"
             android:layout_marginTop="70dp"
             android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/imageLayout"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp">
+
+                <ImageView
+                    android:id="@+id/taskImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/baseline_account_circle_dark_24" />
+
+                <ImageButton
+                    android:id="@+id/editTaskImage"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/oval_50_primary"
+                    android:src="@drawable/baseline_edit_24" />
+            </RelativeLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/taskNameTextInputLayout"
@@ -85,10 +115,18 @@
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipTaskType"
                 style="@style/chipGroup"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 app:singleLine="false"
                 app:singleSelection="true" />
+
+            <TextView
+                android:id="@+id/chipTaskTypeError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginVertical="0dp"
+                android:textColor="@color/Error"
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -118,7 +156,7 @@
                 <TextView
                     android:id="@+id/dateTimeTaskDeadline"
                     style="@style/textViewLeft"
-                    android:text="@string/set"/>
+                    android:text="@string/set" />
             </RelativeLayout>
 
             <Button
@@ -180,7 +218,7 @@
             android:layout_marginEnd="25dp"
             android:layout_marginBottom="25dp"
             android:text="@string/set"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </RelativeLayout>
 
     <LinearLayout

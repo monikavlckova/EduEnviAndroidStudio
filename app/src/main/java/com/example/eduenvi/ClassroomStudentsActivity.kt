@@ -8,27 +8,27 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.eduenvi.adapters.ClassroomStudentsAdapter
-import com.example.eduenvi.databinding.ActivityClassStudentsBinding
+import com.example.eduenvi.databinding.ActivityClassroomStudentsBinding
 import com.example.eduenvi.models.Classroom
-import com.example.eduenvi.models.Image
 import com.example.eduenvi.models.Student
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ClassStudentsActivity : AppCompatActivity() {
+class ClassroomStudentsActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityClassStudentsBinding
+    lateinit var binding: ActivityClassroomStudentsBinding
     private var _creatingNew: Boolean? = null
     private var students: MutableList<Student>? = null
     private lateinit var adapter: ClassroomStudentsAdapter
     private var changeToClassroom = Constants.Classroom
     private val myContext = this
+    private var imageId :Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityClassStudentsBinding.inflate(layoutInflater)
+        binding = ActivityClassroomStudentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -43,18 +43,20 @@ class ClassStudentsActivity : AppCompatActivity() {
             }
         }
         val classroom = Constants.Classroom
-        binding.className.text = classroom.name
+        binding.classroomName.text = classroom.name
+
+        setClassroomsDropdown()
 
         binding.backButton.setOnClickListener {
-            val intent = Intent(this, ClassesActivity::class.java)
+            val intent = Intent(this, ClassroomsActivity::class.java)
             startActivity(intent)
         }
         binding.tasksButton.setOnClickListener {
-            val intent = Intent(this, ClassTasksActivity::class.java)
+            val intent = Intent(this, ClassroomTasksActivity::class.java)
             startActivity(intent)
         }
         binding.groupsButton.setOnClickListener {
-            val intent = Intent(this, ClassGroupsActivity::class.java)
+            val intent = Intent(this, ClassroomGroupsActivity::class.java)
             startActivity(intent)
         }
 
@@ -66,33 +68,26 @@ class ClassStudentsActivity : AppCompatActivity() {
             binding.classroomTextInputLayout.visibility = View.GONE
             binding.saveButton.text = Constants.SaveButtonTextCreate
             binding.studentPanel.visibility = View.VISIBLE
+            binding.mainPanel.visibility = View.GONE
         }
 
         binding.editButton.setOnClickListener {
             _creatingNew = false
-            val context = this
-            if (Constants.Student.imageId != null) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    val dbImage: Image? = ApiHelper.getImage(Constants.Student.imageId!!)
-                    withContext(Dispatchers.Main) {
-                        if (dbImage != null)
-                            Constants.imageManager.setImage(
-                                dbImage.url,
-                                context,
-                                binding.editProfileImage
-                            )
-                    }
-                }
-            }
+            imageId = Constants.Student.imageId
+            Constants.imageManager.setImage(Constants.Student.imageId, myContext, binding.studentImage)
             binding.saveButton.text = Constants.SaveButtonTextUpdate
-            binding.firstName.setText(Constants.Student.name)
+            binding.firstName.setText(Constants.Student.firstName)
             binding.lastName.setText(Constants.Student.lastName)
             binding.loginCode.setText(Constants.Student.loginCode)
             binding.classroom.setText(Constants.Classroom.name)
             binding.classroomTextInputLayout.visibility = View.VISIBLE
             binding.studentPanel.visibility = View.VISIBLE
             binding.editPanel.visibility = View.GONE
-            setClassroomsDropdown()
+            binding.mainPanel.visibility = View.GONE
+        }
+
+        binding.editStudentImage.setOnClickListener {
+            //TODO otvor panel na vyberanie obrazkov, tam bude nejake tlacidlo uloz a v nom spravit ak nove vytvor a nastav imageId na nove ak vybera uz z db tak tiez nastav imageId
         }
 
         binding.saveButton.setOnClickListener {
@@ -107,12 +102,13 @@ class ClassStudentsActivity : AppCompatActivity() {
                         binding.firstName.text.toString(),
                         binding.lastName.text.toString(),
                         binding.loginCode.text.toString(),
-                        null//TODO zmenit
+                        imageId
                     )
                 var res: Student?
                 CoroutineScope(Dispatchers.IO).launch {
                     if (_creatingNew == false) {
                         student.id = Constants.Student.id
+                        if (changeToClassroom.id != Constants.Classroom.id) deleteStudentFromGroups(student.id)
                         res = ApiHelper.updateStudent(student.id, student)
                         if (res != null)
                             if (students != null) students!!.remove(Constants.Student)
@@ -129,7 +125,6 @@ class ClassStudentsActivity : AppCompatActivity() {
                         adapter.notifyDataChanged()
                         closeStudentPanel()
                     }
-
                 }
             }
         }
@@ -149,10 +144,9 @@ class ClassStudentsActivity : AppCompatActivity() {
                         else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG)
                             .show()
                     adapter.notifyDataChanged()
+                    binding.deletePanel.visibility = View.GONE
                 }
             }
-            val intent = Intent(this, ClassStudentsActivity::class.java)
-            startActivity(intent)
         }
 
         binding.generateLoginCode.setOnClickListener { binding.loginCode.setText(generateLoginCode()) }
@@ -170,6 +164,7 @@ class ClassStudentsActivity : AppCompatActivity() {
 
     private fun closeStudentPanel() {
         binding.studentPanel.visibility = View.GONE
+        binding.mainPanel.visibility = View.VISIBLE
         binding.firstNameTextInputLayout.error = null
         binding.firstName.text = null
         binding.lastNameTextInputLayout.error = null
@@ -180,14 +175,13 @@ class ClassStudentsActivity : AppCompatActivity() {
     }
 
     private fun setClassroomsDropdown() {
-        val myContext = this
         CoroutineScope(Dispatchers.IO).launch {
             val classrooms = ApiHelper.getTeachersClassrooms(Constants.Teacher.id)
             withContext(Dispatchers.Main) {
                 if (classrooms != null) {
                     val listAdapter =
                         ArrayAdapter(myContext, R.layout.dropdown_list_item, classrooms)
-                    binding.classroom.setAdapter(listAdapter)//TODO mozno zmenit a robit to v on create? lebo vzdy su triedy rovnake
+                    binding.classroom.setAdapter(listAdapter)
                     binding.classroom.setOnItemClickListener { adapterView, _, i, _ ->
                         changeToClassroom = adapterView.getItemAtPosition(i) as Classroom
                     }
@@ -197,7 +191,10 @@ class ClassStudentsActivity : AppCompatActivity() {
     }
 
     private fun deleteStudentFromGroups(studentId: Int) {
-        //TODO
+        CoroutineScope(Dispatchers.IO).launch {
+            val groups = ApiHelper.getStudentsGroups(studentId)
+            groups?.forEach { group -> ApiHelper.deleteStudentGroup(studentId, group.id) }
+        }
     }
 
     private fun generateLoginCode(): String {

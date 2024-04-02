@@ -24,10 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ClassesActivity"/>
-        <activity android:name=".ClassGroupsActivity"/>
-        <activity android:name=".ClassStudentsActivity"/>
-        <activity android:name=".ClassTasksActivity"/>
+        <activity android:name=".ClassroomsActivity"/>
+        <activity android:name=".ClassroomGroupsActivity"/>
+        <activity android:name=".ClassroomStudentsActivity"/>
+        <activity android:name=".ClassroomTasksActivity"/>
         <activity android:name=".GroupStudentsActivity"/>
         <activity android:name=".GroupTasksActivity"/>
         <activity android:name=".LoginActivity"/>

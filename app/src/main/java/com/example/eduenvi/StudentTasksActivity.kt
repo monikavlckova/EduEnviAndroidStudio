@@ -46,10 +46,10 @@ class StudentTasksActivity : AppCompatActivity() {
             }
         }
 
-        binding.studentName.text = "${student.name} ${student.lastName}"
+        binding.studentName.text = "${student.firstName} ${student.lastName}"
 
         binding.backButton.setOnClickListener {
-            val intent = Intent(this, ClassStudentsActivity::class.java)
+            val intent = Intent(this, ClassroomStudentsActivity::class.java)
             startActivity(intent)
         }
 
@@ -66,6 +66,7 @@ class StudentTasksActivity : AppCompatActivity() {
                     if (result != null) if (tasks != null) tasks!!.remove(Constants.Task)
                     else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
+                    binding.deletePanel.visibility = View.GONE
                 }
             }
         }
@@ -76,16 +77,17 @@ class StudentTasksActivity : AppCompatActivity() {
 
         binding.saveButton.setOnClickListener {
             manageTasks()
-            closeTaskPanel()
+            closeTasksPanel()
         }
 
-        binding.closeTaskPanel.setOnClickListener { closeTaskPanel() }
+        binding.closeTasksPanel.setOnClickListener { closeTasksPanel() }
         binding.closeDeletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
     }
 
-    private fun closeTaskPanel() {
+    private fun closeTasksPanel() {
         binding.tasksPanel.visibility = View.GONE
+        binding.mainPanel.visibility = View.VISIBLE
         empty()
     }
 
@@ -103,6 +105,7 @@ class StudentTasksActivity : AppCompatActivity() {
 
     private fun setActiveTasksPanel() {
         binding.tasksPanel.visibility = View.VISIBLE
+        binding.mainPanel.visibility = View.GONE
         CoroutineScope(Dispatchers.IO).launch {
             val tasksInStudent = ApiHelper.getStudentsTasks(Constants.Student.id)
             val tasksNotInStudent = ApiHelper.getTasksFromTeacherNotInStudent(

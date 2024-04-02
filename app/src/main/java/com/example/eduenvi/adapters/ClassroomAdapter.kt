@@ -9,17 +9,11 @@ import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.eduenvi.ApiHelper
-import com.example.eduenvi.ClassStudentsActivity
-import com.example.eduenvi.ClassesActivity
+import com.example.eduenvi.ClassroomStudentsActivity
+import com.example.eduenvi.ClassroomsActivity
 import com.example.eduenvi.Constants
 import com.example.eduenvi.R
 import com.example.eduenvi.models.Classroom
-import com.example.eduenvi.models.Image
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ClassroomAdapter(private val context: Activity, private val list: List<Classroom>) :
     ArrayAdapter<Classroom>(context, R.layout.classroom_list_item, list) {
@@ -35,23 +29,16 @@ class ClassroomAdapter(private val context: Activity, private val list: List<Cla
         val classroom = list[position]
         classroomName.text = classroom.name
 
-        if (classroom.imageId != null) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val dbImage : Image? = ApiHelper.getImage(classroom.imageId!!)
-                withContext(Dispatchers.Main) {
-                    if (dbImage != null)
-                        Constants.imageManager.setImage(dbImage.url, context, image)
-                }
-            }
-        }
+        Constants.imageManager.setImage(classroom.imageId, context, image)
+
 
         edit.setOnClickListener {
             Constants.Classroom = classroom
-            (context as ClassesActivity).binding.editPanel.visibility = View.VISIBLE
+            (context as ClassroomsActivity).binding.editPanel.visibility = View.VISIBLE
         }
         view?.setOnClickListener {
             Constants.Classroom = classroom
-            val intent = Intent((context as ClassesActivity), ClassStudentsActivity::class.java)
+            val intent = Intent((context as ClassroomsActivity), ClassroomStudentsActivity::class.java)
             context.startActivity(intent)
         }
 

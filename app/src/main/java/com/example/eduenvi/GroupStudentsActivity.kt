@@ -49,7 +49,7 @@ class GroupStudentsActivity : AppCompatActivity() {
         binding.groupName.text = group.name
 
         binding.backButton.setOnClickListener {
-            val intent = Intent(this, ClassGroupsActivity::class.java)
+            val intent = Intent(this, ClassroomGroupsActivity::class.java)
             startActivity(intent)
         }
 
@@ -65,6 +65,7 @@ class GroupStudentsActivity : AppCompatActivity() {
                     if (result != null) if (students != null) students!!.remove(Constants.Student)
                     else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
+                    binding.deletePanel.visibility = View.GONE
                 }
             }
         }
@@ -75,18 +76,19 @@ class GroupStudentsActivity : AppCompatActivity() {
 
         binding.saveButton.setOnClickListener {
             manageStudents()
-            closeStudentPanel()
+            closeStudentsPanel()
             //val intent = Intent(this, GroupStudentsActivity::class.java)
             //startActivity(intent)
         }
 
-        binding.closeStudentPanel.setOnClickListener { closeStudentPanel() }
+        binding.closeStudentsPanel.setOnClickListener { closeStudentsPanel() }
         binding.closeDeletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
     }
 
-    private fun closeStudentPanel() {
+    private fun closeStudentsPanel() {
         binding.studentsPanel.visibility = View.GONE
+        binding.mainPanel.visibility = View.VISIBLE
         empty()
     }
 
@@ -104,6 +106,7 @@ class GroupStudentsActivity : AppCompatActivity() {
 
     private fun setActiveStudentsPanel() {
         binding.studentsPanel.visibility = View.VISIBLE
+        binding.mainPanel.visibility = View.GONE
         CoroutineScope(Dispatchers.IO).launch {
             val studentsInGroup = ApiHelper.getStudentsInGroup(Constants.Group.id)
             val studentsNotInGroup = ApiHelper.getStudentsFromClassroomNotInGroup(
@@ -131,7 +134,7 @@ class GroupStudentsActivity : AppCompatActivity() {
 
     private fun addStudentToList(student: Student, chipGroup: ChipGroup, isInGroup: Boolean) {
         var addedInGroup = isInGroup
-        val tagName = student.name + " " + student.lastName
+        val tagName = student.firstName + " " + student.lastName
         val chip = Chip(this)
         chip.text = tagName
         chip.layoutParams = FrameLayout.LayoutParams(

@@ -79,10 +79,20 @@
         <item name="android:src">@drawable/baseline_arrow_back_dark_24</item>
     </style>
 
-    <style name="profileButton" parent="simpleButton">
-        <item name="android:layout_marginEnd">10dp</item>
-        <item name="android:src">@drawable/baseline_account_circle_24</item>
+    <style name="menuButton" parent="simpleButton">
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:src">@drawable/baseline_menu_24</item>
         <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
+    <style name="profileButton" parent="simpleButton">
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:src">@drawable/baseline_account_circle_24</item>
+    </style>
+
+    <style name="logoutButton" parent="simpleButton">
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:src">@drawable/baseline_logout_24</item>
     </style>
 
     <style name="editButton" parent="simpleButton">
@@ -243,7 +253,7 @@
 
     <style name="textViewLeft">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">40dp</item>
         <item name="android:layout_marginLeft">25dp</item>
         <item name="android:layout_marginRight">25dp</item>
         <item name="android:layout_alignParentEnd">true</item>
@@ -253,7 +263,7 @@
 
     <style name="textViewRight">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">40dp</item>
         <item name="android:layout_marginLeft">25dp</item>
         <item name="android:layout_marginRight">25dp</item>
         <item name="android:gravity">center</item>

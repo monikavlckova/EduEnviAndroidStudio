@@ -43,7 +43,7 @@
                 android:layout_marginTop="20dp"
                 android:text="Meno Priezvisko"
                 android:textAlignment="center"
-                android:textSize="22sp"/>
+                android:textSize="22sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -102,14 +102,14 @@
                 android:layout_gravity="center">
 
                 <ImageView
-                    android:id="@+id/editProfileImage"
+                    android:id="@+id/profileImageEditPanel"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:src="@drawable/baseline_account_circle_dark_24" />
 
                 <ImageButton
-                    android:id="@+id/changeProfileImage"
+                    android:id="@+id/editProfileImage"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_alignParentEnd="true"
@@ -181,8 +181,8 @@
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
                     android:background="@color/transparent"
-                    android:textColor="@color/Accent"
                     android:text="Zmeniť heslo"
+                    android:textColor="@color/Accent"
                     android:textStyle="bold" />
 
             </RelativeLayout>

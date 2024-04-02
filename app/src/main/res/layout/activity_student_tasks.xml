@@ -7,40 +7,46 @@
     android:background="@color/Tertiary"
     android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/backButton"
-        style="@style/backButton" />
-
-    <TextView
-        android:id="@+id/studentName"
-        style="@style/headline"
-        android:text="Meno žiaka" />
-
-    <GridView
-        android:id="@+id/tasksLayout"
-        style="@style/gridView"
-        android:numColumns="3"
-        tools:listitem="@layout/grid_x_list_item" />
-
-    <ImageButton
-        android:id="@+id/addButton"
-        style="@style/addButton"
-        android:contentDescription="@string/add" />
-
-    <LinearLayout style="@style/bottomNavigationLayout">
+    <RelativeLayout
+        android:id="@+id/mainPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageButton
-            android:id="@+id/tasksButton"
-            style="@style/navButton"
-            android:contentDescription="@string/tasks"
-            android:src="@mipmap/tasks_highlighted" />
+            android:id="@+id/backButton"
+            style="@style/backButton" />
+
+        <TextView
+            android:id="@+id/studentName"
+            style="@style/headline"
+            android:text="Meno žiaka" />
+
+        <GridView
+            android:id="@+id/tasksLayout"
+            style="@style/gridView"
+            android:numColumns="3"
+            tools:listitem="@layout/grid_x_list_item" />
 
         <ImageButton
-            android:id="@+id/groupsButton"
-            style="@style/navButton"
-            android:contentDescription="@string/groups"
-            android:src="@mipmap/groups" />
-    </LinearLayout>
+            android:id="@+id/addButton"
+            style="@style/addButton"
+            android:contentDescription="@string/add" />
+
+        <LinearLayout style="@style/bottomNavigationLayout">
+
+            <ImageButton
+                android:id="@+id/tasksButton"
+                style="@style/navButton"
+                android:contentDescription="@string/tasks"
+                android:src="@mipmap/tasks_highlighted" />
+
+            <ImageButton
+                android:id="@+id/groupsButton"
+                style="@style/navButton"
+                android:contentDescription="@string/groups"
+                android:src="@mipmap/groups" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/tasksPanel"
@@ -50,7 +56,7 @@
         android:visibility="gone">
 
         <ImageButton
-            android:id="@+id/closeTaskPanel"
+            android:id="@+id/closeTasksPanel"
             style="@style/backButtonDark" />
 
         <TextView
