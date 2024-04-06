@@ -16,7 +16,7 @@ import com.example.eduenvi.R
 import com.example.eduenvi.models.Group
 
 class ClassroomGroupsAdapter (private val context: Activity, private val list: List<Group>) :
-    ArrayAdapter<Group>(context, R.layout.classroom_list_item, list) {
+    ArrayAdapter<Group>(context, R.layout.grid_list_item, list) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)

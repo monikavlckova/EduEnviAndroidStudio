@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Tertiary"
+    android:orientation="vertical">
+
+
+    <ImageButton
+        android:id="@+id/backButton"
+        style="@style/backButton" />
+
+    <TextView
+        style="@style/headline"
+        android:text="Galéria" />
+
+    <GridView
+        android:id="@+id/imagesLayout"
+        style="@style/gridView"
+        android:layout_marginBottom="0dp"
+        android:numColumns="3"
+        tools:listitem="@layout/grid_image_list_item" />
+
+    <ImageButton
+        android:id="@+id/addButton"
+        style="@style/addButton"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/add" />
+
+</RelativeLayout>

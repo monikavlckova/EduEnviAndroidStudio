@@ -2,6 +2,7 @@ package com.example.eduenvi
 
 import com.example.eduenvi.models.Classroom
 import com.example.eduenvi.models.Group
+import com.example.eduenvi.models.Image
 import com.example.eduenvi.models.Student
 import com.example.eduenvi.models.Task
 import com.example.eduenvi.models.TaskType
@@ -64,9 +65,9 @@ object Constants {
 
     var Classroom = Classroom(0, 0, "", null)
     var Group = Group(0, 0, "", null)
+    var Image = Image(0, "")
     var Student = Student(0, 0, "", "", "", null)
     var Task = Task(0, 0, 0, "", "", null, null, null)
     var TaskType = TaskType(0, "", null)
     var Teacher = Teacher(0, "", "", "", "", "", null)
-
 }

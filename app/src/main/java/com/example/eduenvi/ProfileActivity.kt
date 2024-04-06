@@ -16,7 +16,6 @@ import kotlinx.coroutines.withContext
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileBinding
-    private val IMAGE_REQUEST_CODE = 100
     private val myContext = this
     private var imageId :Int? = Constants.Teacher.imageId
 
@@ -26,6 +25,13 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
         val teacher = Constants.Teacher
         setValuesInEditPanel()
+
+        if (intent.extras != null){
+            if (intent.getBooleanExtra("IMAGE_CHANGED", false)){
+                imageId = Constants.Image.id
+                openEditPanel()
+            }
+        }
 
         binding.firstNameLastName.text = "${teacher.firstName} ${teacher.lastName}"
 
@@ -46,27 +52,28 @@ class ProfileActivity : AppCompatActivity() {
                 teacher.lastName = binding.editLastName.text.toString()
                 teacher.userName = binding.editUserName.text.toString()
                 teacher.email = binding.editEmail.text.toString()
-                teacher.imageId = imageId//TODO funkciu nech vytvori obrazok ak je novy, nie z db
+                teacher.imageId = imageId
                 CoroutineScope(Dispatchers.IO).launch {
                     val result = ApiHelper.updateTeacher(teacher.id, teacher)
                     withContext(Dispatchers.Main) {
                         if (result == null)
                             Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                        else
+                            Constants.Teacher = result
+                        val intent = Intent(myContext, ProfileActivity::class.java)
+                        startActivity(intent)
                     }
                 }
-                binding.mainPanel.visibility = View.VISIBLE
-                binding.editPanel.visibility = View.GONE
             }
         }
 
         binding.editButton.setOnClickListener {
-            setValuesInEditPanel()
-            binding.mainPanel.visibility = View.GONE
-            binding.editPanel.visibility = View.VISIBLE
+            openEditPanel()
         }
 
         binding.editProfileImage.setOnClickListener {
-            pickImageGallery()//TODO zmenit
+            val intent = Intent(this, ImageGalleryActivity::class.java)
+            startActivity(intent) //TODO zapamatat si ze sa mam sem vratit, ked sa vratim, imageId = Constants.Image.id
         }
 
         binding.changePassword.setOnClickListener {
@@ -113,19 +120,11 @@ class ProfileActivity : AppCompatActivity() {
         binding.password2.addTextChangedListener { binding.password2TextInputLayout.error = null }
     }
 
-    private fun pickImageGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_REQUEST_CODE)
+    private fun openEditPanel(){
+        setValuesInEditPanel()
+        binding.mainPanel.visibility = View.GONE
+        binding.editPanel.visibility = View.VISIBLE
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
-            binding.profileImageEditPanel.setImageURI(data?.data)
-        }
-    }
-
     private fun closePasswordPanel() {
         binding.password1.text = null
         binding.password2.text = null
@@ -138,7 +137,11 @@ class ProfileActivity : AppCompatActivity() {
         binding.editLastName.setText(teacher.lastName)
         binding.editUserName.setText(teacher.userName)
         binding.editEmail.setText(teacher.email)
-        Constants.imageManager.setImage(teacher.imageId, this, binding.profileImageEditPanel)
+        if (intent.getBooleanExtra("IMAGE_CHANGED", false)){
+            Constants.imageManager.setImage(imageId, this, binding.profileImageEditPanel)
+        }else{
+            Constants.imageManager.setImage(teacher.imageId, this, binding.profileImageEditPanel)
+        }
     }
 
     private fun validFirstName(): Boolean {

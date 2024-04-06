@@ -14,7 +14,7 @@ import com.example.eduenvi.R
 import com.example.eduenvi.models.Task
 
 class ClassroomTasksAdapter (private val context: Activity, private val list: List<Task>) :
-    ArrayAdapter<Task>(context, R.layout.classroom_list_item, list) {
+    ArrayAdapter<Task>(context, R.layout.grid_list_item, list) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
