@@ -6,21 +6,13 @@
     android:background="@color/Tertiary"
     android:orientation="vertical">
 
-
-    <ImageButton
-        android:id="@+id/backButton"
-        style="@style/backButton" />
-
-    <TextView
-        style="@style/headline"
-        android:text="Galéria" />
-
     <GridView
         android:id="@+id/imagesLayout"
         style="@style/gridView"
         android:layout_marginBottom="0dp"
-        android:numColumns="3"
-        tools:listitem="@layout/grid_image_list_item" />
+        android:numColumns="4"
+        tools:listitem="@layout/grid_image_list_item"
+        android:layout_marginTop="0dp"/>
 
     <ImageButton
         android:id="@+id/addButton"

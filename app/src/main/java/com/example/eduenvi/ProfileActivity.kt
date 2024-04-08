@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
 import com.example.eduenvi.databinding.ActivityProfileBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,20 +18,19 @@ class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileBinding
     private val myContext = this
-    private var imageId :Int? = Constants.Teacher.imageId
-
+    private var imageId: Int? = Constants.Teacher.imageId
+    private lateinit var viewModel: ImageViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val teacher = Constants.Teacher
-        setValuesInEditPanel()
 
-        if (intent.extras != null){
-            if (intent.getBooleanExtra("IMAGE_CHANGED", false)){
-                imageId = Constants.Image.id
-                openEditPanel()
-            }
+        setImageGalleryFragment()
+        viewModel = ViewModelProvider(this)[ImageViewModel::class.java]
+        viewModel.getSelectedImage().observe(this){ image ->
+            imageId = image.id
+            openEditPanel()
         }
 
         binding.firstNameLastName.text = "${teacher.firstName} ${teacher.lastName}"
@@ -72,8 +72,8 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         binding.editProfileImage.setOnClickListener {
-            val intent = Intent(this, ImageGalleryActivity::class.java)
-            startActivity(intent) //TODO zapamatat si ze sa mam sem vratit, ked sa vratim, imageId = Constants.Image.id
+            binding.fragmentLayout.visibility = View.VISIBLE
+            binding.editPanel.visibility = View.GONE
         }
 
         binding.changePassword.setOnClickListener {
@@ -103,6 +103,12 @@ class ProfileActivity : AppCompatActivity() {
             binding.editPanel.visibility = View.GONE
         }
 
+        binding.closeFragmentButton.setOnClickListener {
+            binding.fragmentLayout.visibility = View.GONE//TODO mozno ho nejak killnut ten fragment
+            binding.editPanel.visibility = View.VISIBLE
+            //supportFragmentManager.popBackStack()
+        }
+
         binding.passwordPanel.setOnClickListener { closePasswordPanel() }
         binding.closePasswordPanel.setOnClickListener { closePasswordPanel() }
 
@@ -120,11 +126,20 @@ class ProfileActivity : AppCompatActivity() {
         binding.password2.addTextChangedListener { binding.password2TextInputLayout.error = null }
     }
 
-    private fun openEditPanel(){
+    private fun setImageGalleryFragment() {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        val fragment = ImageGalleryFragment()
+        fragmentTransaction.add(R.id.fragmentContainer, fragment)
+        fragmentTransaction.commit()
+    }
+
+    private fun openEditPanel() {
         setValuesInEditPanel()
+        binding.fragmentLayout.visibility = View.GONE
         binding.mainPanel.visibility = View.GONE
         binding.editPanel.visibility = View.VISIBLE
     }
+
     private fun closePasswordPanel() {
         binding.password1.text = null
         binding.password2.text = null
@@ -137,11 +152,7 @@ class ProfileActivity : AppCompatActivity() {
         binding.editLastName.setText(teacher.lastName)
         binding.editUserName.setText(teacher.userName)
         binding.editEmail.setText(teacher.email)
-        if (intent.getBooleanExtra("IMAGE_CHANGED", false)){
-            Constants.imageManager.setImage(imageId, this, binding.profileImageEditPanel)
-        }else{
-            Constants.imageManager.setImage(teacher.imageId, this, binding.profileImageEditPanel)
-        }
+        Constants.imageManager.setImage(imageId, this, binding.profileImageEditPanel)
     }
 
     private fun validFirstName(): Boolean {

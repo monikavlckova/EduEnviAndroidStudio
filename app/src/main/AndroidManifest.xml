@@ -30,7 +30,7 @@
         <activity android:name=".ClassroomTasksActivity"/>
         <activity android:name=".GroupStudentsActivity"/>
         <activity android:name=".GroupTasksActivity"/>
-        <activity android:name=".ImageGalleryActivity"/>
+        <activity android:name=".ImageGalleryFragment"/>
         <activity android:name=".LoginActivity"/>
         <activity android:name=".LoginStudentActivity"/>
         <activity android:name=".ProfileActivity"/>

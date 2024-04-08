@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
 import com.example.eduenvi.adapters.ClassroomTasksAdapter
 import com.example.eduenvi.databinding.ActivityClassroomTasksBinding
 import com.example.eduenvi.models.Task
@@ -32,11 +33,20 @@ class ClassroomTasksActivity : AppCompatActivity() {
     private var deadlineDate: Date? = null
     private var visibleFromDate: Date? = null
     private var imageId :Int? = null
+    private lateinit var viewModel: ImageViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClassroomTasksBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setImageGalleryFragment()
+        viewModel = ViewModelProvider(this)[ImageViewModel::class.java]
+        viewModel.getSelectedImage().observe(this){ image ->
+            imageId = image.id
+            Constants.imageManager.setImage(image.url, this, binding.taskImage)
+            binding.fragmentLayout.visibility = View.GONE
+        }
 
         CoroutineScope(Dispatchers.IO).launch {
             tasks = ApiHelper.getTasksInClassroom(Constants.Classroom.id) as MutableList<Task>?
@@ -66,6 +76,8 @@ class ClassroomTasksActivity : AppCompatActivity() {
 
         binding.addButton.setOnClickListener {
             _creatingNew = true
+            imageId = null
+            Constants.imageManager.setImage("", this, binding.taskImage)
             binding.taskPanel.visibility = View.VISIBLE
             binding.mainPanel.visibility = View.GONE
             binding.taskName.text = null
@@ -88,7 +100,8 @@ class ClassroomTasksActivity : AppCompatActivity() {
         }
 
         binding.editTaskImage.setOnClickListener {
-            //TODO otvor panel na vyberanie obrazkov, tam bude nejake tlacidlo uloz a v nom spravit ak nove vytvor a nastav imageId na nove ak vybera uz z db tak tiez nastav imageId
+            binding.fragmentLayout.visibility = View.VISIBLE
+            binding.editPanel.visibility = View.GONE
         }
 
         binding.dateTimeTaskVisibleFrom.setOnClickListener {
@@ -152,9 +165,9 @@ class ClassroomTasksActivity : AppCompatActivity() {
                     } else {
                         res = ApiHelper.createTask(task)
                     }
-                    Constants.Task = task
+                    //Constants.Task = res!!
                     withContext(Dispatchers.Main) {
-                        if (res != null) if (tasks != null) tasks!!.add(task)
+                        if (res != null) if (tasks != null) tasks!!.add(res!!)
                         else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
                             .show()
                         adapter.notifyDataChanged()
@@ -184,6 +197,12 @@ class ClassroomTasksActivity : AppCompatActivity() {
             //startActivity(intent)
         }
 
+        binding.closeFragmentButton.setOnClickListener {
+            binding.fragmentLayout.visibility = View.GONE//TODO mozno ho nejak killnut ten fragment
+            binding.editPanel.visibility = View.VISIBLE
+            //supportFragmentManager.popBackStack()
+        }
+
         binding.closeTaskPanel.setOnClickListener { closeTaskPanel() }
         binding.dateTimePickerPanel.setOnClickListener { closeDateTimePanel() }
         binding.closeEditPanel.setOnClickListener { binding.editPanel.visibility = View.GONE }
@@ -192,6 +211,13 @@ class ClassroomTasksActivity : AppCompatActivity() {
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
 
         binding.taskName.addTextChangedListener { binding.taskNameTextInputLayout.error = null }
+    }
+
+    private fun setImageGalleryFragment() {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        val fragment = ImageGalleryFragment()
+        fragmentTransaction.add(R.id.fragmentContainer, fragment)
+        fragmentTransaction.commit()
     }
 
     private fun addTaskTypesToList() {

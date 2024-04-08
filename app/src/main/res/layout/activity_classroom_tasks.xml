@@ -293,4 +293,23 @@
         </LinearLayout>
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/fragmentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/Background"
+        android:visibility="gone">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="70dp" />
+
+        <ImageButton
+            android:id="@+id/closeFragmentButton"
+            style="@style/backButtonDark"
+            android:contentDescription="@string/back" />
+
+    </RelativeLayout>
 </RelativeLayout>

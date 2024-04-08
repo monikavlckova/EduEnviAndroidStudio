@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
 import com.example.eduenvi.adapters.ClassroomAdapter
 import com.example.eduenvi.databinding.ActivityClassroomsBinding
 import com.example.eduenvi.models.Classroom
@@ -23,11 +24,20 @@ class ClassroomsActivity : AppCompatActivity() {
     private lateinit var adapter: ClassroomAdapter
     private val myContext = this
     private var imageId :Int? = null
+    private lateinit var viewModel: ImageViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClassroomsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setImageGalleryFragment()
+        viewModel = ViewModelProvider(this)[ImageViewModel::class.java]
+        viewModel.getSelectedImage().observe(this){ image ->
+            imageId = image.id
+            Constants.imageManager.setImage(image.url, this, binding.ClassroomImage)
+            binding.fragmentLayout.visibility = View.GONE
+        }
 
         CoroutineScope(Dispatchers.IO).launch {
             classrooms =
@@ -55,6 +65,8 @@ class ClassroomsActivity : AppCompatActivity() {
 
         binding.addButton.setOnClickListener {
             _creatingNew = true
+            imageId = null
+            Constants.imageManager.setImage("", this, binding.ClassroomImage)
             binding.saveButton.text = Constants.SaveButtonTextCreate
             binding.classroomPanel.visibility = View.VISIBLE
         }
@@ -64,13 +76,14 @@ class ClassroomsActivity : AppCompatActivity() {
             imageId = Constants.Classroom.imageId
             binding.saveButton.text = Constants.SaveButtonTextUpdate
             binding.classroomName.setText(Constants.Classroom.name)
-            Constants.imageManager.setImage(Constants.Classroom.imageId, this, binding.ClassroomImage)
+            Constants.imageManager.setImage(imageId, this, binding.ClassroomImage)
             binding.classroomPanel.visibility = View.VISIBLE
             binding.editPanel.visibility = View.GONE
         }
 
         binding.editClassroomImage.setOnClickListener {
-            //TODO otvor panel na vyberanie obrazkov, tam bude nejake tlacidlo uloz a v nom spravit ak nove vytvor a nastav imageId na nove ak vybera uz z db tak tiez nastav imageId
+            binding.fragmentLayout.visibility = View.VISIBLE
+            binding.editPanel.visibility = View.GONE
         }
 
         binding.saveButton.setOnClickListener {
@@ -102,9 +115,9 @@ class ClassroomsActivity : AppCompatActivity() {
                     }
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
-                        val result = ApiHelper.createClassroom(classroom)
+                        val res = ApiHelper.createClassroom(classroom)
                         withContext(Dispatchers.Main) {
-                            if (result != null) if (classrooms != null) classrooms!!.add(classroom)
+                            if (res != null) if (classrooms != null) classrooms!!.add(res!!)
                             else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
                                 .show()
                             adapter.notifyDataChanged()
@@ -135,6 +148,11 @@ class ClassroomsActivity : AppCompatActivity() {
             }
         }
 
+        binding.closeFragmentButton.setOnClickListener {
+            binding.fragmentLayout.visibility = View.GONE//TODO mozno ho nejak killnut ten fragment
+            //supportFragmentManager.popBackStack()
+        }
+
         binding.menuPanel.setOnClickListener { binding.menuPanel.visibility = View.GONE }
         binding.closeClassroomPanel.setOnClickListener { closeClassroomPanel() }
         binding.classroomPanel.setOnClickListener { closeClassroomPanel() }
@@ -144,6 +162,13 @@ class ClassroomsActivity : AppCompatActivity() {
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
 
         binding.classroomName.addTextChangedListener { binding.classroomNameTextInputLayout.error = null }
+    }
+
+    private fun setImageGalleryFragment() {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        val fragment = ImageGalleryFragment()
+        fragmentTransaction.add(R.id.fragmentContainer, fragment)
+        fragmentTransaction.commit()
     }
 
     private fun closeClassroomPanel() {

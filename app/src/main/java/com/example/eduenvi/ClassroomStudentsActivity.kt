@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
 import com.example.eduenvi.adapters.ClassroomStudentsAdapter
 import com.example.eduenvi.databinding.ActivityClassroomStudentsBinding
 import com.example.eduenvi.models.Classroom
@@ -25,11 +26,20 @@ class ClassroomStudentsActivity : AppCompatActivity() {
     private var changeToClassroom = Constants.Classroom
     private val myContext = this
     private var imageId :Int? = null
+    private lateinit var viewModel: ImageViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClassroomStudentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setImageGalleryFragment()
+        viewModel = ViewModelProvider(this)[ImageViewModel::class.java]
+        viewModel.getSelectedImage().observe(this){ image ->
+            imageId = image.id
+            Constants.imageManager.setImage(image.url, this, binding.studentImage)
+            binding.fragmentLayout.visibility = View.GONE
+        }
 
         CoroutineScope(Dispatchers.IO).launch {
             students =
@@ -62,6 +72,8 @@ class ClassroomStudentsActivity : AppCompatActivity() {
 
         binding.addButton.setOnClickListener {
             _creatingNew = true
+            imageId = null
+            Constants.imageManager.setImage("", this, binding.studentImage)
             binding.firstName.text = null
             binding.lastName.text = null
             binding.loginCode.text = null
@@ -87,7 +99,8 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         }
 
         binding.editStudentImage.setOnClickListener {
-            //TODO otvor panel na vyberanie obrazkov, tam bude nejake tlacidlo uloz a v nom spravit ak nove vytvor a nastav imageId na nove ak vybera uz z db tak tiez nastav imageId
+            binding.fragmentLayout.visibility = View.VISIBLE
+            binding.editPanel.visibility = View.GONE
         }
 
         binding.saveButton.setOnClickListener {
@@ -118,9 +131,9 @@ class ClassroomStudentsActivity : AppCompatActivity() {
                         if (res == null)
                             Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                         else {
-                            Constants.Student = student
+                            //Constants.Student = res!!
                             if (changeToClassroom == Constants.Classroom)
-                                if (students != null) students!!.add(student)
+                                if (students != null) students!!.add(res!!)
                         }
                         adapter.notifyDataChanged()
                         closeStudentPanel()
@@ -149,6 +162,12 @@ class ClassroomStudentsActivity : AppCompatActivity() {
             }
         }
 
+        binding.closeFragmentButton.setOnClickListener {
+            binding.fragmentLayout.visibility = View.GONE//TODO mozno ho nejak killnut ten fragment
+            binding.editPanel.visibility = View.VISIBLE
+            //supportFragmentManager.popBackStack()
+        }
+
         binding.generateLoginCode.setOnClickListener { binding.loginCode.setText(generateLoginCode()) }
 
         binding.closeStudentPanel.setOnClickListener { closeStudentPanel() }
@@ -160,6 +179,13 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         binding.firstName.addTextChangedListener { binding.firstNameTextInputLayout.error = null }
         binding.lastName.addTextChangedListener { binding.lastNameTextInputLayout.error = null }
         binding.loginCode.addTextChangedListener { binding.loginCode.error = null }
+    }
+
+    private fun setImageGalleryFragment() {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        val fragment = ImageGalleryFragment()
+        fragmentTransaction.add(R.id.fragmentContainer, fragment)
+        fragmentTransaction.commit()
     }
 
     private fun closeStudentPanel() {

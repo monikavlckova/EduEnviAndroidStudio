@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
 import com.example.eduenvi.adapters.ClassroomGroupsAdapter
 import com.example.eduenvi.databinding.ActivityClassroomGroupsBinding
 import com.example.eduenvi.models.Group
@@ -31,11 +32,20 @@ class ClassroomGroupsActivity : AppCompatActivity() {
     private lateinit var adapter: ClassroomGroupsAdapter
     private val myContext = this
     private var imageId :Int? = null
+    private lateinit var viewModel: ImageViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClassroomGroupsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setImageGalleryFragment()
+        viewModel = ViewModelProvider(this)[ImageViewModel::class.java]
+        viewModel.getSelectedImage().observe(this){ image ->
+            imageId = image.id
+            Constants.imageManager.setImage(image.url, this, binding.GroupImage)
+            binding.fragmentLayout.visibility = View.GONE
+        }
 
         CoroutineScope(Dispatchers.IO).launch {
             groups = ApiHelper.getGroupsInClassroom(Constants.Classroom.id) as MutableList<Group>?
@@ -65,6 +75,8 @@ class ClassroomGroupsActivity : AppCompatActivity() {
 
         binding.addButton.setOnClickListener {
             _creatingNewGroup = true
+            imageId = null
+            Constants.imageManager.setImage("", this, binding.GroupImage)
             binding.saveButton.text = Constants.SaveButtonTextCreate
             setActiveGroupPanel()
         }
@@ -80,7 +92,8 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         }
 
         binding.editGroupImage.setOnClickListener {
-            //TODO otvor panel na vyberanie obrazkov, tam bude nejake tlacidlo uloz a v nom spravit ak nove vytvor a nastav imageId na nove ak vybera uz z db tak tiez nastav imageId
+            binding.fragmentLayout.visibility = View.VISIBLE
+            binding.editPanel.visibility = View.GONE
         }
 
         binding.saveButton.setOnClickListener {
@@ -98,14 +111,12 @@ class ClassroomGroupsActivity : AppCompatActivity() {
                         group.id = Constants.Group.id
                         res = ApiHelper.updateGroup(group.id, group)
                         if (groups != null) groups!!.remove(Constants.Group)
-                    } else {
-                        res = ApiHelper.createGroup(group)
-                    }
+                    } else res = ApiHelper.createGroup(group)
 
                     withContext(Dispatchers.Main) {
                         if (res != null) {
-                            Constants.Group = res!!
-                            if (groups != null) groups!!.add(Constants.Group)
+                            //Constants.Group = res!!
+                            if (groups != null) groups!!.add(res!!)
                         } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
                             .show()
 
@@ -139,6 +150,12 @@ class ClassroomGroupsActivity : AppCompatActivity() {
             //startActivity(intent)
         }
 
+        binding.closeFragmentButton.setOnClickListener {
+            binding.fragmentLayout.visibility = View.GONE//TODO mozno ho nejak killnut ten fragment
+            binding.editPanel.visibility = View.VISIBLE
+            //supportFragmentManager.popBackStack()
+        }
+
         binding.closeGroupPanel.setOnClickListener { closeGroupPanel() }
         binding.closeEditPanel.setOnClickListener { binding.editPanel.visibility = View.GONE }
         binding.editPanel.setOnClickListener { binding.editPanel.visibility = View.GONE }
@@ -146,6 +163,13 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
 
         binding.groupName.addTextChangedListener { binding.groupNameTextInputLayout.error = null }
+    }
+
+    private fun setImageGalleryFragment() {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        val fragment = ImageGalleryFragment()
+        fragmentTransaction.add(R.id.fragmentContainer, fragment)
+        fragmentTransaction.commit()
     }
 
     private fun closeGroupPanel() {

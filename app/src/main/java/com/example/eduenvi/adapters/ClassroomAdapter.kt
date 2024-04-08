@@ -22,12 +22,12 @@ class ClassroomAdapter(private val context: Activity, private val list: List<Cla
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.classroom_list_item, null)
 
-        val classroomName = view.findViewById<TextView>(R.id.classroomName)
+        val name = view.findViewById<TextView>(R.id.classroomName)
         val image = view.findViewById<ImageView>(R.id.classroomImage)
         val edit = view.findViewById<ImageButton>(R.id.editClassroomButton)
 
         val classroom = list[position]
-        classroomName.text = classroom.name
+        name.text = classroom.name
 
         Constants.imageManager.setImage(classroom.imageId, context, image)
 
