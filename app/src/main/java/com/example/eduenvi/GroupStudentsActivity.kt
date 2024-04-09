@@ -60,9 +60,9 @@ class GroupStudentsActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                val result = ApiHelper.deleteStudentGroup(Constants.Student.id, group.id)
+                val res = ApiHelper.deleteStudentGroup(Constants.Student.id, group.id)
                 withContext(Dispatchers.Main) {
-                    if (result != null) if (students != null) students!!.remove(Constants.Student)
+                    if (res != null) if (students != null) students!!.remove(Constants.Student)
                     else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
@@ -165,24 +165,28 @@ class GroupStudentsActivity : AppCompatActivity() {
     }
 
     private fun manageStudents() {
+        var showSaveToast = false
+        var showDeleteToast = false
         CoroutineScope(Dispatchers.IO).launch {
             for (student in _addToGroup) {
-                val newStudent =
-                    ApiHelper.createStudentGroup(StudentGroup(student.id, Constants.Group.id))
+                val res = ApiHelper.createStudentGroup(StudentGroup(student.id, Constants.Group.id))
                 withContext(Dispatchers.Main) {
-                    if (newStudent != null) if (students != null) students!!.add(student)
-                    else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
-                        .show() //TODO napisat konkretne kt student, davat to sem? co ak to bude vyskakovat 10krat
+                    if (res != null) if (students != null) students!!.add(student)
+                    else showSaveToast = true
                 }
             }
             for (student in _delFromGroup) {
-                val result = ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
+                val res = ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
                 withContext(Dispatchers.Main) {
-                    if (result != null) if (students != null) students!!.remove(student)
-                    else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
+                    if (res != null) if (students != null) students!!.remove(student)
+                    else showDeleteToast
                 }
             }
             withContext(Dispatchers.Main) {
+                if (showSaveToast)
+                    Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                if (showDeleteToast)
+                    Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                 adapter.notifyDataChanged()
                 _delFromGroup = HashSet()
                 _addToGroup = HashSet()

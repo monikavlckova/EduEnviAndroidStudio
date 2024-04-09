@@ -19,7 +19,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
     private val myContext = this
     private var imageId: Int? = Constants.Teacher.imageId
-    private lateinit var viewModel: ImageViewModel
+    private lateinit var viewModel: MyViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
@@ -27,7 +27,7 @@ class ProfileActivity : AppCompatActivity() {
         val teacher = Constants.Teacher
 
         setImageGalleryFragment()
-        viewModel = ViewModelProvider(this)[ImageViewModel::class.java]
+        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
         viewModel.getSelectedImage().observe(this){ image ->
             imageId = image.id
             openEditPanel()
@@ -54,12 +54,12 @@ class ProfileActivity : AppCompatActivity() {
                 teacher.email = binding.editEmail.text.toString()
                 teacher.imageId = imageId
                 CoroutineScope(Dispatchers.IO).launch {
-                    val result = ApiHelper.updateTeacher(teacher.id, teacher)
+                    val res = ApiHelper.updateTeacher(teacher.id, teacher)
                     withContext(Dispatchers.Main) {
-                        if (result == null)
+                        if (res == null)
                             Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                         else
-                            Constants.Teacher = result
+                            Constants.Teacher = res
                         val intent = Intent(myContext, ProfileActivity::class.java)
                         startActivity(intent)
                     }
@@ -88,9 +88,9 @@ class ProfileActivity : AppCompatActivity() {
             if (isValidPassword()) {
                 teacher.password = binding.password1.text.toString()
                 CoroutineScope(Dispatchers.IO).launch {
-                    val result = ApiHelper.updateTeacher(teacher.id, teacher)
+                    val res = ApiHelper.updateTeacher(teacher.id, teacher)
                     withContext(Dispatchers.Main) {
-                        if (result == null)
+                        if (res == null)
                             Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                     }
                 }
@@ -104,7 +104,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         binding.closeFragmentButton.setOnClickListener {
-            binding.fragmentLayout.visibility = View.GONE//TODO mozno ho nejak killnut ten fragment
+            binding.fragmentLayout.visibility = View.GONE
             binding.editPanel.visibility = View.VISIBLE
             //supportFragmentManager.popBackStack()
         }

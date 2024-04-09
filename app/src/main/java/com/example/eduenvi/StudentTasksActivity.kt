@@ -60,10 +60,10 @@ class StudentTasksActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                val result = ApiHelper.deleteStudentTask(student.id, Constants.Task.id)
+                val res = ApiHelper.deleteStudentTask(student.id, Constants.Task.id)
 
                 withContext(Dispatchers.Main) {
-                    if (result != null) if (tasks != null) tasks!!.remove(Constants.Task)
+                    if (res != null) if (tasks != null) tasks!!.remove(Constants.Task)
                     else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
@@ -171,9 +171,9 @@ class StudentTasksActivity : AppCompatActivity() {
                 }
             }
             for (task in _delFromStudent) {
-                val result = ApiHelper.deleteStudentTask(Constants.Student.id, task.id)
+                val res = ApiHelper.deleteStudentTask(Constants.Student.id, task.id)
                 withContext(Dispatchers.Main) {
-                    if (result != null) if (tasks != null) tasks!!.remove(task)
+                    if (res != null) if (tasks != null) tasks!!.remove(task)
                     else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                 }
             }

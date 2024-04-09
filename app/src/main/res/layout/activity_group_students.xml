@@ -60,38 +60,45 @@
             android:id="@+id/closeStudentsPanel"
             style="@style/backButtonDark" />
 
-        <TextView
-            android:id="@+id/textInGroup"
-            style="@style/chipTextView"
-            android:layout_marginTop="70dp"
-            android:text="V skupine" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="70dp">
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroupIn"
-            style="@style/chipGroup"
-            android:layout_below="@+id/textInGroup"
-            app:singleLine="false"
-            app:singleSelection="true" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textNotInGroup"
-            style="@style/chipTextView"
-            android:layout_below="@+id/chipGroupIn"
-            android:text="Mimo skupiny" />
+                <TextView
+                    android:id="@+id/textInGroup"
+                    style="@style/chipTextView"
+                    android:text="V skupine" />
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroupNotIn"
-            style="@style/chipGroup"
-            android:layout_below="@+id/textNotInGroup"
-            app:singleLine="false"
-            app:singleSelection="true" />
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupIn"
+                    style="@style/chipGroup"
+                    app:singleLine="false"
+                    app:singleSelection="true" />
 
-        <Button
-            android:id="@+id/saveButton"
-            style="@style/actionButton"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="25dp"
-            android:text="@string/save" />
+                <TextView
+                    android:id="@+id/textNotInGroup"
+                    style="@style/chipTextView"
+                    android:text="Mimo skupiny" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupNotIn"
+                    style="@style/chipGroup"
+                    app:singleLine="false"
+                    app:singleSelection="true" />
+
+                <Button
+                    android:id="@+id/saveButton"
+                    style="@style/actionButton"
+                    android:layout_margin="25dp"
+                    android:text="@string/save" />
+            </LinearLayout>
+        </ScrollView>
 
     </RelativeLayout>
 

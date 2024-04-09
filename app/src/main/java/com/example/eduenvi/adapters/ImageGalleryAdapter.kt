@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.eduenvi.Constants
-import com.example.eduenvi.ImageViewModel
+import com.example.eduenvi.MyViewModel
 import com.example.eduenvi.R
 import com.example.eduenvi.models.Image
 
@@ -26,7 +26,7 @@ class ImageGalleryAdapter(private val context: FragmentActivity, private val lis
         Constants.imageManager.setImage(image.url, context, imageView)
 
         view?.setOnClickListener {
-            val viewModel: ImageViewModel = ViewModelProvider(context)[ImageViewModel::class.java]
+            val viewModel: MyViewModel = ViewModelProvider(context)[MyViewModel::class.java]
             viewModel.setData(image)
         }
 

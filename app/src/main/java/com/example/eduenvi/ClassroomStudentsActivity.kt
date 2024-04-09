@@ -25,8 +25,9 @@ class ClassroomStudentsActivity : AppCompatActivity() {
     private lateinit var adapter: ClassroomStudentsAdapter
     private var changeToClassroom = Constants.Classroom
     private val myContext = this
-    private var imageId :Int? = null
-    private lateinit var viewModel: ImageViewModel
+    private var imageId: Int? = null
+    private lateinit var viewModel: MyViewModel
+    private var teachersClassrooms: List<Classroom>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +35,8 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setImageGalleryFragment()
-        viewModel = ViewModelProvider(this)[ImageViewModel::class.java]
-        viewModel.getSelectedImage().observe(this){ image ->
+        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
+        viewModel.getSelectedImage().observe(this) { image ->
             imageId = image.id
             Constants.imageManager.setImage(image.url, this, binding.studentImage)
             binding.fragmentLayout.visibility = View.GONE
@@ -44,6 +45,7 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             students =
                 ApiHelper.getStudentsInClassroom(Constants.Classroom.id) as MutableList<Student>?
+            teachersClassrooms = ApiHelper.getTeachersClassrooms(Constants.Teacher.id)
 
             withContext(Dispatchers.Main) {
                 if (students != null) {
@@ -54,8 +56,6 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         }
         val classroom = Constants.Classroom
         binding.classroomName.text = classroom.name
-
-        setClassroomsDropdown()
 
         binding.backButton.setOnClickListener {
             val intent = Intent(this, ClassroomsActivity::class.java)
@@ -86,7 +86,11 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         binding.editButton.setOnClickListener {
             _creatingNew = false
             imageId = Constants.Student.imageId
-            Constants.imageManager.setImage(Constants.Student.imageId, myContext, binding.studentImage)
+            Constants.imageManager.setImage(
+                Constants.Student.imageId,
+                myContext,
+                binding.studentImage
+            )
             binding.saveButton.text = Constants.SaveButtonTextUpdate
             binding.firstName.setText(Constants.Student.firstName)
             binding.lastName.setText(Constants.Student.lastName)
@@ -96,6 +100,7 @@ class ClassroomStudentsActivity : AppCompatActivity() {
             binding.studentPanel.visibility = View.VISIBLE
             binding.editPanel.visibility = View.GONE
             binding.mainPanel.visibility = View.GONE
+            setClassroomsDropdown()
         }
 
         binding.editStudentImage.setOnClickListener {
@@ -121,7 +126,9 @@ class ClassroomStudentsActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.IO).launch {
                     if (_creatingNew == false) {
                         student.id = Constants.Student.id
-                        if (changeToClassroom.id != Constants.Classroom.id) deleteStudentFromGroups(student.id)
+                        if (changeToClassroom.id != Constants.Classroom.id) deleteStudentFromGroups(
+                            student.id
+                        )
                         res = ApiHelper.updateStudent(student.id, student)
                         if (res != null)
                             if (students != null) students!!.remove(Constants.Student)
@@ -150,9 +157,9 @@ class ClassroomStudentsActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                val result = ApiHelper.deleteStudent(Constants.Student.id)
+                val res = ApiHelper.deleteStudent(Constants.Student.id)
                 withContext(Dispatchers.Main) {
-                    if (result != null)
+                    if (res != null)
                         if (students != null) students!!.remove(Constants.Student)
                         else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG)
                             .show()
@@ -163,7 +170,7 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         }
 
         binding.closeFragmentButton.setOnClickListener {
-            binding.fragmentLayout.visibility = View.GONE//TODO mozno ho nejak killnut ten fragment
+            binding.fragmentLayout.visibility = View.GONE
             binding.editPanel.visibility = View.VISIBLE
             //supportFragmentManager.popBackStack()
         }
@@ -201,17 +208,12 @@ class ClassroomStudentsActivity : AppCompatActivity() {
     }
 
     private fun setClassroomsDropdown() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val classrooms = ApiHelper.getTeachersClassrooms(Constants.Teacher.id)
-            withContext(Dispatchers.Main) {
-                if (classrooms != null) {
-                    val listAdapter =
-                        ArrayAdapter(myContext, R.layout.dropdown_list_item, classrooms)
-                    binding.classroom.setAdapter(listAdapter)
-                    binding.classroom.setOnItemClickListener { adapterView, _, i, _ ->
-                        changeToClassroom = adapterView.getItemAtPosition(i) as Classroom
-                    }
-                }
+        if (teachersClassrooms != null) {
+            val listAdapter =
+                ArrayAdapter(myContext, R.layout.dropdown_list_item, teachersClassrooms!!)
+            binding.classroom.setAdapter(listAdapter)
+            binding.classroom.setOnItemClickListener { adapterView, _, i, _ ->
+                changeToClassroom = adapterView.getItemAtPosition(i) as Classroom
             }
         }
     }

@@ -14,18 +14,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
+// TODO na miestach kde pouzivam, nacitat az ked kliknem ze chcem zmenit obrazok
 class ImageGalleryFragment : Fragment() {
 
     private lateinit var imagesLayout: GridView
     private lateinit var add: ImageButton
     private var images: MutableList<Image>? = null
     private lateinit var adapter: ImageGalleryAdapter
-    lateinit var viewModel: ImageViewModel
+    private lateinit var viewModel: MyViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(requireActivity())[ImageViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[MyViewModel::class.java]
         return inflater.inflate(R.layout.fragment_image_gallery, container, false)
     }
 

@@ -32,7 +32,7 @@ class LoginStudentActivity : AppCompatActivity() {
                         val intent = Intent(
                             myContext,
                             StudentTasksActivity::class.java
-                        ) //TODO zmen StudentTaskActivity
+                        ) //TODO vytvor studentovu obrazovku po prihlaseni
                         startActivity(intent)
                     }
                 }

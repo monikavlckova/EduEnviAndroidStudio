@@ -60,9 +60,9 @@ class GroupTasksActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                val result = ApiHelper.deleteGroupTask(group.id, Constants.Task.id)
+                val res = ApiHelper.deleteGroupTask(group.id, Constants.Task.id)
                 withContext(Dispatchers.Main) {
-                    if (result != null) if (tasks != null) tasks!!.remove(Constants.Task)
+                    if (res != null) if (tasks != null) tasks!!.remove(Constants.Task)
                     else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
@@ -171,9 +171,9 @@ class GroupTasksActivity : AppCompatActivity() {
                 }
             }
             for (task in _delFromGroup) {
-                val result = ApiHelper.deleteGroupTask(Constants.Group.id, task.id)
+                val res = ApiHelper.deleteGroupTask(Constants.Group.id, task.id)
                 withContext(Dispatchers.Main) {
-                    if (result != null) if (tasks != null) tasks!!.remove(task)
+                    if (res != null) if (tasks != null) tasks!!.remove(task)
                     else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                 }
             }

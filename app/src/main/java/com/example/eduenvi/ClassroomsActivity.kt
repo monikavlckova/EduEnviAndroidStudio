@@ -15,7 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-//TODO ak otvorim  upravit coma obr a potom upravit co nema, obrazok ostane, aj v inych aktivitach
+
 class ClassroomsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityClassroomsBinding
@@ -23,8 +23,8 @@ class ClassroomsActivity : AppCompatActivity() {
     private var classrooms: MutableList<Classroom>? = null
     private lateinit var adapter: ClassroomAdapter
     private val myContext = this
-    private var imageId :Int? = null
-    private lateinit var viewModel: ImageViewModel
+    private var imageId: Int? = null
+    private lateinit var viewModel: MyViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +32,8 @@ class ClassroomsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setImageGalleryFragment()
-        viewModel = ViewModelProvider(this)[ImageViewModel::class.java]
-        viewModel.getSelectedImage().observe(this){ image ->
+        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
+        viewModel.getSelectedImage().observe(this) { image ->
             imageId = image.id
             Constants.imageManager.setImage(image.url, this, binding.ClassroomImage)
             binding.fragmentLayout.visibility = View.GONE
@@ -98,9 +98,9 @@ class ClassroomsActivity : AppCompatActivity() {
                 if (_creatingNew == false) {
                     classroom.id = Constants.Classroom.id
                     CoroutineScope(Dispatchers.IO).launch {
-                        val result = ApiHelper.updateClassroom(classroom.id, classroom)
+                        val res = ApiHelper.updateClassroom(classroom.id, classroom)
                         withContext(Dispatchers.Main) {
-                            if (result != null) {
+                            if (res != null) {
                                 if (classrooms != null) {
                                     classrooms!!.remove(Constants.Classroom)
                                     classrooms!!.add(classroom)
@@ -135,13 +135,16 @@ class ClassroomsActivity : AppCompatActivity() {
         }
 
         binding.confirmDelete.setOnClickListener {
-            switchClassroomTasksToStudentTasks()
-            switchGroupTasksToStudentTasks()
             CoroutineScope(Dispatchers.IO).launch {
-                val result = ApiHelper.deleteClassroom(Constants.Classroom.id)
+                switchClassroomTasksToStudentTasks()
+                switchGroupTasksToStudentTasks()
+                removeStudentsFromClassroom()
+                val res = ApiHelper.deleteClassroom(Constants.Classroom.id)
                 withContext(Dispatchers.Main) {
-                    if (result != null) if (classrooms != null) classrooms!!.remove(Constants.Classroom)
-                    else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
+                    if (res != null) {
+                        if (classrooms != null) classrooms!!.remove(Constants.Classroom)
+                    } else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG)
+                        .show()
                     adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
                 }
@@ -149,7 +152,7 @@ class ClassroomsActivity : AppCompatActivity() {
         }
 
         binding.closeFragmentButton.setOnClickListener {
-            binding.fragmentLayout.visibility = View.GONE//TODO mozno ho nejak killnut ten fragment
+            binding.fragmentLayout.visibility = View.GONE
             //supportFragmentManager.popBackStack()
         }
 
@@ -161,7 +164,9 @@ class ClassroomsActivity : AppCompatActivity() {
         binding.closeDeletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
 
-        binding.classroomName.addTextChangedListener { binding.classroomNameTextInputLayout.error = null }
+        binding.classroomName.addTextChangedListener {
+            binding.classroomNameTextInputLayout.error = null
+        }
     }
 
     private fun setImageGalleryFragment() {
@@ -182,11 +187,12 @@ class ClassroomsActivity : AppCompatActivity() {
             val students = ApiHelper.getStudentsInClassroom(Constants.Classroom.id)
             val classroomTasks = ApiHelper.getTasksInClassroom(Constants.Classroom.id)
 
-            if (students != null && classroomTasks != null)
+            if (students != null && classroomTasks != null) {
                 for (student in students) for (task in classroomTasks) {
                     val studentTask = StudentTask(student.id, task.id)
                     ApiHelper.createStudentTask(studentTask)
                 }
+            }
         }
     }
 
@@ -194,18 +200,31 @@ class ClassroomsActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             val groups = ApiHelper.getGroupsInClassroom(Constants.Classroom.id)
 
-            if (groups != null)
+            if (groups != null) {
                 for (group in groups) {
                     val studentsInGroup = ApiHelper.getStudentsInGroup(group.id)
                     val groupTasks = ApiHelper.getGroupsTasks(group.id)
-                    if (studentsInGroup != null && groupTasks != null)
+                    if (studentsInGroup != null && groupTasks != null) {
                         for (student in studentsInGroup) for (task in groupTasks) {
                             val studentTask = StudentTask(student.id, task.id)
                             ApiHelper.createStudentTask(studentTask)
                         }
+                    }
                 }
+            }
         }
+    }
 
+    private fun removeStudentsFromClassroom(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val students = ApiHelper.getStudentsInClassroom(Constants.Classroom.id)
+            if (students != null) {
+                for (student in students) {
+                    student.classroomId = null
+                    ApiHelper.updateStudent(student.id, student)
+                }
+            }
+        }
     }
 
     private fun validClassroomName(): Boolean {

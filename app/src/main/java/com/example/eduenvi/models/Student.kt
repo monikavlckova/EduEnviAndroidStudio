@@ -2,7 +2,7 @@ package com.example.eduenvi.models
 
 class Student(
     var id: Int,
-    var classroomId: Int,
+    var classroomId: Int?,
     var firstName: String,
     var lastName: String,
     var loginCode: String,

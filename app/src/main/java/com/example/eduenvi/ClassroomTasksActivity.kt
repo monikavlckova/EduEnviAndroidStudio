@@ -33,7 +33,7 @@ class ClassroomTasksActivity : AppCompatActivity() {
     private var deadlineDate: Date? = null
     private var visibleFromDate: Date? = null
     private var imageId :Int? = null
-    private lateinit var viewModel: ImageViewModel
+    private lateinit var viewModel: MyViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +41,7 @@ class ClassroomTasksActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setImageGalleryFragment()
-        viewModel = ViewModelProvider(this)[ImageViewModel::class.java]
+        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
         viewModel.getSelectedImage().observe(this){ image ->
             imageId = image.id
             Constants.imageManager.setImage(image.url, this, binding.taskImage)
@@ -185,9 +185,9 @@ class ClassroomTasksActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                val result = ApiHelper.deleteTask(Constants.Task.id)
+                val res = ApiHelper.deleteTask(Constants.Task.id)
                 withContext(Dispatchers.Main) {
-                    if (result != null) if (tasks != null) tasks!!.remove(Constants.Task)
+                    if (res != null) if (tasks != null) tasks!!.remove(Constants.Task)
                     else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
@@ -198,7 +198,7 @@ class ClassroomTasksActivity : AppCompatActivity() {
         }
 
         binding.closeFragmentButton.setOnClickListener {
-            binding.fragmentLayout.visibility = View.GONE//TODO mozno ho nejak killnut ten fragment
+            binding.fragmentLayout.visibility = View.GONE//TODO mozno ho nejak killnut ten fragment vsade
             binding.editPanel.visibility = View.VISIBLE
             //supportFragmentManager.popBackStack()
         }

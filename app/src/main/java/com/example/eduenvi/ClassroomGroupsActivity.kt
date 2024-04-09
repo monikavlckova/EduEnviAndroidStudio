@@ -20,8 +20,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-//TODO pohladat buttony co su fixne na spodku obrazovky, spravit scrollable tam kde su chipy a
-// buttony dat na spodok nie na spodok obrazovky nalepit, nech sa to vestko pekne hybe
+
 class ClassroomGroupsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityClassroomGroupsBinding
@@ -31,8 +30,8 @@ class ClassroomGroupsActivity : AppCompatActivity() {
     private var groups: MutableList<Group>? = null
     private lateinit var adapter: ClassroomGroupsAdapter
     private val myContext = this
-    private var imageId :Int? = null
-    private lateinit var viewModel: ImageViewModel
+    private var imageId: Int? = null
+    private lateinit var viewModel: MyViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,21 +39,20 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setImageGalleryFragment()
-        viewModel = ViewModelProvider(this)[ImageViewModel::class.java]
-        viewModel.getSelectedImage().observe(this){ image ->
+        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
+        viewModel.getSelectedImage().observe(this) { image ->
             imageId = image.id
             Constants.imageManager.setImage(image.url, this, binding.GroupImage)
             binding.fragmentLayout.visibility = View.GONE
         }
 
         CoroutineScope(Dispatchers.IO).launch {
-            groups = ApiHelper.getGroupsInClassroom(Constants.Classroom.id) as MutableList<Group>?
+            groups = ApiHelper.getGroupsInClassroom(Constants.Classroom.id) as MutableList<Group>
 
             withContext(Dispatchers.Main) {
-                if (groups != null) {
-                    adapter = ClassroomGroupsAdapter(myContext, groups!!)
-                    binding.groupsLayout.adapter = adapter
-                }
+                if (groups == null) groups = mutableListOf()
+                adapter = ClassroomGroupsAdapter(myContext, groups!!)
+                binding.groupsLayout.adapter = adapter
             }
         }
         val classroom = Constants.Classroom
@@ -110,20 +108,19 @@ class ClassroomGroupsActivity : AppCompatActivity() {
                     if (_creatingNewGroup == false) {
                         group.id = Constants.Group.id
                         res = ApiHelper.updateGroup(group.id, group)
-                        if (groups != null) groups!!.remove(Constants.Group)
+                        groups?.remove(Constants.Group)
                     } else res = ApiHelper.createGroup(group)
 
                     withContext(Dispatchers.Main) {
                         if (res != null) {
-                            //Constants.Group = res!!
-                            if (groups != null) groups!!.add(res!!)
+                            Constants.Group = res!!
+                            groups?.add(res!!)
                         } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
                             .show()
-
+                        manageStudents()
                         adapter.notifyDataChanged()
                     }
                 }
-                manageStudents()
                 closeGroupPanel()
             }
         }
@@ -136,12 +133,12 @@ class ClassroomGroupsActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                val result = ApiHelper.deleteGroup(Constants.Group.id)
+                val res = ApiHelper.deleteGroup(Constants.Group.id)
                 withContext(Dispatchers.Main) {
-                    if (result != null) {
-                        if (groups != null) groups!!.remove(Constants.Group)
-                    } else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG)
-                        .show()
+                    if (res != null) {
+                        groups?.remove(Constants.Group)
+                    } else
+                        Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
                 }
@@ -151,7 +148,7 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         }
 
         binding.closeFragmentButton.setOnClickListener {
-            binding.fragmentLayout.visibility = View.GONE//TODO mozno ho nejak killnut ten fragment
+            binding.fragmentLayout.visibility = View.GONE
             binding.editPanel.visibility = View.VISIBLE
             //supportFragmentManager.popBackStack()
         }
@@ -260,30 +257,22 @@ class ClassroomGroupsActivity : AppCompatActivity() {
     }
 
     private fun manageStudents() {
+        var showSaveToast = false
+        var showDeleteToast = false
         CoroutineScope(Dispatchers.IO).launch {
             for (student in _addToGroup) {
-                val result =
-                    ApiHelper.createStudentGroup(StudentGroup(student.id, Constants.Group.id))
-                withContext(Dispatchers.Main) {
-                    if (result == null) Toast.makeText(
-                        myContext,
-                        Constants.SaveError,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+                val res = ApiHelper.createStudentGroup(StudentGroup(student.id, Constants.Group.id))
+                if (res == null) showSaveToast = true
             }
             for (student in _delFromGroup) {
-                val result = ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
-                withContext(Dispatchers.Main) {
-                    if (result == null) Toast.makeText(
-                        myContext,
-                        Constants.DeleteError,
-                        Toast.LENGTH_LONG
-                    ).show() //TODO konkretne
-                }
+                val res = ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
+                if (res == null) showDeleteToast = true
             }
             withContext(Dispatchers.Main) {
-                adapter.notifyDataChanged()
+                if (showSaveToast)
+                    Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                if (showDeleteToast)
+                    Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                 _delFromGroup = HashSet()
                 _addToGroup = HashSet()
             }

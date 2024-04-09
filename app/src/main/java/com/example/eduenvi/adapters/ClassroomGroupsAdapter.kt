@@ -14,7 +14,7 @@ import com.example.eduenvi.Constants
 import com.example.eduenvi.GroupTasksActivity
 import com.example.eduenvi.R
 import com.example.eduenvi.models.Group
-//TODO ked vytvorim novu tak neviem pridat ziakov, asi pridavam skor, ako sa vytvori
+
 class ClassroomGroupsAdapter (private val context: Activity, private val list: List<Group>) :
     ArrayAdapter<Group>(context, R.layout.grid_list_item, list) {
 
