@@ -4,6 +4,7 @@ import android.app.Activity
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.models.Image
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +31,9 @@ class ImageManager {
         CoroutineScope(Dispatchers.IO).launch {
             if (imageId != null) {
                 val dbImage: Image? = ApiHelper.getImage(imageId)
-                if (dbImage != null) url = dbImage.url
+                if (dbImage != null) {
+                    url = dbImage.url
+                }
             }
             withContext(Dispatchers.Main) {
                 setImage(url, context, imageView)

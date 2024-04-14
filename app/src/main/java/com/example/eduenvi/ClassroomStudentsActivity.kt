@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.example.eduenvi.adapters.ClassroomStudentsAdapter
+import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityClassroomStudentsBinding
 import com.example.eduenvi.models.Classroom
 import com.example.eduenvi.models.Student
@@ -28,13 +29,19 @@ class ClassroomStudentsActivity : AppCompatActivity() {
     private var imageId: Int? = null
     private lateinit var viewModel: MyViewModel
     private var teachersClassrooms: List<Classroom>? = null
+    private val fragment = ImageGalleryFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClassroomStudentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setImageGalleryFragment()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, fragment)
+                .commit()
+        }
+
         viewModel = ViewModelProvider(this)[MyViewModel::class.java]
         viewModel.getSelectedImage().observe(this) { image ->
             imageId = image.id
@@ -104,6 +111,7 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         }
 
         binding.editStudentImage.setOnClickListener {
+            fragment.load()
             binding.fragmentLayout.visibility = View.VISIBLE
             binding.editPanel.visibility = View.GONE
         }
@@ -186,13 +194,6 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         binding.firstName.addTextChangedListener { binding.firstNameTextInputLayout.error = null }
         binding.lastName.addTextChangedListener { binding.lastNameTextInputLayout.error = null }
         binding.loginCode.addTextChangedListener { binding.loginCode.error = null }
-    }
-
-    private fun setImageGalleryFragment() {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        val fragment = ImageGalleryFragment()
-        fragmentTransaction.add(R.id.fragmentContainer, fragment)
-        fragmentTransaction.commit()
     }
 
     private fun closeStudentPanel() {

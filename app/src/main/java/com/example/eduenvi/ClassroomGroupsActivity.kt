@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.example.eduenvi.adapters.ClassroomGroupsAdapter
+import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityClassroomGroupsBinding
 import com.example.eduenvi.models.Group
 import com.example.eduenvi.models.Student
@@ -32,13 +33,19 @@ class ClassroomGroupsActivity : AppCompatActivity() {
     private val myContext = this
     private var imageId: Int? = null
     private lateinit var viewModel: MyViewModel
+    private val fragment = ImageGalleryFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClassroomGroupsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setImageGalleryFragment()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, fragment)
+                .commit()
+        }
+
         viewModel = ViewModelProvider(this)[MyViewModel::class.java]
         viewModel.getSelectedImage().observe(this) { image ->
             imageId = image.id
@@ -90,6 +97,7 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         }
 
         binding.editGroupImage.setOnClickListener {
+            fragment.load()
             binding.fragmentLayout.visibility = View.VISIBLE
             binding.editPanel.visibility = View.GONE
         }
@@ -162,13 +170,6 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         binding.groupName.addTextChangedListener { binding.groupNameTextInputLayout.error = null }
     }
 
-    private fun setImageGalleryFragment() {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        val fragment = ImageGalleryFragment()
-        fragmentTransaction.add(R.id.fragmentContainer, fragment)
-        fragmentTransaction.commit()
-    }
-
     private fun closeGroupPanel() {
         binding.groupPanel.visibility = View.GONE
         binding.mainPanel.visibility = View.VISIBLE
@@ -226,7 +227,7 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         val tagName = student.firstName + " " + student.lastName
         val chip = Chip(this)
         /*val paddingDp = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP, 10f,
+            TypedValue.COMPLEX_UNIT_PX, 1f,
             resources.displayMetrics
         ).toInt()
         chip.setPadding(paddingDp, paddingDp, paddingDp, paddingDp)*/

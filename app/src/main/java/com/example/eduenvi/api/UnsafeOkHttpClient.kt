@@ -1,4 +1,4 @@
-package com.example.eduenvi
+package com.example.eduenvi.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

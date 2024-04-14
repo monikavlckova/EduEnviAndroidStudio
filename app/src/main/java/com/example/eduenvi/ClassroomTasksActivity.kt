@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.example.eduenvi.adapters.ClassroomTasksAdapter
+import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityClassroomTasksBinding
 import com.example.eduenvi.models.Task
 import com.google.android.material.chip.Chip
@@ -32,17 +33,23 @@ class ClassroomTasksActivity : AppCompatActivity() {
     private val myContext = this
     private var deadlineDate: Date? = null
     private var visibleFromDate: Date? = null
-    private var imageId :Int? = null
+    private var imageId: Int? = null
     private lateinit var viewModel: MyViewModel
+    private val fragment = ImageGalleryFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClassroomTasksBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setImageGalleryFragment()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, fragment)
+                .commit()
+        }
+
         viewModel = ViewModelProvider(this)[MyViewModel::class.java]
-        viewModel.getSelectedImage().observe(this){ image ->
+        viewModel.getSelectedImage().observe(this) { image ->
             imageId = image.id
             Constants.imageManager.setImage(image.url, this, binding.taskImage)
             binding.fragmentLayout.visibility = View.GONE
@@ -77,6 +84,8 @@ class ClassroomTasksActivity : AppCompatActivity() {
         binding.addButton.setOnClickListener {
             _creatingNew = true
             imageId = null
+            deadlineDate = null
+            visibleFromDate = null
             Constants.imageManager.setImage("", this, binding.taskImage)
             binding.taskPanel.visibility = View.VISIBLE
             binding.mainPanel.visibility = View.GONE
@@ -89,17 +98,22 @@ class ClassroomTasksActivity : AppCompatActivity() {
         binding.editButton.setOnClickListener {
             imageId = Constants.Task.imageId
             _creatingNew = false
+            deadlineDate = Constants.Task.deadline
+            visibleFromDate = Constants.Task.visibleFrom
             binding.editPanel.visibility = View.GONE
             binding.mainPanel.visibility = View.GONE
             binding.taskPanel.visibility = View.VISIBLE
             binding.taskName.setText(Constants.Task.name)
-            if (Constants.Task.deadline != null)
+            if (Constants.Task.deadline != null) {
                 binding.dateTimeTaskDeadline.text = Constants.Task.deadline.toString()
-            if (Constants.Task.visibleFrom != null)
+            }
+            if (Constants.Task.visibleFrom != null) {
                 binding.dateTimeTaskVisibleFrom.text = Constants.Task.visibleFrom.toString()
+            }
         }
 
         binding.editTaskImage.setOnClickListener {
+            fragment.load()
             binding.fragmentLayout.visibility = View.VISIBLE
             binding.editPanel.visibility = View.GONE
         }
@@ -133,8 +147,7 @@ class ClassroomTasksActivity : AppCompatActivity() {
             if (settingDeadline) {
                 binding.dateTimeTaskDeadline.text = datetime
                 deadlineDate = cal.time
-            }
-            else {
+            } else {
                 binding.dateTimeTaskVisibleFrom.text = datetime
                 visibleFromDate = cal.time
             }
@@ -150,7 +163,7 @@ class ClassroomTasksActivity : AppCompatActivity() {
                         0,
                         Constants.Teacher.id,
                         Constants.TaskType.id,
-                        binding.taskName.toString(),
+                        binding.taskName.text.toString(),
                         "",//TODO nastavit text, spravit okinko, treba text?
                         imageId,
                         deadlineDate,
@@ -161,14 +174,21 @@ class ClassroomTasksActivity : AppCompatActivity() {
                     if (_creatingNew == false) {
                         task.id = Constants.Task.id
                         res = ApiHelper.updateTask(task.id, task)
-                        if (res != null) if (tasks != null) tasks!!.remove(Constants.Task)
+                        if (res != null) {
+                            if (tasks != null) {
+                                tasks!!.remove(Constants.Task)
+                            }
+                        }
                     } else {
                         res = ApiHelper.createTask(task)
                     }
                     //Constants.Task = res!!
                     withContext(Dispatchers.Main) {
-                        if (res != null) if (tasks != null) tasks!!.add(res!!)
-                        else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
+                        if (res != null) {
+                            if (tasks != null) {
+                                tasks!!.add(res!!)
+                            }
+                        } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
                             .show()
                         adapter.notifyDataChanged()
                     }
@@ -187,8 +207,10 @@ class ClassroomTasksActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 val res = ApiHelper.deleteTask(Constants.Task.id)
                 withContext(Dispatchers.Main) {
-                    if (res != null) if (tasks != null) tasks!!.remove(Constants.Task)
-                    else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
+                    if (res != null) {
+                        if (tasks != null) tasks!!.remove(Constants.Task)
+                    } else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG)
+                        .show()
                     adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
                 }
@@ -198,7 +220,8 @@ class ClassroomTasksActivity : AppCompatActivity() {
         }
 
         binding.closeFragmentButton.setOnClickListener {
-            binding.fragmentLayout.visibility = View.GONE//TODO mozno ho nejak killnut ten fragment vsade
+            binding.fragmentLayout.visibility =
+                View.GONE//TODO mozno ho nejak killnut ten fragment vsade
             binding.editPanel.visibility = View.VISIBLE
             //supportFragmentManager.popBackStack()
         }
@@ -211,13 +234,6 @@ class ClassroomTasksActivity : AppCompatActivity() {
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
 
         binding.taskName.addTextChangedListener { binding.taskNameTextInputLayout.error = null }
-    }
-
-    private fun setImageGalleryFragment() {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        val fragment = ImageGalleryFragment()
-        fragmentTransaction.add(R.id.fragmentContainer, fragment)
-        fragmentTransaction.commit()
     }
 
     private fun addTaskTypesToList() {
@@ -234,7 +250,7 @@ class ClassroomTasksActivity : AppCompatActivity() {
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
                     )
-                    chip.setOnClickListener{
+                    chip.setOnClickListener {
                         binding.chipTaskTypeError.visibility = View.GONE
                         Constants.TaskType = taskType
                     }

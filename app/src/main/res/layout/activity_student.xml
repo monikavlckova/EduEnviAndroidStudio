@@ -1,6 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/Tertiary"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        style="@style/headline"
+        android:text="Vitaj Meno!" />
+
+    <ImageButton
+        android:id="@+id/logoutButton"
+        style="@style/logoutButton"
+        android:contentDescription="@string/back" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="70dp"
+        android:background="@color/Background">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/imageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@color/Tertiary">
+
+                <ImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/baseline_account_circle_dark_24" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginHorizontal="10dp"
+                android:id="@+id/soloTasksText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="samostatné úlohy"
+                android:layout_below="@+id/imageLayout"/>
+
+            <GridView
+                android:id="@+id/soloTasksLayout"
+                style="@style/gridView"
+                android:numColumns="3"
+                tools:listitem="@layout/grid_student_task_item"
+                android:layout_below="@+id/soloTasksText"/>
+
+            <TextView
+                android:layout_marginHorizontal="10dp"
+                android:id="@+id/groupTasksText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="skupinová úlohy"
+                android:layout_below="@+id/soloTasksLayout"/>
+
+            <GridView
+                android:id="@+id/groupTasksLayout"
+                style="@style/gridView"
+                android:numColumns="3"
+                tools:listitem="@layout/grid_student_task_item"
+                android:layout_below="@+id/groupTasksText"/>
+
+            <TextView
+                android:layout_marginHorizontal="10dp"
+                android:id="@+id/terminatedTasksText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="minulé úlohy"
+                android:layout_below="@+id/groupTasksLayout"/>
+
+            <GridView
+                android:id="@+id/terminatedTasksLayout"
+                style="@style/gridView"
+                android:numColumns="3"
+                tools:listitem="@layout/grid_student_task_item"
+                android:layout_below="@+id/terminatedTasksText"/>
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <LinearLayout style="@style/bottomNavigationLayout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/tasksButton"
+                style="@style/navButtonInConstraintLayout"
+                android:src="@mipmap/tasks"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/newTaskNotice"
+                style="@style/navButtonInConstraintLayoutMessage"
+                android:visibility="gone"
+                tools:ignore="MissingConstraints" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/massagesButton"
+                style="@style/navButtonInConstraintLayout"
+                android:src="@mipmap/tasks"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/newMassageNotice"
+                style="@style/navButtonInConstraintLayoutMessage"
+                android:visibility="gone"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

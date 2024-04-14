@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eduenvi.adapters.StudentsGroupsAdapter
+import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityStudentGroupsBinding
 import com.example.eduenvi.models.Group
 import com.example.eduenvi.models.StudentGroup
@@ -62,8 +63,11 @@ class StudentGroupsActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 val res = ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
                 withContext(Dispatchers.Main) {
-                    if (res != null) if (groups != null) groups!!.remove(Constants.Group)
-                    else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
+                    if (res != null) {
+                        if (groups != null) groups!!.remove(Constants.Group)
+                    } else {
+                        Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
+                    }
                     adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
                 }
@@ -168,8 +172,9 @@ class StudentGroupsActivity : AppCompatActivity() {
                 val newGroup =
                     ApiHelper.createStudentGroup(StudentGroup(Constants.Student.id, group.id))
                 withContext(Dispatchers.Main) {
-                    if (newGroup != null) if (groups != null) groups!!.add(group)
-                    else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                    if (newGroup != null) {
+                        if (groups != null) groups!!.add(group)
+                    } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                 }
             }
             for (group in _delFromStudent) {

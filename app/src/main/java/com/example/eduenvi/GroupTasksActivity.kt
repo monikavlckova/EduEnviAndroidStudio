@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eduenvi.adapters.GroupTasksAdapter
+import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityGroupTasksBinding
 import com.example.eduenvi.models.GroupTask
 import com.example.eduenvi.models.Task
@@ -62,8 +63,13 @@ class GroupTasksActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 val res = ApiHelper.deleteGroupTask(group.id, Constants.Task.id)
                 withContext(Dispatchers.Main) {
-                    if (res != null) if (tasks != null) tasks!!.remove(Constants.Task)
-                    else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                    if (res != null) {
+                        if (tasks != null) {
+                            tasks!!.remove(Constants.Task)
+                        }
+                    } else {
+                        Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                    }
                     adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
                 }
@@ -138,8 +144,11 @@ class GroupTasksActivity : AppCompatActivity() {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        if (isInGroup) chip.setCloseIconResource(R.drawable.baseline_close_24)
-        else chip.setCloseIconResource(R.drawable.baseline_add_24)
+        if (isInGroup) {
+            chip.setCloseIconResource(R.drawable.baseline_close_24)
+        } else {
+            chip.setCloseIconResource(R.drawable.baseline_add_24)
+        }
         chip.isCloseIconVisible = true
         chip.setOnCloseIconClickListener {
             if (addedInGroup) {
@@ -147,15 +156,21 @@ class GroupTasksActivity : AppCompatActivity() {
                 binding.chipGroupIn.removeView(chip)
                 binding.chipGroupNotIn.addView(chip)
                 addedInGroup = false
-                if (isInGroup) _delFromGroup.add(task)
-                else _addToGroup.remove(task)
+                if (isInGroup) {
+                    _delFromGroup.add(task)
+                } else {
+                    _addToGroup.remove(task)
+                }
             } else {
                 chip.setCloseIconResource(R.drawable.baseline_close_24)
                 binding.chipGroupNotIn.removeView(chip)
                 binding.chipGroupIn.addView(chip)
                 addedInGroup = true
-                if (!isInGroup) _addToGroup.add(task)
-                else _delFromGroup.remove(task)
+                if (!isInGroup) {
+                    _addToGroup.add(task)
+                } else {
+                    _delFromGroup.remove(task)
+                }
             }
         }
         chipGroup.addView(chip)
@@ -166,15 +181,21 @@ class GroupTasksActivity : AppCompatActivity() {
             for (task in _addToGroup) {
                 val newTask = ApiHelper.createGroupTask(GroupTask(Constants.Group.id, task.id))
                 withContext(Dispatchers.Main) {
-                    if (newTask != null) if (tasks != null) tasks!!.add(task)
-                    else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                    if (newTask != null) {
+                        if (tasks != null) {
+                            tasks!!.add(task)
+                        }
+                    } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                 }
             }
             for (task in _delFromGroup) {
                 val res = ApiHelper.deleteGroupTask(Constants.Group.id, task.id)
                 withContext(Dispatchers.Main) {
-                    if (res != null) if (tasks != null) tasks!!.remove(task)
-                    else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                    if (res != null) {
+                        if (tasks != null) {
+                            tasks!!.remove(task)
+                        }
+                    } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                 }
             }
             withContext(Dispatchers.Main) {

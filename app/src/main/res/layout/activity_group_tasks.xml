@@ -24,7 +24,7 @@
 
         <GridView
             android:id="@+id/tasksLayout"
-            style="@style/gridView"
+            style="@style/scrollGridView"
             android:numColumns="3"
             tools:listitem="@layout/grid_x_list_item" />
 
@@ -73,7 +73,7 @@
                 <TextView
                     android:id="@+id/textInGroup"
                     style="@style/chipTextView"
-                    android:text="V skupine" />
+                    android:text="Priradené úlohy" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroupIn"
@@ -84,7 +84,7 @@
                 <TextView
                     android:id="@+id/textNotInGroup"
                     style="@style/chipTextView"
-                    android:text="Mimo skupiny" />
+                    android:text="Dostupné úloy" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroupNotIn"

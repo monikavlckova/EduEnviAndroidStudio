@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
+import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityProfileBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,13 +21,19 @@ class ProfileActivity : AppCompatActivity() {
     private val myContext = this
     private var imageId: Int? = Constants.Teacher.imageId
     private lateinit var viewModel: MyViewModel
+    private val fragment = ImageGalleryFragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val teacher = Constants.Teacher
 
-        setImageGalleryFragment()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, fragment)
+                .commit()
+        }
+
         viewModel = ViewModelProvider(this)[MyViewModel::class.java]
         viewModel.getSelectedImage().observe(this){ image ->
             imageId = image.id
@@ -56,10 +63,11 @@ class ProfileActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.IO).launch {
                     val res = ApiHelper.updateTeacher(teacher.id, teacher)
                     withContext(Dispatchers.Main) {
-                        if (res == null)
+                        if (res == null) {
                             Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
-                        else
+                        } else {
                             Constants.Teacher = res
+                        }
                         val intent = Intent(myContext, ProfileActivity::class.java)
                         startActivity(intent)
                     }
@@ -72,6 +80,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         binding.editProfileImage.setOnClickListener {
+            fragment.load()
             binding.fragmentLayout.visibility = View.VISIBLE
             binding.editPanel.visibility = View.GONE
         }
@@ -90,8 +99,9 @@ class ProfileActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.IO).launch {
                     val res = ApiHelper.updateTeacher(teacher.id, teacher)
                     withContext(Dispatchers.Main) {
-                        if (res == null)
+                        if (res == null) {
                             Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
                 closePasswordPanel()
@@ -124,13 +134,6 @@ class ProfileActivity : AppCompatActivity() {
         binding.editEmail.addTextChangedListener { binding.editEmailTextInputLayout.error = null }
         binding.password1.addTextChangedListener { binding.password1TextInputLayout.error = null }
         binding.password2.addTextChangedListener { binding.password2TextInputLayout.error = null }
-    }
-
-    private fun setImageGalleryFragment() {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        val fragment = ImageGalleryFragment()
-        fragmentTransaction.add(R.id.fragmentContainer, fragment)
-        fragmentTransaction.commit()
     }
 
     private fun openEditPanel() {

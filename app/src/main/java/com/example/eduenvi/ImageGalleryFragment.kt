@@ -9,11 +9,13 @@ import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.eduenvi.adapters.ImageGalleryAdapter
+import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.models.Image
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
 // TODO na miestach kde pouzivam, nacitat az ked kliknem ze chcem zmenit obrazok
 class ImageGalleryFragment : Fragment() {
 
@@ -22,6 +24,8 @@ class ImageGalleryFragment : Fragment() {
     private var images: MutableList<Image>? = null
     private lateinit var adapter: ImageGalleryAdapter
     private lateinit var viewModel: MyViewModel
+    private lateinit var view: View
+    private var loaded = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -31,6 +35,14 @@ class ImageGalleryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        this.view = view
+    }
+
+    fun load(){
+        if (loaded) {
+            return
+        }
+        loaded = true
         imagesLayout = view.findViewById(R.id.imagesLayout)
         add = view.findViewById(R.id.addButton)
 
@@ -40,7 +52,7 @@ class ImageGalleryFragment : Fragment() {
         }
 
         CoroutineScope(Dispatchers.IO).launch {
-            images = ApiHelper.getAllImages() as MutableList<Image>
+            images = ApiHelper.getAllImages() as MutableList<Image> //TODO nacitat niekde raz, s´kontrolovat, ci sa nepridal obrazok do databazy, spravit priecinky, nahravat priecinky
 
             withContext(Dispatchers.Main) {
                 if (images != null) {

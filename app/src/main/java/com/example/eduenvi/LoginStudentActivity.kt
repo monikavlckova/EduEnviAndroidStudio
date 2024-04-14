@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityLoginStudentBinding
 import com.example.eduenvi.models.Student
 import kotlinx.coroutines.CoroutineScope
@@ -31,8 +32,8 @@ class LoginStudentActivity : AppCompatActivity() {
                         Constants.Student = student!!
                         val intent = Intent(
                             myContext,
-                            StudentTasksActivity::class.java
-                        ) //TODO vytvor studentovu obrazovku po prihlaseni
+                            StudentActivity::class.java
+                        )
                         startActivity(intent)
                     }
                 }

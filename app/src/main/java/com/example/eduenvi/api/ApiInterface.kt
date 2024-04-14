@@ -1,4 +1,4 @@
-package com.example.eduenvi
+package com.example.eduenvi.api
 
 import com.example.eduenvi.models.*
 import retrofit2.Response
@@ -214,6 +214,9 @@ interface ApiInterface {
         @Path("teacherId") teacherId: Int,
         @Path("studentId") studentId: Int
     ): Response<List<Task>>
+
+    @GET("api/Task/getByStudentIdInAllGroups/{studentId}")
+    suspend fun getTasksInStudentsGroups(@Path("studentId") studentId: Int): Response<List<Task>>
 
     @PUT("api/Task")
     suspend fun createTask(@Body task: Task): Response<Task>

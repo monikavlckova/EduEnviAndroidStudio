@@ -132,6 +132,25 @@
         <item name="android:layout_alignParentEnd">true</item>
     </style>
 
+    <style name="navButtonInConstraintLayout" parent="navButton">
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+    </style>
+
+    <style name="navButtonInConstraintLayoutMessage">
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:background">@drawable/oval_30_surface</item>
+        <item name="android:backgroundTint">@color/Error</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/OnError</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+    </style>
+
     <style name="actionButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">64dp</item>
@@ -211,12 +230,22 @@
         <item name="android:background">@color/Secondary</item>
     </style>
 
-    <style name="gridView">
+    <style name="scrollGridView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginTop">70dp</item>
         <item name="android:layout_marginBottom">70dp</item>
         <item name="android:isScrollContainer">true</item>
+        <item name="android:background">@color/Background</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingStart">3dp</item>
+        <item name="android:paddingEnd">3dp</item>
+    </style>
+
+    <style name="gridView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:isScrollContainer">false</item>
         <item name="android:background">@color/Background</item>
         <item name="android:paddingTop">3dp</item>
         <item name="android:paddingStart">3dp</item>

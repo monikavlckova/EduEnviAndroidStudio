@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eduenvi.adapters.GroupStudentsAdapter
+import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityGroupStudentsBinding
 import com.example.eduenvi.models.Student
 import com.example.eduenvi.models.StudentGroup
@@ -62,8 +63,12 @@ class GroupStudentsActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 val res = ApiHelper.deleteStudentGroup(Constants.Student.id, group.id)
                 withContext(Dispatchers.Main) {
-                    if (res != null) if (students != null) students!!.remove(Constants.Student)
-                    else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
+                    if (res != null) {
+                        if (students != null) {
+                            students!!.remove(Constants.Student)
+                        }
+                    } else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG)
+                        .show()
                     adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
                 }
@@ -141,8 +146,11 @@ class GroupStudentsActivity : AppCompatActivity() {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        if (isInGroup) chip.setCloseIconResource(R.drawable.baseline_close_24)
-        else chip.setCloseIconResource(R.drawable.baseline_add_24)
+        if (isInGroup) {
+            chip.setCloseIconResource(R.drawable.baseline_close_24)
+        } else {
+            chip.setCloseIconResource(R.drawable.baseline_add_24)
+        }
         chip.isCloseIconVisible = true
         chip.setOnCloseIconClickListener {
             if (addedInGroup) {
@@ -150,15 +158,21 @@ class GroupStudentsActivity : AppCompatActivity() {
                 binding.chipGroupIn.removeView(chip)
                 binding.chipGroupNotIn.addView(chip)
                 addedInGroup = false
-                if (isInGroup) _delFromGroup.add(student)
-                else _addToGroup.remove(student)
+                if (isInGroup) {
+                    _delFromGroup.add(student)
+                } else {
+                    _addToGroup.remove(student)
+                }
             } else {
                 chip.setCloseIconResource(R.drawable.baseline_close_24)
                 binding.chipGroupNotIn.removeView(chip)
                 binding.chipGroupIn.addView(chip)
                 addedInGroup = true
-                if (!isInGroup) _addToGroup.add(student)
-                else _delFromGroup.remove(student)
+                if (!isInGroup) {
+                    _addToGroup.add(student)
+                } else {
+                    _delFromGroup.remove(student)
+                }
             }
         }
         chipGroup.addView(chip)
@@ -171,22 +185,30 @@ class GroupStudentsActivity : AppCompatActivity() {
             for (student in _addToGroup) {
                 val res = ApiHelper.createStudentGroup(StudentGroup(student.id, Constants.Group.id))
                 withContext(Dispatchers.Main) {
-                    if (res != null) if (students != null) students!!.add(student)
-                    else showSaveToast = true
+                    if (res != null) {
+                        if (students != null) {
+                            students!!.add(student)
+                        }
+                    } else showSaveToast = true
                 }
             }
             for (student in _delFromGroup) {
                 val res = ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
                 withContext(Dispatchers.Main) {
-                    if (res != null) if (students != null) students!!.remove(student)
-                    else showDeleteToast
+                    if (res != null) {
+                        if (students != null) {
+                            students!!.remove(student)
+                        }
+                    } else showDeleteToast = true
                 }
             }
             withContext(Dispatchers.Main) {
-                if (showSaveToast)
+                if (showSaveToast) {
                     Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
-                if (showDeleteToast)
+                }
+                if (showDeleteToast) {
                     Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
+                }
                 adapter.notifyDataChanged()
                 _delFromGroup = HashSet()
                 _addToGroup = HashSet()

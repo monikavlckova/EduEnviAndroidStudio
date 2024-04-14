@@ -1,4 +1,4 @@
-package com.example.eduenvi
+package com.example.eduenvi.api
 
 
 import android.util.Log
@@ -336,6 +336,10 @@ object ApiHelper {
                 studentId
             )
         }
+    }
+
+    suspend fun getTasksInStudentsGroups(studentId: Int): List<Task>? {
+        return performApiCall { RetrofitInstance.api.getTasksInStudentsGroups(studentId) }
     }
 
 

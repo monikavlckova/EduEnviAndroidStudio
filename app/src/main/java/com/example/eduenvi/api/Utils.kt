@@ -1,4 +1,4 @@
-package com.example.eduenvi.utils
+package com.example.eduenvi.api
 
 object Utils {
     //const val BASE = "https://localhost:7193/"

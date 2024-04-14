@@ -7,6 +7,7 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivitySignupBinding
 import com.example.eduenvi.models.Teacher
 import kotlinx.coroutines.CoroutineScope

@@ -24,7 +24,7 @@
 
         <GridView
             android:id="@+id/studentsLayout"
-            style="@style/gridView"
+            style="@style/scrollGridView"
             android:numColumns="3"
             tools:listitem="@layout/grid_x_list_item" />
 

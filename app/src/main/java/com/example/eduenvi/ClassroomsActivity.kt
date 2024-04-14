@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.example.eduenvi.adapters.ClassroomAdapter
+import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityClassroomsBinding
 import com.example.eduenvi.models.Classroom
 import com.example.eduenvi.models.StudentTask
@@ -25,13 +26,19 @@ class ClassroomsActivity : AppCompatActivity() {
     private val myContext = this
     private var imageId: Int? = null
     private lateinit var viewModel: MyViewModel
+    private val fragment = ImageGalleryFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClassroomsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setImageGalleryFragment()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, fragment)
+                .commit()
+        }
+
         viewModel = ViewModelProvider(this)[MyViewModel::class.java]
         viewModel.getSelectedImage().observe(this) { image ->
             imageId = image.id
@@ -82,6 +89,7 @@ class ClassroomsActivity : AppCompatActivity() {
         }
 
         binding.editClassroomImage.setOnClickListener {
+            fragment.load()
             binding.fragmentLayout.visibility = View.VISIBLE
             binding.editPanel.visibility = View.GONE
         }
@@ -117,8 +125,11 @@ class ClassroomsActivity : AppCompatActivity() {
                     CoroutineScope(Dispatchers.IO).launch {
                         val res = ApiHelper.createClassroom(classroom)
                         withContext(Dispatchers.Main) {
-                            if (res != null) if (classrooms != null) classrooms!!.add(res!!)
-                            else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
+                            if (res != null) {
+                                if (classrooms != null) {
+                                    classrooms!!.add(res)
+                                }
+                            } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
                                 .show()
                             adapter.notifyDataChanged()
                         }
@@ -142,7 +153,9 @@ class ClassroomsActivity : AppCompatActivity() {
                 val res = ApiHelper.deleteClassroom(Constants.Classroom.id)
                 withContext(Dispatchers.Main) {
                     if (res != null) {
-                        if (classrooms != null) classrooms!!.remove(Constants.Classroom)
+                        if (classrooms != null) {
+                            classrooms!!.remove(Constants.Classroom)
+                        }
                     } else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG)
                         .show()
                     adapter.notifyDataChanged()
@@ -167,13 +180,6 @@ class ClassroomsActivity : AppCompatActivity() {
         binding.classroomName.addTextChangedListener {
             binding.classroomNameTextInputLayout.error = null
         }
-    }
-
-    private fun setImageGalleryFragment() {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        val fragment = ImageGalleryFragment()
-        fragmentTransaction.add(R.id.fragmentContainer, fragment)
-        fragmentTransaction.commit()
     }
 
     private fun closeClassroomPanel() {
@@ -215,7 +221,7 @@ class ClassroomsActivity : AppCompatActivity() {
         }
     }
 
-    private fun removeStudentsFromClassroom(){
+    private fun removeStudentsFromClassroom() {
         CoroutineScope(Dispatchers.IO).launch {
             val students = ApiHelper.getStudentsInClassroom(Constants.Classroom.id)
             if (students != null) {
