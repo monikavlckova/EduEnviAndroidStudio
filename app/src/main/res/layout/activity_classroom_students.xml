@@ -143,7 +143,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="5dp"
                     android:backgroundTint="@color/transparent"
-                    android:src="@drawable/baseline_renew_24" />
+                    android:src="@drawable/baseline_renew_dark_24" />
             </RelativeLayout>
 
             <com.google.android.material.textfield.TextInputLayout

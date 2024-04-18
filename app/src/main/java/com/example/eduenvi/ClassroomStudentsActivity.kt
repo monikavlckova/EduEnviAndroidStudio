@@ -22,7 +22,7 @@ class ClassroomStudentsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityClassroomStudentsBinding
     private var _creatingNew: Boolean? = null
-    private var students: MutableList<Student>? = null
+    private var students = mutableListOf<Student>() // TODO nebude problem ze som ho spravile nenullable
     private lateinit var adapter: ClassroomStudentsAdapter
     private var changeToClassroom = Constants.Classroom
     private val myContext = this
@@ -48,17 +48,15 @@ class ClassroomStudentsActivity : AppCompatActivity() {
             Constants.imageManager.setImage(image.url, this, binding.studentImage)
             binding.fragmentLayout.visibility = View.GONE
         }
-
+        //TODO ak sa nestihnu nacitat obrazky, po kliknuti na nejake tlacitko sa caka kym sa nacitaju, ako to spravit, aby sa nenacitavali
         CoroutineScope(Dispatchers.IO).launch {
             students =
-                ApiHelper.getStudentsInClassroom(Constants.Classroom.id) as MutableList<Student>?
+                ApiHelper.getStudentsInClassroom(Constants.Classroom.id) as MutableList<Student>
             teachersClassrooms = ApiHelper.getTeachersClassrooms(Constants.Teacher.id)
 
             withContext(Dispatchers.Main) {
-                if (students != null) {
-                    adapter = ClassroomStudentsAdapter(myContext, students!!)
-                    binding.studentsLayout.adapter = adapter
-                }
+                adapter = ClassroomStudentsAdapter(myContext, students)
+                binding.studentsLayout.adapter = adapter
             }
         }
         val classroom = Constants.Classroom
@@ -81,11 +79,11 @@ class ClassroomStudentsActivity : AppCompatActivity() {
             _creatingNew = true
             imageId = null
             Constants.imageManager.setImage("", this, binding.studentImage)
+            binding.saveButton.text = Constants.SaveButtonTextCreate
             binding.firstName.text = null
             binding.lastName.text = null
             binding.loginCode.text = null
             binding.classroomTextInputLayout.visibility = View.GONE
-            binding.saveButton.text = Constants.SaveButtonTextCreate
             binding.studentPanel.visibility = View.VISIBLE
             binding.mainPanel.visibility = View.GONE
         }
@@ -93,11 +91,7 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         binding.editButton.setOnClickListener {
             _creatingNew = false
             imageId = Constants.Student.imageId
-            Constants.imageManager.setImage(
-                Constants.Student.imageId,
-                myContext,
-                binding.studentImage
-            )
+            Constants.imageManager.setImage(imageId, myContext, binding.studentImage)
             binding.saveButton.text = Constants.SaveButtonTextUpdate
             binding.firstName.setText(Constants.Student.firstName)
             binding.lastName.setText(Constants.Student.lastName)
@@ -105,8 +99,8 @@ class ClassroomStudentsActivity : AppCompatActivity() {
             binding.classroom.setText(Constants.Classroom.name)
             binding.classroomTextInputLayout.visibility = View.VISIBLE
             binding.studentPanel.visibility = View.VISIBLE
-            binding.editPanel.visibility = View.GONE
             binding.mainPanel.visibility = View.GONE
+            binding.editPanel.visibility = View.GONE
             setClassroomsDropdown()
         }
 
@@ -121,34 +115,29 @@ class ClassroomStudentsActivity : AppCompatActivity() {
             val validLastName = validLastName()
             val validLoginCode = validLoginCode()
             if (validName && validLastName && validLoginCode) {
-                val student =
-                    Student(
-                        0,
-                        changeToClassroom.id,
-                        binding.firstName.text.toString(),
-                        binding.lastName.text.toString(),
-                        binding.loginCode.text.toString(),
-                        imageId
-                    )
+                val classroomId = changeToClassroom.id
+                val firstName = binding.firstName.text.toString()
+                val lastName = binding.lastName.text.toString()
+                val loginCode = binding.loginCode.text.toString()
+                val student = Student(0, classroomId, firstName, lastName, loginCode, imageId)
                 var res: Student?
                 CoroutineScope(Dispatchers.IO).launch {
                     if (_creatingNew == false) {
                         student.id = Constants.Student.id
-                        if (changeToClassroom.id != Constants.Classroom.id) deleteStudentFromGroups(
-                            student.id
-                        )
+                        if (changeToClassroom.id != Constants.Classroom.id) {
+                            deleteStudentFromGroups(student.id)
+                        }
                         res = ApiHelper.updateStudent(student.id, student)
-                        if (res != null)
-                            if (students != null) students!!.remove(Constants.Student)
+                        if (res != null) {
+                            students.remove(Constants.Student)
+                        }
                     } else res = ApiHelper.createStudent(student)
 
                     withContext(Dispatchers.Main) {
-                        if (res == null)
+                        if (res == null) {
                             Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
-                        else {
-                            //Constants.Student = res!!
-                            if (changeToClassroom == Constants.Classroom)
-                                if (students != null) students!!.add(res!!)
+                        }else if (changeToClassroom == Constants.Classroom) {
+                            students.add(res!!)
                         }
                         adapter.notifyDataChanged()
                         closeStudentPanel()
@@ -167,10 +156,11 @@ class ClassroomStudentsActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 val res = ApiHelper.deleteStudent(Constants.Student.id)
                 withContext(Dispatchers.Main) {
-                    if (res != null)
-                        if (students != null) students!!.remove(Constants.Student)
-                        else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG)
-                            .show()
+                    if (res != null) {
+                        students.remove(Constants.Student)
+                    } else {
+                        Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
+                    }
                     adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
                 }
@@ -236,7 +226,6 @@ class ClassroomStudentsActivity : AppCompatActivity() {
             binding.firstNameTextInputLayout.error = Constants.WrongFirstNameFormatMessage
             return false
         }
-
         return true
     }
 
@@ -245,7 +234,6 @@ class ClassroomStudentsActivity : AppCompatActivity() {
             binding.lastNameTextInputLayout.error = Constants.WrongLastNameFormatMessage
             return false
         }
-
         return true
     }
 
@@ -254,18 +242,17 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         if (binding.loginCode.text.toString().length < Constants.MinimalLoginCodeLength) {
             binding.loginCodeTextInputLayout.error = Constants.WrongLoginCodeFormatMessage
             return false
-        } else {
-            CoroutineScope(Dispatchers.IO).launch {
-                val user = ApiHelper.getStudentByLoginCode(binding.loginCode.text.toString())
-                withContext(Dispatchers.Main) {
-                    if (user != null && user.id != Constants.Student.id) {
-                        binding.loginCodeTextInputLayout.error =
-                            Constants.WrongLoginCodeAlreadyExistMessage
-                        isValid = false
-                    }
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            val user = ApiHelper.getStudentByLoginCode(binding.loginCode.text.toString())
+            withContext(Dispatchers.Main) {
+                if (user != null && user.id != Constants.Student.id) {
+                    binding.loginCodeTextInputLayout.error =
+                        Constants.WrongLoginCodeAlreadyExistMessage
+                    isValid = false
                 }
             }
-            return isValid
         }
+        return isValid
     }
 }

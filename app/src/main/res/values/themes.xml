@@ -97,18 +97,18 @@
 
     <style name="editButton" parent="simpleButton">
         <item name="android:layout_marginTop">0dp</item>
-        <item name="android:src">@drawable/baseline_more_horiz_24</item>
+        <item name="android:src">@drawable/baseline_more_horiz_dark_24</item>
         <item name="android:layout_alignParentEnd">true</item>
     </style>
 
     <style name="closeButtonLeft" parent="simpleButton">
         <item name="android:layout_marginStart">10dp</item>
-        <item name="android:src">@drawable/baseline_close_24</item>
+        <item name="android:src">@drawable/baseline_close_dark_24</item>
     </style>
 
     <style name="closeButton" parent="simpleButton">
         <item name="android:layout_marginEnd">10dp</item>
-        <item name="android:src">@drawable/baseline_close_24</item>
+        <item name="android:src">@drawable/baseline_close_dark_24</item>
         <item name="android:layout_alignParentEnd">true</item>
     </style>
 
@@ -121,6 +121,25 @@
         <item name="android:background">@drawable/oval_50_primary</item>
         <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
+    <style name="addButtonMore">
+        <item name="android:layout_width">52dp</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:background">@drawable/oval_50_surface</item>
+    </style>
+
+    <style name="textToAddButtonMore">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/Background</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_margin">3dp</item>
+
     </style>
 
     <style name="navButton">

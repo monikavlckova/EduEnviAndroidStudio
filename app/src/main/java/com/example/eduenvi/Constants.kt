@@ -2,6 +2,7 @@ package com.example.eduenvi
 
 import com.example.eduenvi.models.Classroom
 import com.example.eduenvi.models.Group
+import com.example.eduenvi.models.Image
 import com.example.eduenvi.models.Student
 import com.example.eduenvi.models.Task
 import com.example.eduenvi.models.TaskType
@@ -68,4 +69,17 @@ object Constants {
     var Task = Task(0, 0, 0, "", "", null, null, null)
     var TaskType = TaskType(0, "", null)
     var Teacher = Teacher(0, "", "", "", "", "", null)
+
+    var TaskType1Id = 2
+    var TaskType2Id = 3
+
+    var TaskTypeCreatingActivity = mapOf(Pair(TaskType1Id, TaskType1CreatingActivity::class.java),
+        Pair(TaskType2Id, TaskType2CreatingActivity::class.java))
+
+    var TaskTypeActivity = mapOf(Pair(TaskType1Id, TaskType1Activity::class.java),
+        Pair(TaskType2Id, TaskType2Activity::class.java))
+
+    var ImageGridResources = mutableListOf(R.color.Primary, R.mipmap.wall, R.mipmap.start, R.mipmap.item)
+    var ImageGridImages= mutableListOf<Image?>(null, null, null, null)
+
 }

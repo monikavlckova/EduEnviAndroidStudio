@@ -28,7 +28,7 @@ class ClassroomGroupsActivity : AppCompatActivity() {
     private var _creatingNewGroup: Boolean? = null
     private var _delFromGroup: HashSet<Student> = HashSet()
     private var _addToGroup: HashSet<Student> = HashSet()
-    private var groups: MutableList<Group>? = null
+    private var groups = mutableListOf<Group>()
     private lateinit var adapter: ClassroomGroupsAdapter
     private val myContext = this
     private var imageId: Int? = null
@@ -57,11 +57,11 @@ class ClassroomGroupsActivity : AppCompatActivity() {
             groups = ApiHelper.getGroupsInClassroom(Constants.Classroom.id) as MutableList<Group>
 
             withContext(Dispatchers.Main) {
-                if (groups == null) groups = mutableListOf()
-                adapter = ClassroomGroupsAdapter(myContext, groups!!)
+                adapter = ClassroomGroupsAdapter(myContext, groups)
                 binding.groupsLayout.adapter = adapter
             }
         }
+
         val classroom = Constants.Classroom
         binding.classroomName.text = classroom.name
 
@@ -89,9 +89,9 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         binding.editButton.setOnClickListener {
             _creatingNewGroup = false
             imageId = Constants.Group.imageId
+            Constants.imageManager.setImage(imageId, this, binding.GroupImage)
             binding.saveButton.text = Constants.SaveButtonTextUpdate
             binding.groupName.setText(Constants.Group.name)
-            Constants.imageManager.setImage(Constants.Group.imageId, this, binding.GroupImage)
             setActiveGroupPanel()
             binding.editPanel.visibility = View.GONE
         }
@@ -104,29 +104,28 @@ class ClassroomGroupsActivity : AppCompatActivity() {
 
         binding.saveButton.setOnClickListener {
             if (validName()) {
-                val group =
-                    Group(
-                        0,
-                        Constants.Classroom.id,
-                        binding.groupName.text.toString(),
-                        imageId
-                    )
+                val classroomId = Constants.Classroom.id
+                val name = binding.groupName.text.toString()
+                val group = Group(0, classroomId, name, imageId)
                 var res: Group?
                 CoroutineScope(Dispatchers.IO).launch {
                     if (_creatingNewGroup == false) {
                         group.id = Constants.Group.id
                         res = ApiHelper.updateGroup(group.id, group)
-                        groups?.remove(Constants.Group)
-                    } else res = ApiHelper.createGroup(group)
-
+                        if (res != null) {
+                            groups.remove(Constants.Group)
+                        }
+                    } else {
+                        res = ApiHelper.createGroup(group)
+                    }
                     withContext(Dispatchers.Main) {
                         if (res != null) {
-                            Constants.Group = res!!
-                            groups?.add(res!!)
-                        } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
-                            .show()
+                            groups.add(res!!)
+                            adapter.notifyDataChanged()
+                        } else {
+                            Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                        }
                         manageStudents()
-                        adapter.notifyDataChanged()
                     }
                 }
                 closeGroupPanel()
@@ -144,15 +143,14 @@ class ClassroomGroupsActivity : AppCompatActivity() {
                 val res = ApiHelper.deleteGroup(Constants.Group.id)
                 withContext(Dispatchers.Main) {
                     if (res != null) {
-                        groups?.remove(Constants.Group)
-                    } else
+                        groups.remove(Constants.Group)
+                        adapter.notifyDataChanged()
+                    } else {
                         Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
-                    adapter.notifyDataChanged()
+                    }
                     binding.deletePanel.visibility = View.GONE
                 }
             }
-            //val intent = Intent(this, ClassroomGroupsActivity::class.java)
-            //startActivity(intent)
         }
 
         binding.closeFragmentButton.setOnClickListener {
@@ -233,7 +231,7 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         chip.setPadding(paddingDp, paddingDp, paddingDp, paddingDp)*/
         chip.text = tagName
         chip.layoutParams = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-        if (isInGroup) chip.setCloseIconResource(R.drawable.baseline_close_24)
+        if (isInGroup) chip.setCloseIconResource(R.drawable.baseline_close_dark_24)
         else chip.setCloseIconResource(R.drawable.baseline_add_24)
         chip.isCloseIconVisible = true
         chip.setOnCloseIconClickListener {
@@ -246,7 +244,7 @@ class ClassroomGroupsActivity : AppCompatActivity() {
                 if (isInGroup) _delFromGroup.add(student)
                 else _addToGroup.remove(student)
             } else {
-                chip.setCloseIconResource(R.drawable.baseline_close_24)
+                chip.setCloseIconResource(R.drawable.baseline_close_dark_24)
                 binding.chipGroupNotIn.removeView(chip)
                 binding.chipGroupIn.addView(chip)
                 addedInGroup = true

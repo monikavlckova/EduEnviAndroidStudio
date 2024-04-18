@@ -2,6 +2,7 @@ package com.example.eduenvi.api
 
 
 import android.util.Log
+import com.example.eduenvi.models.Board
 import com.example.eduenvi.models.Classroom
 import com.example.eduenvi.models.ClassroomTask
 import com.example.eduenvi.models.Edge
@@ -14,6 +15,7 @@ import com.example.eduenvi.models.StudentTask
 import com.example.eduenvi.models.Task
 import com.example.eduenvi.models.TaskType
 import com.example.eduenvi.models.Teacher
+import com.example.eduenvi.models.Tile
 import com.example.eduenvi.models.Vertex
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -519,6 +521,55 @@ object ApiHelper {
 
     suspend fun deleteImage(id: Int): Image? {
         return performApiCall { RetrofitInstance.api.deleteImage(id) }
+    }
+
+    suspend fun getBoard(id: Int): Board?{
+        return performApiCall { RetrofitInstance.api.getBoard(id) }
+    }
+
+    suspend fun getAllBoards(): List<Board>?{
+        return performApiCall { RetrofitInstance.api.getAllBoards() }
+    }
+
+    suspend fun getTaskBoards(taskId: Int): List<Board>?{
+        return performApiCall { RetrofitInstance.api.getTaskBoards(taskId) }
+    }
+
+    suspend fun createBoard(board: Board): Board?{
+        return performApiCall { RetrofitInstance.api.createBoard(board) }
+    }
+
+    suspend fun updateAllBoard(id: Int, board: Board): Board?{
+        return performApiCall { RetrofitInstance.api.updateAllBoard(id, board) }
+    }
+
+    suspend fun deleteBoard(id: Int): Board?{
+        return performApiCall { RetrofitInstance.api.deleteBoard(id) }
+    }
+
+
+    suspend fun getTile(id: Int): Tile?{
+        return performApiCall { RetrofitInstance.api.getTile(id) }
+    }
+
+    suspend fun getAllTiles(): List<Tile>?{
+        return performApiCall { RetrofitInstance.api.getAllTiles() }
+    }
+
+    suspend fun getBoardTiles(taskId: Int): List<Tile>?{
+        return performApiCall { RetrofitInstance.api.getBoardTiles(taskId) }
+    }
+
+    suspend fun createTile(tile: Tile): Tile?{
+        return performApiCall { RetrofitInstance.api.createTile(tile) }
+    }
+
+    suspend fun updateAllTile(id: Int, tile: Tile): Tile?{
+        return performApiCall { RetrofitInstance.api.updateAllTile(id, tile) }
+    }
+
+    suspend fun deleteTile(id: Int): Tile?{
+        return performApiCall { RetrofitInstance.api.deleteTile(id) }
     }
 
 

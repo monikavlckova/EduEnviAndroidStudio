@@ -1,6 +1,7 @@
 package com.example.eduenvi.adapters
 
 import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,11 @@ import android.widget.TextView
 import com.example.eduenvi.Constants
 import com.example.eduenvi.R
 import com.example.eduenvi.StudentTasksActivity
+import com.example.eduenvi.TaskType1CreatingActivity
+import com.example.eduenvi.TaskType2CreatingActivity
 import com.example.eduenvi.models.Task
 
-class StudentsTasksAdapter(private val context: Activity, private val list: List<Task>) :
+class StudentTasksAdapter(private val context: Activity, private val list: List<Task>) :
     ArrayAdapter<Task>(context, R.layout.grid_x_list_item, list) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -36,8 +39,15 @@ class StudentsTasksAdapter(private val context: Activity, private val list: List
         }
         view?.setOnClickListener {
             Constants.Task = task
-            //val intent = Intent((context as StudentTasksActivity), TaskActivity::class.java) TODO otvor taskactivity
-            //context.startActivity(intent)
+            if (task.taskTypeId == Constants.TaskType1Id) {
+                val intent =
+                    Intent((context as StudentTasksActivity), TaskType1CreatingActivity::class.java)//TODO zmen na progres ziakov?
+                context.startActivity(intent)
+            } else if (task.taskTypeId == Constants.TaskType2Id) {
+                val intent =
+                    Intent((context as StudentTasksActivity), TaskType2CreatingActivity::class.java)
+                context.startActivity(intent)
+            }//TODO viac
         }
 
         return view

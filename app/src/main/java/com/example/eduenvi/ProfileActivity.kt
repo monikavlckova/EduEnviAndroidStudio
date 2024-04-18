@@ -35,7 +35,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         viewModel = ViewModelProvider(this)[MyViewModel::class.java]
-        viewModel.getSelectedImage().observe(this){ image ->
+        viewModel.getSelectedImage().observe(this) { image ->
             imageId = image.id
             openEditPanel()
         }
@@ -180,17 +180,17 @@ class ProfileActivity : AppCompatActivity() {
         if (userName.length < Constants.MinimalUserNameLength) {
             binding.editUserNameTextInputLayout.error = Constants.WrongUserNameFormatMessage
             return false
-        } else {
-            CoroutineScope(Dispatchers.IO).launch {
-                val teacher = ApiHelper.getTeacherByUserName(userName)
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            val teacher = ApiHelper.getTeacherByUserName(userName)
 
-                withContext(Dispatchers.Main) {
-                    if (teacher != null && teacher.id != Constants.Teacher.id) {
-                        binding.editUserNameTextInputLayout.error =
-                            Constants.WrongUserNameAlreadyExistMessage
-                        isValid = false
-                    }
+            withContext(Dispatchers.Main) {
+                if (teacher != null && teacher.id != Constants.Teacher.id) {
+                    binding.editUserNameTextInputLayout.error =
+                        Constants.WrongUserNameAlreadyExistMessage
+                    isValid = false
                 }
+
             }
         }
         return isValid
@@ -202,16 +202,14 @@ class ProfileActivity : AppCompatActivity() {
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.editEmailTextInputLayout.error = Constants.WrongEmailFormatMessage
             return false
-        } else {
-            CoroutineScope(Dispatchers.IO).launch {
-                val teacher = ApiHelper.getTeacherByEmail(email)
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            val teacher = ApiHelper.getTeacherByEmail(email)
 
-                withContext(Dispatchers.Main) {
-                    if (teacher != null && teacher.id != Constants.Teacher.id) {
-                        binding.editEmailTextInputLayout.error =
-                            Constants.WrongEmailAlreadyExistMessage
-                        isValid = false
-                    }
+            withContext(Dispatchers.Main) {
+                if (teacher != null && teacher.id != Constants.Teacher.id) {
+                    binding.editEmailTextInputLayout.error = Constants.WrongEmailAlreadyExistMessage
+                    isValid = false
                 }
             }
         }

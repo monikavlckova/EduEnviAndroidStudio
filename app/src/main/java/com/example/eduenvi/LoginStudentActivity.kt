@@ -30,10 +30,7 @@ class LoginStudentActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     if (validLoginCode(student)) {
                         Constants.Student = student!!
-                        val intent = Intent(
-                            myContext,
-                            StudentActivity::class.java
-                        )
+                        val intent = Intent(myContext, StudentActivity::class.java)
                         startActivity(intent)
                     }
                 }
@@ -53,7 +50,6 @@ class LoginStudentActivity : AppCompatActivity() {
             binding.loginCodeTextInputLayout.error = Constants.WrongLoginCodeMessage
             return false
         }
-
         return true
     }
 }

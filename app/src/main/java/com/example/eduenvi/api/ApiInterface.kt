@@ -337,4 +337,42 @@ interface ApiInterface {
     @DELETE("api/Image/{id}")
     suspend fun deleteImage(@Path("id") id: Int): Response<Image>
 
+
+    @GET("api/Board/{id}")
+    suspend fun getBoard(@Path("id") id: Int): Response<Board>
+
+    @GET("api/Board")
+    suspend fun getAllBoards(): Response<List<Board>>
+
+    @GET("api/Board/getByTaskId/{id}")
+    suspend fun getTaskBoards(@Path("taskId") taskId: Int): Response<List<Board>>
+
+    @PUT("api/Board")
+    suspend fun createBoard(@Body board: Board): Response<Board>
+
+    @POST("api/Board/{id}")
+    suspend fun updateAllBoard(@Path("id") id: Int, @Body board: Board): Response<Board>
+
+    @DELETE("api/Board/{id}")
+    suspend fun deleteBoard(@Path("id") id: Int): Response<Board>
+
+
+    @GET("api/Tile/{id}")
+    suspend fun getTile(@Path("id") id: Int): Response<Tile>
+
+    @GET("api/Tile")
+    suspend fun getAllTiles(): Response<List<Tile>>
+
+    @GET("api/Tile/getByBoardId/{id}")
+    suspend fun getBoardTiles(@Path("boardId") boardId: Int): Response<List<Tile>>
+
+    @PUT("api/Tile")
+    suspend fun createTile(@Body tile: Tile): Response<Tile>
+
+    @POST("api/Tile/{id}")
+    suspend fun updateAllTile(@Path("id") id: Int, @Body tile: Tile): Response<Tile>
+
+    @DELETE("api/Tile/{id}")
+    suspend fun deleteTile(@Path("id") id: Int): Response<Tile>
+
 }

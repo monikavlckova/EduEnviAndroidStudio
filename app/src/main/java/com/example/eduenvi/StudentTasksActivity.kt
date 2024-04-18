@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.eduenvi.adapters.StudentsTasksAdapter
+import com.example.eduenvi.adapters.StudentTasksAdapter
 import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityStudentTasksBinding
 import com.example.eduenvi.models.StudentTask
@@ -25,8 +25,8 @@ class StudentTasksActivity : AppCompatActivity() {
 
     private var _delFromStudent: HashSet<Task> = HashSet()
     private var _addToStudent: HashSet<Task> = HashSet()
-    private var tasks: MutableList<Task>? = null
-    private lateinit var adapter: StudentsTasksAdapter
+    private var tasks = mutableListOf<Task>()
+    private lateinit var adapter: StudentTasksAdapter
     private val myContext = this
 
 
@@ -37,13 +37,11 @@ class StudentTasksActivity : AppCompatActivity() {
 
         val student = Constants.Student
         CoroutineScope(Dispatchers.IO).launch {
-            tasks = ApiHelper.getStudentsTasks(student.id) as MutableList<Task>?
+            tasks = ApiHelper.getStudentsTasks(student.id) as MutableList<Task>
 
             withContext(Dispatchers.Main) {
-                if (tasks != null) {
-                    adapter = StudentsTasksAdapter(myContext, tasks!!)
-                    binding.tasksLayout.adapter = adapter
-                }
+                adapter = StudentTasksAdapter(myContext, tasks)
+                binding.tasksLayout.adapter = adapter
             }
         }
 
@@ -65,7 +63,7 @@ class StudentTasksActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (res != null) {
-                        if (tasks != null) tasks!!.remove(Constants.Task)
+                        tasks.remove(Constants.Task)
                     } else {
                         Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     }
@@ -141,11 +139,9 @@ class StudentTasksActivity : AppCompatActivity() {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        if (isInStudent) {
-            chip.setCloseIconResource(R.drawable.baseline_close_24)
-        } else {
-            chip.setCloseIconResource(R.drawable.baseline_add_24)
-        }
+        if (isInStudent) chip.setCloseIconResource(R.drawable.baseline_close_dark_24)
+        else chip.setCloseIconResource(R.drawable.baseline_add_24)
+
         chip.isCloseIconVisible = true
         chip.setOnCloseIconClickListener {
             if (addedInStudent) {
@@ -153,51 +149,41 @@ class StudentTasksActivity : AppCompatActivity() {
                 binding.chipGroupIn.removeView(chip)
                 binding.chipGroupNotIn.addView(chip)
                 addedInStudent = false
-                if (isInStudent) {
-                    _delFromStudent.add(task)
-                } else {
-                    _addToStudent.remove(task)
-                }
+                if (isInStudent) _delFromStudent.add(task)
+                else _addToStudent.remove(task)
             } else {
-                chip.setCloseIconResource(R.drawable.baseline_close_24)
+                chip.setCloseIconResource(R.drawable.baseline_close_dark_24)
                 binding.chipGroupNotIn.removeView(chip)
                 binding.chipGroupIn.addView(chip)
                 addedInStudent = true
-                if (!isInStudent) {
-                    _addToStudent.add(task)
-                } else {
-                    _delFromStudent.remove(task)
-                }
+                if (!isInStudent) _addToStudent.add(task)
+                else _delFromStudent.remove(task)
             }
         }
         chipGroup.addView(chip)
     }
 
     private fun manageTasks() {
+        var showSaveToast = false
+        var showDeleteToast = false
         CoroutineScope(Dispatchers.IO).launch {
             for (task in _addToStudent) {
                 val newTask =
                     ApiHelper.createStudentTask(StudentTask(Constants.Student.id, task.id))
-                withContext(Dispatchers.Main) {
-                    if (newTask != null) {
-                        if (tasks != null) {
-                            tasks!!.add(task)
-                        }
-                    } else {
-                        Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
-                    }
-                }
+                if (newTask != null) tasks.add(task)
+                else showSaveToast = true
             }
             for (task in _delFromStudent) {
                 val res = ApiHelper.deleteStudentTask(Constants.Student.id, task.id)
-                withContext(Dispatchers.Main) {
-                    if (res != null) {
-                        if (tasks != null) tasks!!.remove(task)
-                    } else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG)
-                        .show()
-                }
+                if (res != null) tasks.remove(task)
+                else showDeleteToast = true
+
             }
             withContext(Dispatchers.Main) {
+                if (showSaveToast)
+                    Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                if (showDeleteToast)
+                    Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                 adapter.notifyDataChanged()
                 _delFromStudent = HashSet()
                 _addToStudent = HashSet()

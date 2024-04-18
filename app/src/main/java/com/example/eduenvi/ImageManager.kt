@@ -31,9 +31,7 @@ class ImageManager {
         CoroutineScope(Dispatchers.IO).launch {
             if (imageId != null) {
                 val dbImage: Image? = ApiHelper.getImage(imageId)
-                if (dbImage != null) {
-                    url = dbImage.url
-                }
+                if (dbImage != null) url = dbImage.url
             }
             withContext(Dispatchers.Main) {
                 setImage(url, context, imageView)

@@ -112,25 +112,58 @@
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    style="@style/chipTextView"
-                    android:text="Typ" />
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipTaskType"
-                    style="@style/chipGroup"
-                    app:singleLine="false"
-                    app:singleSelection="true" />
-
-                <TextView
-                    android:id="@+id/chipTaskTypeError"
+                <LinearLayout
+                    android:id="@+id/taskTypeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="50dp"
-                    android:layout_marginVertical="0dp"
-                    android:textColor="@color/Error"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/chipTextView"
+                        android:text="Typ" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipTaskType"
+                        style="@style/chipGroup"
+                        app:singleLine="false"
+                        app:singleSelection="true" />
+
+                    <TextView
+                        android:id="@+id/chipTaskTypeError"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="50dp"
+                        android:layout_marginVertical="0dp"
+                        android:textColor="@color/Error"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/updatingTaskTypeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="25dp"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:textSize="16dp"
+                        android:text="Typ" />
+
+                    <TextView
+                        android:id="@+id/updatingTaskTypeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:textSize="16dp"
+                        android:text="" />
+
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"

@@ -1,6 +1,7 @@
 package com.example.eduenvi.adapters
 
 import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,7 @@ import com.example.eduenvi.Constants
 import com.example.eduenvi.R
 import com.example.eduenvi.models.Task
 
-class ClassroomTasksAdapter (private val context: Activity, private val list: List<Task>) :
+class ClassroomTasksAdapter(private val context: Activity, private val list: List<Task>) :
     ArrayAdapter<Task>(context, R.layout.grid_list_item, list) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -35,13 +36,14 @@ class ClassroomTasksAdapter (private val context: Activity, private val list: Li
         }
         view?.setOnClickListener {
             Constants.Task = task
-            //val intent = Intent((context as ClassTasksActivity), TaskActivity::class.java) TODO otvor taskactivity
-            //context.startActivity(intent)
+            val intent = Intent(context, Constants.TaskTypeCreatingActivity[task.taskTypeId])//TODO zmen na progres ziakov?
+            context.startActivity(intent)
         }
+
         return view
     }
 
-    fun notifyDataChanged(){
+    fun notifyDataChanged() {
         notifyDataSetChanged()
     }
 }

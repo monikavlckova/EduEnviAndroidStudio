@@ -21,7 +21,7 @@ class ClassroomsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityClassroomsBinding
     private var _creatingNew: Boolean? = null
-    private var classrooms: MutableList<Classroom>? = null
+    private var classrooms = mutableListOf<Classroom>()
     private lateinit var adapter: ClassroomAdapter
     private val myContext = this
     private var imageId: Int? = null
@@ -48,20 +48,18 @@ class ClassroomsActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             classrooms =
-                ApiHelper.getTeachersClassrooms(Constants.Teacher.id) as MutableList<Classroom>?
+                ApiHelper.getTeachersClassrooms(Constants.Teacher.id) as MutableList<Classroom>
 
             withContext(Dispatchers.Main) {
-                if (classrooms != null) {
-                    adapter = ClassroomAdapter(myContext, classrooms!!)
-                    binding.classroomLayout.adapter = adapter
-                }
+                adapter = ClassroomAdapter(myContext, classrooms)
+                binding.classroomLayout.adapter = adapter
             }
         }
 
         binding.menuButton.setOnClickListener { binding.menuPanel.visibility = View.VISIBLE }
 
         binding.logoutButton.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
@@ -73,8 +71,8 @@ class ClassroomsActivity : AppCompatActivity() {
         binding.addButton.setOnClickListener {
             _creatingNew = true
             imageId = null
-            Constants.imageManager.setImage("", this, binding.ClassroomImage)
             binding.saveButton.text = Constants.SaveButtonTextCreate
+            Constants.imageManager.setImage("", this, binding.ClassroomImage)
             binding.classroomPanel.visibility = View.VISIBLE
         }
 
@@ -96,42 +94,26 @@ class ClassroomsActivity : AppCompatActivity() {
 
         binding.saveButton.setOnClickListener {
             if (validClassroomName()) {
-                val classroom =
-                    Classroom(
-                        0,
-                        Constants.Teacher.id,
-                        binding.classroomName.text.toString(),
-                        imageId
-                    )
-                if (_creatingNew == false) {
-                    classroom.id = Constants.Classroom.id
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val res = ApiHelper.updateClassroom(classroom.id, classroom)
-                        withContext(Dispatchers.Main) {
-                            if (res != null) {
-                                if (classrooms != null) {
-                                    classrooms!!.remove(Constants.Classroom)
-                                    classrooms!!.add(classroom)
-                                }
-                            } else Toast.makeText(
-                                myContext,
-                                Constants.SaveError,
-                                Toast.LENGTH_LONG
-                            ).show()
-                            adapter.notifyDataChanged()
+                val teacherId = Constants.Teacher.id
+                val name = binding.classroomName.text.toString()
+                val classroom = Classroom(0, teacherId, name, imageId)
+                var res: Classroom?
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (_creatingNew == false) {
+                        classroom.id = Constants.Classroom.id
+                        res = ApiHelper.updateClassroom(classroom.id, classroom)
+                        if (res != null) {
+                            classrooms.remove(Constants.Classroom)
                         }
+                    } else {
+                        res = ApiHelper.createClassroom(classroom)
                     }
-                } else {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val res = ApiHelper.createClassroom(classroom)
-                        withContext(Dispatchers.Main) {
-                            if (res != null) {
-                                if (classrooms != null) {
-                                    classrooms!!.add(res)
-                                }
-                            } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG)
-                                .show()
+                    withContext(Dispatchers.Main) {
+                        if (res != null) {
+                            classrooms.add(classroom)
                             adapter.notifyDataChanged()
+                        } else {
+                            Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                         }
                     }
                 }

@@ -1,6 +1,7 @@
 package com.example.eduenvi.adapters
 
 import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.eduenvi.Constants
 import com.example.eduenvi.R
+import com.example.eduenvi.StudentActivity
+import com.example.eduenvi.TaskType1Activity
+import com.example.eduenvi.TaskType2Activity
 import com.example.eduenvi.models.Task
 
 class StudentSoloTasksAdapter (private val context: Activity, private val list: List<Task>) :
@@ -28,8 +32,15 @@ class StudentSoloTasksAdapter (private val context: Activity, private val list: 
 
         view?.setOnClickListener {
             Constants.Task = task
-            //val intent = Intent((context as ClassTasksActivity), TaskActivity::class.java) TODO otvor taskactivity
-            //context.startActivity(intent)
+            if (task.taskTypeId == Constants.TaskType1Id) {
+                val intent =
+                    Intent((context as StudentActivity), TaskType1Activity::class.java)
+                context.startActivity(intent)
+            } else if (task.taskTypeId == Constants.TaskType2Id) {
+                val intent =
+                    Intent((context as StudentActivity), TaskType2Activity::class.java)
+                context.startActivity(intent)
+            }//TODO viac
         }
         return view
     }

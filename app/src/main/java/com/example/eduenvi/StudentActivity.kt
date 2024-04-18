@@ -38,7 +38,7 @@ class StudentActivity : AppCompatActivity() {
         setTerminatedTasksLayout()
 
         binding.logoutButton.setOnClickListener {
-            val intent = Intent(this, LoginStudentActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 

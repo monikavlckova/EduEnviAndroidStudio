@@ -25,7 +25,7 @@ class GroupTasksActivity : AppCompatActivity() {
 
     private var _delFromGroup: HashSet<Task> = HashSet()
     private var _addToGroup: HashSet<Task> = HashSet()
-    private var tasks: MutableList<Task>? = null
+    private var tasks = mutableListOf<Task>()
     private lateinit var adapter: GroupTasksAdapter
     private val myContext = this
 
@@ -37,13 +37,11 @@ class GroupTasksActivity : AppCompatActivity() {
 
         val group = Constants.Group
         CoroutineScope(Dispatchers.IO).launch {
-            tasks = ApiHelper.getGroupsTasks(group.id) as MutableList<Task>?
+            tasks = ApiHelper.getGroupsTasks(group.id) as MutableList<Task>
 
             withContext(Dispatchers.Main) {
-                if (tasks != null) {
-                    adapter = GroupTasksAdapter(myContext, tasks!!)
-                    binding.tasksLayout.adapter = adapter
-                }
+                adapter = GroupTasksAdapter(myContext, tasks)
+                binding.tasksLayout.adapter = adapter
             }
         }
 
@@ -64,27 +62,21 @@ class GroupTasksActivity : AppCompatActivity() {
                 val res = ApiHelper.deleteGroupTask(group.id, Constants.Task.id)
                 withContext(Dispatchers.Main) {
                     if (res != null) {
-                        if (tasks != null) {
-                            tasks!!.remove(Constants.Task)
-                        }
+                        tasks.remove(Constants.Task)
+                        adapter.notifyDataChanged()
                     } else {
                         Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                     }
-                    adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
                 }
             }
         }
 
-        binding.addButton.setOnClickListener {
-            setActiveTasksPanel()
-        }
+        binding.addButton.setOnClickListener { setActiveTasksPanel() }
 
         binding.saveButton.setOnClickListener {
             manageTasks()
             closeTasksPanel()
-            //val intent = Intent(this, GroupTasksActivity::class.java)
-            //startActivity(intent)
         }
 
         binding.closeTasksPanel.setOnClickListener { closeTasksPanel() }
@@ -144,11 +136,9 @@ class GroupTasksActivity : AppCompatActivity() {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        if (isInGroup) {
-            chip.setCloseIconResource(R.drawable.baseline_close_24)
-        } else {
-            chip.setCloseIconResource(R.drawable.baseline_add_24)
-        }
+        if (isInGroup) chip.setCloseIconResource(R.drawable.baseline_close_dark_24)
+        else chip.setCloseIconResource(R.drawable.baseline_add_24)
+
         chip.isCloseIconVisible = true
         chip.setOnCloseIconClickListener {
             if (addedInGroup) {
@@ -162,7 +152,7 @@ class GroupTasksActivity : AppCompatActivity() {
                     _addToGroup.remove(task)
                 }
             } else {
-                chip.setCloseIconResource(R.drawable.baseline_close_24)
+                chip.setCloseIconResource(R.drawable.baseline_close_dark_24)
                 binding.chipGroupNotIn.removeView(chip)
                 binding.chipGroupIn.addView(chip)
                 addedInGroup = true
@@ -177,28 +167,25 @@ class GroupTasksActivity : AppCompatActivity() {
     }
 
     private fun manageTasks() {
+        var showSaveToast = false
+        var showDeleteToast = false
         CoroutineScope(Dispatchers.IO).launch {
             for (task in _addToGroup) {
-                val newTask = ApiHelper.createGroupTask(GroupTask(Constants.Group.id, task.id))
-                withContext(Dispatchers.Main) {
-                    if (newTask != null) {
-                        if (tasks != null) {
-                            tasks!!.add(task)
-                        }
-                    } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
-                }
+                val res = ApiHelper.createGroupTask(GroupTask(Constants.Group.id, task.id))
+                if (res != null) tasks.add(task)
+                else showSaveToast = true
             }
             for (task in _delFromGroup) {
                 val res = ApiHelper.deleteGroupTask(Constants.Group.id, task.id)
-                withContext(Dispatchers.Main) {
-                    if (res != null) {
-                        if (tasks != null) {
-                            tasks!!.remove(task)
-                        }
-                    } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
-                }
+                if (res != null) tasks.remove(task)
+                else showDeleteToast = true
             }
             withContext(Dispatchers.Main) {
+                if (showSaveToast)
+                    Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                if (showDeleteToast)
+                    Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
+
                 adapter.notifyDataChanged()
                 _delFromGroup = HashSet()
                 _addToGroup = HashSet()

@@ -39,9 +39,8 @@ class ImageGalleryFragment : Fragment() {
     }
 
     fun load(){
-        if (loaded) {
-            return
-        }
+        if (loaded) return
+
         loaded = true
         imagesLayout = view.findViewById(R.id.imagesLayout)
         add = view.findViewById(R.id.addButton)

@@ -17,6 +17,7 @@ import kotlinx.coroutines.withContext
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
+    private val myContext = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +56,8 @@ class LoginActivity : AppCompatActivity() {
                         Constants.emailSender.sendPassword(
                             teacher.email,
                             teacher.userName,
-                            newPassword
+                            newPassword,
+                            myContext
                         )
                         closeForgottenPasswordPanel()
                     } else {
@@ -63,7 +65,6 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             }
-
         }
 
         binding.email.addTextChangedListener {

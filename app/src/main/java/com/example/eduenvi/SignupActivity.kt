@@ -62,11 +62,16 @@ class SignupActivity : AppCompatActivity() {
                     if (newTeacher != null) {
                         Constants.Teacher = newTeacher
                         resetForm()
-                        Constants.emailSender.sendWelcome(newTeacher.email, newTeacher.userName)
+                        Constants.emailSender.sendWelcome(
+                            newTeacher.email,
+                            newTeacher.userName,
+                            myContext
+                        )
                         val intent = Intent(context, ClassroomsActivity::class.java)
                         startActivity(intent)
-                    } else Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
-
+                    } else {
+                        Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }
@@ -96,19 +101,19 @@ class SignupActivity : AppCompatActivity() {
         if (userName.length < Constants.MinimalUserNameLength) {
             binding.userNameTextInputLayout.error = Constants.WrongUserNameFormatMessage
             return false
-        } else {
-            CoroutineScope(Dispatchers.IO).launch {
-                val teacher = ApiHelper.getTeacherByUserName(userName)
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            val teacher = ApiHelper.getTeacherByUserName(userName)
 
-                withContext(Dispatchers.Main) {
-                    if (teacher != null) {
-                        binding.userNameTextInputLayout.error =
-                            Constants.WrongUserNameAlreadyExistMessage
-                        isValid = false
-                    }
+            withContext(Dispatchers.Main) {
+                if (teacher != null) {
+                    binding.userNameTextInputLayout.error =
+                        Constants.WrongUserNameAlreadyExistMessage
+                    isValid = false
                 }
             }
         }
+
         return isValid
     }
 
@@ -118,15 +123,14 @@ class SignupActivity : AppCompatActivity() {
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.emailTextInputLayout.error = Constants.WrongEmailFormatMessage
             return false
-        } else {
-            CoroutineScope(Dispatchers.IO).launch {
-                val teacher = ApiHelper.getTeacherByEmail(email)
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            val teacher = ApiHelper.getTeacherByEmail(email)
 
-                withContext(Dispatchers.Main) {
-                    if (teacher != null) {
-                        binding.emailTextInputLayout.error = Constants.WrongEmailAlreadyExistMessage
-                        isValid = false
-                    }
+            withContext(Dispatchers.Main) {
+                if (teacher != null) {
+                    binding.emailTextInputLayout.error = Constants.WrongEmailAlreadyExistMessage
+                    isValid = false
                 }
             }
         }

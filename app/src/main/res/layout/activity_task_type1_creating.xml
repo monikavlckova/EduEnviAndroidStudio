@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Background">
+
+    <RelativeLayout
+        android:id="@+id/mainPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <GridView
+                android:id="@+id/board"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="50dp"
+                android:numColumns="5"
+                tools:listitem="@layout/board_item" />
+
+            <TextView
+                android:id="@+id/boardNumber"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="1/1"
+                android:textSize="20sp" />
+
+            <ImageButton
+                android:id="@+id/prevBoard"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:backgroundTint="@color/transparent"
+                android:src="@drawable/baseline_arrow_left_dark_24"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/nextBoard"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:backgroundTint="@color/transparent"
+                android:src="@drawable/baseline_arrow_right_dark_24"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonsPanel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="82dp"
+            android:gravity="right"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/textToAddButtonMore"
+                    android:text="Nastaviť obrázky" />
+
+                <ImageButton
+                    android:id="@+id/setImages"
+                    style="@style/addButtonMore"
+                    android:contentDescription="Vyber obrázky"
+                    android:src="@drawable/baseline_add_photo_dark_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/textToAddButtonMore"
+                    android:text="Zahodiť plochu" />
+
+                <ImageButton
+                    android:id="@+id/deleteBoard"
+                    style="@style/addButtonMore"
+                    android:contentDescription="Zahodiť plochu"
+                    android:src="@drawable/baseline_disabled_by_default_dark_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/textToAddButtonMore"
+                    android:text="Zmeniť veľkosť plochy" />
+
+                <ImageButton
+                    android:id="@+id/resizeBoard"
+                    style="@style/addButtonMore"
+                    android:contentDescription="Zahodiť"
+                    android:src="@drawable/baseline_replay_dark_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/textToAddButtonMore"
+                    android:text="Vytvoriť ďaľši plochu" />
+
+                <ImageButton
+                    android:id="@+id/addAnotherMap"
+                    style="@style/addButtonMore"
+                    android:contentDescription="Vytvoriť ďaľšiu"
+                    android:src="@drawable/baseline_new_window_dark_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/textToAddButtonMore"
+                    android:text="Zahodiť úlohu" />
+
+                <ImageButton
+                    android:id="@+id/deleteTask"
+                    style="@style/addButtonMore"
+                    android:contentDescription="Zahodiť úlohu"
+                    android:src="@drawable/baseline_delete_dark_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/textToAddButtonMore"
+                    android:text="Uložiť úlohu" />
+
+                <ImageButton
+                    android:id="@+id/saveTask"
+                    style="@style/addButtonMore"
+                    android:contentDescription="Uložiť úlohu"
+                    android:src="@drawable/baseline_save_dark_24" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/moreButtons"
+            style="@style/addButton"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/add" />
+
+        <ImageButton
+            android:id="@+id/closeButtonPanel"
+            style="@style/addButton"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/baseline_close_24"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/boardSizePickerPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/Surface"
+        android:padding="20dp"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:gravity="center"
+            android:text="Veľkosť plochy"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/numOfColumnsAndRowsPickerLayout" />
+
+        <LinearLayout
+            android:id="@+id/numOfColumnsAndRowsPickerLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            app:layout_constraintBottom_toTopOf="@id/icCircle"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <NumberPicker
+                android:id="@+id/numOfColumnsPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="x"
+                android:textSize="20sp" />
+
+            <NumberPicker
+                android:id="@+id/numOfRowsPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp" />
+        </LinearLayout>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/icCircle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:text="kružnica"
+            app:layout_constraintBottom_toTopOf="@id/setBoardSize"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <Button
+            android:id="@+id/setBoardSize"
+            style="@style/actionButton"
+            android:text="@string/set"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="MissingConstraints" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/selectImagesPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:background="@color/Surface"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/closeSelectImagesPanel"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            style="@style/backButtonDark"
+            android:layout_margin="0dp"/>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/imageLayout"
+            app:layout_constraintLeft_toLeftOf="parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:text="Voľné políčko"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:text="Zátarasa"/>
+        </GridLayout>
+
+        <com.example.eduenvi.GridViewItem
+            android:id="@id/imageLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <GridView
+                android:id="@+id/imageGridView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:numColumns="2"
+                android:padding="10dp"
+                tools:listitem="@layout/board_item"/>
+        </com.example.eduenvi.GridViewItem>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/imageLayout"
+            app:layout_constraintLeft_toLeftOf="parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:text="Štartovné políčko"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:text="Označenie cesty"/>
+        </GridLayout>
+
+        <Button
+            android:id="@+id/saveImages"
+            style="@style/actionButton"
+            android:text="@string/set"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragmentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/Background"
+        android:visibility="gone">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="70dp" />
+
+        <ImageButton
+            android:id="@+id/closeFragmentButton"
+            style="@style/backButtonDark"
+            android:contentDescription="@string/back" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
