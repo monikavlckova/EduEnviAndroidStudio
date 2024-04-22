@@ -64,11 +64,11 @@ class GroupStudentsActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     if (res != null) {
                         students.remove(Constants.Student)
+                        adapter.notifyDataChanged()
 
                     } else {
                         Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     }
-                    adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
                 }
             }

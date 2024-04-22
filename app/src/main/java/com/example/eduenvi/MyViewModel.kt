@@ -8,16 +8,23 @@ class MyViewModel : ViewModel() {
 
     private var selectedImage: MutableLiveData<Image> = MutableLiveData()
     private var changingImageIndex: MutableLiveData<Int> = MutableLiveData()
+    private var startingPosition: MutableLiveData<Int> = MutableLiveData()
 
     fun setData(image: Image) {
         selectedImage.value = image
     }
 
-    fun setData(index: Int){
+    fun setChangingImageIndex(index: Int){
         changingImageIndex.value = index
+    }
+
+    fun setStartingPosition(position: Int){
+        startingPosition.value = position
     }
 
     fun getSelectedImage() = selectedImage
     fun getChangingImageIndex() = changingImageIndex
+
+    fun getStartingPosition() = startingPosition
 
 }

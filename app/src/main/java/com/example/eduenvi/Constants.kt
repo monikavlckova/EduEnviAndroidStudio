@@ -70,16 +70,22 @@ object Constants {
     var TaskType = TaskType(0, "", null)
     var Teacher = Teacher(0, "", "", "", "", "", null)
 
-    var TaskType1Id = 2
-    var TaskType2Id = 3
+    var TaskType1Id = 1
+    //var TaskType2Id = 2
 
-    var TaskTypeCreatingActivity = mapOf(Pair(TaskType1Id, TaskType1CreatingActivity::class.java),
-        Pair(TaskType2Id, TaskType2CreatingActivity::class.java))
+    var TaskTypeCreatingActivity = mapOf(Pair(TaskType1Id, TaskType1CreatingActivity::class.java)/*,
+        Pair(TaskType2Id, TaskType2CreatingActivity::class.java)*/)
 
-    var TaskTypeActivity = mapOf(Pair(TaskType1Id, TaskType1Activity::class.java),
-        Pair(TaskType2Id, TaskType2Activity::class.java))
+    var TaskTypeActivity = mapOf(Pair(TaskType1Id, TaskType1Activity::class.java)/*,
+        Pair(TaskType2Id, TaskType2Activity::class.java)*/)
 
+    val freeImageIndex = 0
+    val wallImageIndex = 1
+    val startImageIndex = 2
+    val itemImageIndex = 3
     var ImageGridResources = mutableListOf(R.color.Primary, R.mipmap.wall, R.mipmap.start, R.mipmap.item)
     var ImageGridImages= mutableListOf<Image?>(null, null, null, null)
+
+    var paths = mutableListOf<MutableList<Int>>()
 
 }

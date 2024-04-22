@@ -7,12 +7,16 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/studentName"
         style="@style/headline"
         android:text="Vitaj Meno!" />
 
     <ImageButton
         android:id="@+id/logoutButton"
         style="@style/logoutButton"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:contentDescription="@string/back" />
 
     <ScrollView
@@ -38,7 +42,7 @@
                     android:id="@+id/profileImage"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/baseline_account_circle_dark_24" />
+                    android:src="@drawable/baseline_account_circle_24" />
             </LinearLayout>
 
             <TextView
@@ -98,7 +102,7 @@
             <ImageButton
                 android:id="@+id/tasksButton"
                 style="@style/navButtonInConstraintLayout"
-                android:src="@mipmap/tasks"
+                android:src="@mipmap/tasks_highlighted"
                 tools:ignore="MissingConstraints" />
 
             <TextView
@@ -114,13 +118,13 @@
             android:layout_height="wrap_content">
 
             <ImageButton
-                android:id="@+id/massagesButton"
+                android:id="@+id/ratingButton"
                 style="@style/navButtonInConstraintLayout"
-                android:src="@mipmap/tasks"
+                android:src="@mipmap/star"
                 tools:ignore="MissingConstraints" />
 
             <TextView
-                android:id="@+id/newMassageNotice"
+                android:id="@+id/newRatingNotice"
                 style="@style/navButtonInConstraintLayoutMessage"
                 android:visibility="gone"
                 tools:ignore="MissingConstraints" />

@@ -6,17 +6,70 @@
     android:layout_height="match_parent"
     android:background="@color/Background">
 
-    <RelativeLayout
-        android:id="@+id/mainPanel"
+    <GridView
+        android:id="@+id/board"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="200dp"
+        tools:listitem="@layout/board_item" />
 
-        <GridView
-            android:id="@+id/board"
+    <TextView
+        android:id="@+id/boardNumber"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:text="1/1"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        style="@style/backButtonDark"/>
+
+    <ImageButton
+        android:id="@+id/prevBoard"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="50dp"
+        android:layout_centerVertical="true"
+        android:backgroundTint="@color/transparent"
+        android:src="@drawable/baseline_arrow_left_dark_24"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/nextBoard"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:backgroundTint="@color/transparent"
+        android:src="@drawable/baseline_arrow_right_dark_24"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <ImageButton
+            android:id="@+id/reset"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            tools:listitem="@layout/board_item" />
-    </RelativeLayout>
+            android:layout_weight="1"
+            android:backgroundTint="@color/transparent"
+            android:src="@drawable/baseline_replay_dark_24" />
+
+        <ImageButton
+            android:id="@+id/save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/transparent"
+            android:src="@drawable/baseline_save_dark_24" />
+    </LinearLayout>
+
 
 </RelativeLayout>

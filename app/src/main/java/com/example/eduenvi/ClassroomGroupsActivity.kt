@@ -34,6 +34,7 @@ class ClassroomGroupsActivity : AppCompatActivity() {
     private var imageId: Int? = null
     private lateinit var viewModel: MyViewModel
     private val fragment = ImageGalleryFragment()
+    private var classroom = Constants.Classroom
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +55,7 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         }
 
         CoroutineScope(Dispatchers.IO).launch {
-            groups = ApiHelper.getGroupsInClassroom(Constants.Classroom.id) as MutableList<Group>
+            groups = ApiHelper.getGroupsInClassroom(classroom.id) as MutableList<Group>
 
             withContext(Dispatchers.Main) {
                 adapter = ClassroomGroupsAdapter(myContext, groups)
@@ -62,7 +63,6 @@ class ClassroomGroupsActivity : AppCompatActivity() {
             }
         }
 
-        val classroom = Constants.Classroom
         binding.classroomName.text = classroom.name
 
         binding.backButton.setOnClickListener {
@@ -104,7 +104,7 @@ class ClassroomGroupsActivity : AppCompatActivity() {
 
         binding.saveButton.setOnClickListener {
             if (validName()) {
-                val classroomId = Constants.Classroom.id
+                val classroomId = classroom.id
                 val name = binding.groupName.text.toString()
                 val group = Group(0, classroomId, name, imageId)
                 var res: Group?
@@ -120,12 +120,13 @@ class ClassroomGroupsActivity : AppCompatActivity() {
                     }
                     withContext(Dispatchers.Main) {
                         if (res != null) {
+                            //Constants.Group = res!!
                             groups.add(res!!)
                             adapter.notifyDataChanged()
+                            manageStudents(res!!.id)
                         } else {
                             Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                         }
-                        manageStudents()
                     }
                 }
                 closeGroupPanel()
@@ -194,11 +195,11 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             var studentsInGroup: List<Student>? = null
             var studentsNotInGroup: List<Student>? =
-                ApiHelper.getStudentsInClassroom(Constants.Classroom.id)
+                ApiHelper.getStudentsInClassroom(classroom.id)
             if (_creatingNewGroup == false) {
                 studentsInGroup = ApiHelper.getStudentsInGroup(Constants.Group.id)
                 studentsNotInGroup = ApiHelper.getStudentsFromClassroomNotInGroup(
-                    Constants.Classroom.id,
+                    classroom.id,
                     Constants.Group.id
                 )
             }
@@ -255,16 +256,16 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         chipGroup.addView(chip)
     }
 
-    private fun manageStudents() {
+    private fun manageStudents(groupId: Int) {
         var showSaveToast = false
         var showDeleteToast = false
         CoroutineScope(Dispatchers.IO).launch {
             for (student in _addToGroup) {
-                val res = ApiHelper.createStudentGroup(StudentGroup(student.id, Constants.Group.id))
+                val res = ApiHelper.createStudentGroup(StudentGroup(student.id, groupId))
                 if (res == null) showSaveToast = true
             }
             for (student in _delFromGroup) {
-                val res = ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
+                val res = ApiHelper.deleteStudentGroup(student.id, groupId)
                 if (res == null) showDeleteToast = true
             }
             withContext(Dispatchers.Main) {

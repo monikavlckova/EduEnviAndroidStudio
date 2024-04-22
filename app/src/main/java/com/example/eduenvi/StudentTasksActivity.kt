@@ -2,6 +2,7 @@ package com.example.eduenvi
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -29,15 +30,14 @@ class StudentTasksActivity : AppCompatActivity() {
     private lateinit var adapter: StudentTasksAdapter
     private val myContext = this
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStudentTasksBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val student = Constants.Student
+        Log.v("...", Constants.Student.id.toString())
         CoroutineScope(Dispatchers.IO).launch {
-            tasks = ApiHelper.getStudentsTasks(student.id) as MutableList<Task>
+            tasks = ApiHelper.getStudentsTasks(Constants.Student.id) as MutableList<Task>
 
             withContext(Dispatchers.Main) {
                 adapter = StudentTasksAdapter(myContext, tasks)
@@ -45,7 +45,7 @@ class StudentTasksActivity : AppCompatActivity() {
             }
         }
 
-        binding.studentName.text = "${student.firstName} ${student.lastName}"
+        binding.studentName.text = "${Constants.Student.firstName} ${Constants.Student.lastName}"
 
         binding.backButton.setOnClickListener {
             val intent = Intent(this, ClassroomStudentsActivity::class.java)
@@ -59,15 +59,15 @@ class StudentTasksActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                val res = ApiHelper.deleteStudentTask(student.id, Constants.Task.id)
+                val res = ApiHelper.deleteStudentTask(Constants.Student.id, Constants.Task.id)
 
                 withContext(Dispatchers.Main) {
                     if (res != null) {
                         tasks.remove(Constants.Task)
+                        adapter.notifyDataChanged()
                     } else {
                         Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     }
-                    adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
                 }
             }

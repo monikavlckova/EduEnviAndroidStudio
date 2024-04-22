@@ -12,8 +12,6 @@ import android.widget.TextView
 import com.example.eduenvi.Constants
 import com.example.eduenvi.R
 import com.example.eduenvi.StudentTasksActivity
-import com.example.eduenvi.TaskType1CreatingActivity
-import com.example.eduenvi.TaskType2CreatingActivity
 import com.example.eduenvi.models.Task
 
 class StudentTasksAdapter(private val context: Activity, private val list: List<Task>) :
@@ -39,15 +37,9 @@ class StudentTasksAdapter(private val context: Activity, private val list: List<
         }
         view?.setOnClickListener {
             Constants.Task = task
-            if (task.taskTypeId == Constants.TaskType1Id) {
-                val intent =
-                    Intent((context as StudentTasksActivity), TaskType1CreatingActivity::class.java)//TODO zmen na progres ziakov?
-                context.startActivity(intent)
-            } else if (task.taskTypeId == Constants.TaskType2Id) {
-                val intent =
-                    Intent((context as StudentTasksActivity), TaskType2CreatingActivity::class.java)
-                context.startActivity(intent)
-            }//TODO viac
+            val intent = Intent(context, Constants.TaskTypeCreatingActivity[task.taskTypeId])//TODO zmen na progres skupin
+            intent.putExtra("TASK_ID", task.id)
+            context.startActivity(intent)
         }
 
         return view

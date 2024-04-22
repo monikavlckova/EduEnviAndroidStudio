@@ -35,8 +35,9 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".StudentGroupsActivity" />
-        <activity android:name=".StudentActivity" />
         <activity android:name=".StudentTasksActivity" />
+        <activity android:name=".StudentActivity" />
+        <activity android:name=".StudentRatingActivity" />
         <activity android:name=".TaskType1CreatingActivity" />
         <activity android:name=".TaskType1Activity" />
         <activity android:name=".TaskType2CreatingActivity" />

@@ -12,6 +12,10 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
+        <ImageButton
+            android:id="@+id/backButton"
+            style="@style/backButtonDark"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -21,14 +25,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_margin="50dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="70dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginBottom="200dp"
                 android:numColumns="5"
                 tools:listitem="@layout/board_item" />
 
             <TextView
                 android:id="@+id/boardNumber"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="70dp"
                 android:gravity="center"
                 android:text="1/1"
                 android:textSize="20sp" />

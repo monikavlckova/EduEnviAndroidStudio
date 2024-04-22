@@ -2,6 +2,7 @@ package com.example.eduenvi
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eduenvi.adapters.StudentGroupTasksAdapter
 import com.example.eduenvi.adapters.StudentSoloTasksAdapter
@@ -33,6 +34,10 @@ class StudentActivity : AppCompatActivity() {
         binding = ActivityStudentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Constants.imageManager.setImage(Constants.Student.imageId, myContext, binding.profileImage)
+        if (Constants.Student.imageId == null) binding.imageLayout.visibility = View.GONE
+        binding.studentName.text = "Vitaj ${Constants.Student.firstName}!"
+
         setSoloStudentTasksLayout()
         setGroupTasksLayout()
         setTerminatedTasksLayout()
@@ -42,14 +47,9 @@ class StudentActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        binding.tasksButton.setOnClickListener {
-            setSoloStudentTasksLayout()
-            setGroupTasksLayout()
-            setTerminatedTasksLayout()
-        }
-
-        binding.massagesButton.setOnClickListener {
-            //TODO
+        binding.ratingButton.setOnClickListener {
+            val intent = Intent(this, StudentRatingActivity::class.java)
+            startActivity(intent)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.eduenvi
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.eduenvi.adapters.ClassroomTasksAdapter
 import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityClassroomTasksBinding
+import com.example.eduenvi.models.ClassroomTask
+import com.example.eduenvi.models.GroupTask
+import com.example.eduenvi.models.StudentTask
 import com.example.eduenvi.models.Task
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +26,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 
-//TODO ked vytvorim ulohu pre triedu automatcky prirad studentTask, ked odstranim tak odstarn studentTask aj classroom task
+//TODO ked odstranim tak odstarn studentTask aj classroom task aj grouptask
 
 class ClassroomTasksActivity : AppCompatActivity() {
 
@@ -37,6 +41,10 @@ class ClassroomTasksActivity : AppCompatActivity() {
     private var imageId: Int? = null
     private lateinit var viewModel: MyViewModel
     private val fragment = ImageGalleryFragment()
+    private val classroom = Constants.Classroom
+    private var soloTask = true
+    private var groupTask = false
+    private var freeTask = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +55,6 @@ class ClassroomTasksActivity : AppCompatActivity() {
         loadViewModel()
         loadClassroomTasksToLayout()
 
-        val classroom = Constants.Classroom
         binding.classroomName.text = classroom.name
 
         binding.backButton.setOnClickListener {
@@ -71,6 +78,8 @@ class ClassroomTasksActivity : AppCompatActivity() {
             deadline = null
             visibleFrom = null
             binding.taskName.text = null
+            binding.text.text = null
+            binding.saveButton.text = Constants.SaveButtonTextCreate
             Constants.imageManager.setImage("", this, binding.taskImage)
             binding.taskPanel.visibility = View.VISIBLE
             binding.mainPanel.visibility = View.GONE
@@ -84,6 +93,8 @@ class ClassroomTasksActivity : AppCompatActivity() {
             deadline = Constants.Task.deadline
             visibleFrom = Constants.Task.visibleFrom
             binding.taskName.setText(Constants.Task.name)
+            binding.text.setText(Constants.Task.text)
+            binding.saveButton.text = Constants.SaveButtonTextUpdate
             Constants.imageManager.setImage(Constants.Task.imageId, this, binding.taskImage)
             binding.taskPanel.visibility = View.VISIBLE
             binding.editPanel.visibility = View.GONE
@@ -133,6 +144,31 @@ class ClassroomTasksActivity : AppCompatActivity() {
             closeDateTimePanel()
         }
 
+        binding.soloTaskButton.setOnClickListener {
+            soloTask = true
+            groupTask = false
+            freeTask = false
+            binding.soloTaskButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.Secondary))
+            binding.groupTaskButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.gray))
+            binding.freeTaskButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.gray))
+        }
+        binding.groupTaskButton.setOnClickListener {
+            soloTask = false
+            groupTask = true
+            freeTask = false
+            binding.soloTaskButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.gray))
+            binding.groupTaskButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.Secondary))
+            binding.freeTaskButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.gray))
+        }
+        binding.freeTaskButton.setOnClickListener {
+            soloTask = false
+            groupTask = false
+            freeTask = true
+            binding.soloTaskButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.gray))
+            binding.groupTaskButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.gray))
+            binding.freeTaskButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.Secondary))
+        }
+
         binding.saveButton.setOnClickListener {
             val validName = validName()
             val validType = validType()
@@ -140,8 +176,8 @@ class ClassroomTasksActivity : AppCompatActivity() {
                 val teacherId = Constants.Teacher.id
                 val taskTypeId = Constants.TaskType.id
                 val name = binding.taskName.text.toString()
-                //TODO nastavit text, spravit okinko, treba text?
-                val task = Task(0, teacherId, taskTypeId, name, "", imageId, deadline, visibleFrom)
+                val text = binding.text.text.toString()
+                val task = Task(0, teacherId, taskTypeId, name, text, imageId, deadline, visibleFrom)
                 saveTask(task)
                 closeTaskPanel()
             }
@@ -236,7 +272,10 @@ class ClassroomTasksActivity : AppCompatActivity() {
             binding.taskTypeLayout.visibility = View.GONE
             binding.updatingTaskTypeLayout.visibility = View.VISIBLE
             CoroutineScope(Dispatchers.IO).launch {
-                binding.updatingTaskTypeText.text = getTaskTypeName(Constants.Task.taskTypeId)
+                val name = getTaskTypeName(Constants.Task.taskTypeId)
+                withContext(Dispatchers.Main){
+                    binding.updatingTaskTypeText.text = name
+                }
             }
         }
     }
@@ -269,6 +308,11 @@ class ClassroomTasksActivity : AppCompatActivity() {
         var res: Task?
         CoroutineScope(Dispatchers.IO).launch {
             res = if (_creatingNew) saveNewTask(task) else updateTask(task)
+            if (res != null && _creatingNew) {
+                ApiHelper.createClassroomTask(ClassroomTask(Constants.Classroom.id, res!!.id))
+                if (soloTask) setTaskToStudentsInClassroom(task)
+                else if (groupTask) setTaskToGroupsInClassroom(task)
+            }
             withContext(Dispatchers.Main) {
                 if (res != null) {
                     tasks.add(res!!)
@@ -292,8 +336,22 @@ class ClassroomTasksActivity : AppCompatActivity() {
         return res
     }
 
+    private suspend fun setTaskToStudentsInClassroom(task: Task){
+        val students = ApiHelper.getStudentsInClassroom(classroom.id)
+        for (student in students!!){
+            ApiHelper.createStudentTask(StudentTask(student.id, task.id))
+        }
+    }
+
+    private suspend fun setTaskToGroupsInClassroom(task: Task){
+        val groups = ApiHelper.getGroupsInClassroom(classroom.id)
+        for (group in groups!!){
+            ApiHelper.createGroupTask(GroupTask(group.id, task.id))
+        }
+    }
+
     private suspend fun getTaskTypeName(id: Int): String {
-        return ApiHelper.getTask(id)?.name ?: "id: $id"
+        return ApiHelper.getTaskType(id)?.name ?: "id: $id"
     }
 
     private fun closeTaskPanel() {
@@ -301,6 +359,7 @@ class ClassroomTasksActivity : AppCompatActivity() {
         binding.mainPanel.visibility = View.VISIBLE
         binding.taskNameTextInputLayout.error = null
         binding.taskName.text = null
+        binding.text.text = null
         for (i in binding.chipTaskType.childCount - 1 downTo 0) {
             val chip = binding.chipTaskType.getChildAt(i)
             binding.chipTaskType.removeView(chip)

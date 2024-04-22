@@ -2,6 +2,7 @@ package com.example.eduenvi
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -36,6 +37,7 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         binding = ActivityClassroomStudentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Log.v("DB", "Trieda: ${changeToClassroom.id}")
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragmentContainer, fragment)
@@ -130,6 +132,7 @@ class ClassroomStudentsActivity : AppCompatActivity() {
                         res = ApiHelper.updateStudent(student.id, student)
                         if (res != null) {
                             students.remove(Constants.Student)
+                            adapter.notifyDataChanged()
                         }
                     } else res = ApiHelper.createStudent(student)
 
@@ -138,8 +141,8 @@ class ClassroomStudentsActivity : AppCompatActivity() {
                             Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                         }else if (changeToClassroom == Constants.Classroom) {
                             students.add(res!!)
+                            adapter.notifyDataChanged()
                         }
-                        adapter.notifyDataChanged()
                         closeStudentPanel()
                     }
                 }
@@ -158,10 +161,10 @@ class ClassroomStudentsActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     if (res != null) {
                         students.remove(Constants.Student)
+                        adapter.notifyDataChanged()
                     } else {
                         Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     }
-                    adapter.notifyDataChanged()
                     binding.deletePanel.visibility = View.GONE
                 }
             }

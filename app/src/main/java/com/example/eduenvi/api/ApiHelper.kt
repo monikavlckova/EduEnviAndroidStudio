@@ -5,7 +5,6 @@ import android.util.Log
 import com.example.eduenvi.models.Board
 import com.example.eduenvi.models.Classroom
 import com.example.eduenvi.models.ClassroomTask
-import com.example.eduenvi.models.Edge
 import com.example.eduenvi.models.Group
 import com.example.eduenvi.models.GroupTask
 import com.example.eduenvi.models.Image
@@ -16,7 +15,6 @@ import com.example.eduenvi.models.Task
 import com.example.eduenvi.models.TaskType
 import com.example.eduenvi.models.Teacher
 import com.example.eduenvi.models.Tile
-import com.example.eduenvi.models.Vertex
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -364,6 +362,10 @@ object ApiHelper {
     }
 
 
+    suspend fun getTaskType(id: Int): TaskType? {
+        return performApiCall { RetrofitInstance.api.getTaskType(id) }
+    }
+
     suspend fun getAllTaskTypes(): List<TaskType>? {
         return performApiCall { RetrofitInstance.api.getAllTaskTypes() }
     }
@@ -431,74 +433,6 @@ object ApiHelper {
     }
 
 
-    suspend fun getEdge(id: Int): Edge? {
-        return performApiCall { RetrofitInstance.api.getEdge(id) }
-    }
-
-
-    suspend fun getAllEdges(): List<Edge>? {
-        return performApiCall { RetrofitInstance.api.getAllEdges() }
-    }
-
-
-    suspend fun getFromVertexEdges(fromVertexId: Int): List<Edge>? {
-        return performApiCall { RetrofitInstance.api.getFromVertexEdges(fromVertexId) }
-    }
-
-
-    suspend fun createEdge(edge: Edge): Edge? {
-        return performApiCall { RetrofitInstance.api.createEdge(edge) }
-    }
-
-
-    suspend fun updateAllEdge(id: Int, edge: Edge): Edge? {
-        return performApiCall { RetrofitInstance.api.updateAllEdge(id, edge) }
-    }
-
-    suspend fun updateEdge(id: Int, edge: Edge): Edge? {
-        return performApiCall { RetrofitInstance.api.updateEdge(id, edge) }
-    }
-
-
-    suspend fun deleteEdge(id: Int): Edge? {
-        return performApiCall { RetrofitInstance.api.deleteEdge(id) }
-    }
-
-
-    suspend fun geVertex(id: Int): Vertex? {
-        return performApiCall { RetrofitInstance.api.geVertex(id) }
-    }
-
-
-    suspend fun getAlVertices(): List<Vertex>? {
-        return performApiCall { RetrofitInstance.api.getAlVertices() }
-    }
-
-
-    suspend fun getTaskVertices(taskId: Int): List<Vertex>? {
-        return performApiCall { RetrofitInstance.api.getTaskVertices(taskId) }
-    }
-
-
-    suspend fun createVertex(vertex: Vertex): Vertex? {
-        return performApiCall { RetrofitInstance.api.createVertex(vertex) }
-    }
-
-
-    suspend fun updateAllVertex(id: Int, vertex: Vertex): Vertex? {
-        return performApiCall { RetrofitInstance.api.updateAllVertex(id, vertex) }
-    }
-
-    suspend fun updateVertex(id: Int, vertex: Vertex): Vertex? {
-        return performApiCall { RetrofitInstance.api.updateVertex(id, vertex) }
-    }
-
-
-    suspend fun deleteVertex(id: Int): Vertex? {
-        return performApiCall { RetrofitInstance.api.deleteVertex(id) }
-    }
-
-
     suspend fun getImage(id: Int): Image? {
         return performApiCall { RetrofitInstance.api.getImage(id) }
     }
@@ -523,6 +457,7 @@ object ApiHelper {
         return performApiCall { RetrofitInstance.api.deleteImage(id) }
     }
 
+
     suspend fun getBoard(id: Int): Board?{
         return performApiCall { RetrofitInstance.api.getBoard(id) }
     }
@@ -536,6 +471,7 @@ object ApiHelper {
     }
 
     suspend fun createBoard(board: Board): Board?{
+        board.tiles = null
         return performApiCall { RetrofitInstance.api.createBoard(board) }
     }
 
@@ -556,8 +492,8 @@ object ApiHelper {
         return performApiCall { RetrofitInstance.api.getAllTiles() }
     }
 
-    suspend fun getBoardTiles(taskId: Int): List<Tile>?{
-        return performApiCall { RetrofitInstance.api.getBoardTiles(taskId) }
+    suspend fun getBoardTiles(boardId: Int): List<Tile>?{
+        return performApiCall { RetrofitInstance.api.getBoardTiles(boardId) }
     }
 
     suspend fun createTile(tile: Tile): Tile?{

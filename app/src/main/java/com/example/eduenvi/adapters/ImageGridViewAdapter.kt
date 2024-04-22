@@ -30,7 +30,7 @@ class ImageGridViewAdapter(private val context: TaskType1CreatingActivity, list:
             context.binding.fragmentLayout.visibility = View.VISIBLE
             context.binding.selectImagesPanel.visibility = View.GONE
             val viewModel: MyViewModel = ViewModelProvider(context)[MyViewModel::class.java]
-            viewModel.setData(position)
+            viewModel.setChangingImageIndex(position)
         }
 
         return view

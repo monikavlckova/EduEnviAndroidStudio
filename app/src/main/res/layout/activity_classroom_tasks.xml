@@ -112,6 +112,23 @@
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout"
+                    android:layout_height = "wrap_content"
+                    android:layout_width = "match_parent"
+                    android:layout_marginHorizontal="20dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/oval_50_background"
+                        android:hint="Text"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="30dp"
+                        android:paddingEnd="30dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <LinearLayout
                     android:id="@+id/taskTypeLayout"
                     android:layout_width="match_parent"
@@ -152,16 +169,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:textSize="16dp"
-                        android:text="Typ" />
+                        android:text="Typ"
+                        android:textSize="16dp" />
 
                     <TextView
                         android:id="@+id/updatingTaskTypeText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:textSize="16dp"
-                        android:text="" />
+                        android:text=""
+                        android:textSize="16dp" />
 
                 </RelativeLayout>
 
@@ -195,6 +212,39 @@
                         style="@style/textViewLeft"
                         android:text="@string/set" />
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/soloTaskButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:text="samostatná"
+                        android:backgroundTint="@color/Secondary"/>
+
+                    <Button
+                        android:id="@+id/groupTaskButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:padding="12dp"
+                        android:text="skupinová"
+                        android:backgroundTint="@color/gray"/>
+
+                    <Button
+                        android:id="@+id/freeTaskButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:text="nepriradená"
+                        android:backgroundTint="@color/gray"/>
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/saveButton"

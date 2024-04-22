@@ -184,7 +184,7 @@ interface ApiInterface {
         @Body studentTask: StudentTask
     ): Response<StudentTask>
 
-    @DELETE("api/StudentTask/{{studentId}/{taskId}")
+    @DELETE("api/StudentTask/{studentId}/{taskId}")
     suspend fun deleteStudentTask(
         @Path("studentId") studentId: Int,
         @Path("taskId") taskId: Int
@@ -230,6 +230,9 @@ interface ApiInterface {
     @DELETE("api/Task/{id}")
     suspend fun deleteTask(@Path("id") id: Int): Response<Task>
 
+
+    @GET("api/TaskType/{id}")
+    suspend fun getTaskType(@Path("id") id: Int): Response<TaskType>
 
     @GET("api/TaskType")
     suspend fun getAllTaskTypes(): Response<List<TaskType>>
@@ -278,50 +281,6 @@ interface ApiInterface {
     suspend fun deleteTeacher(@Path("id") id: Int): Response<Teacher>
 
 
-    @GET("api/Edge/{id}")
-    suspend fun getEdge(@Path("id") id: Int): Response<Edge>
-
-    @GET("api/Edge")
-    suspend fun getAllEdges(): Response<List<Edge>>
-
-    @GET("api/Edge/getByFromVertexId/{fromVertexId}")
-    suspend fun getFromVertexEdges(@Path("fromVertexId") fromVertexId: Int): Response<List<Edge>>
-
-    @PUT("api/Edge")
-    suspend fun createEdge(@Body edge: Edge): Response<Edge>
-
-    @POST("api/Edge/{id}")
-    suspend fun updateAllEdge(@Path("id") id: Int, @Body edge: Edge): Response<Edge>
-
-    @PATCH("api/Edge/{id}")
-    suspend fun updateEdge(@Path("id") id: Int, @Body edge: Edge): Response<Edge>
-
-    @DELETE("api/Edge/{id}")
-    suspend fun deleteEdge(@Path("id") id: Int): Response<Edge>
-
-
-    @GET("api/Vertex/{id}")
-    suspend fun geVertex(@Path("id") id: Int): Response<Vertex>
-
-    @GET("api/Vertex")
-    suspend fun getAlVertices(): Response<List<Vertex>>
-
-    @GET("api/Vertex/getByTaskId/{taskId}")
-    suspend fun getTaskVertices(@Path("taskId") taskId: Int): Response<List<Vertex>>
-
-    @PUT("api/Vertex")
-    suspend fun createVertex(@Body vertex: Vertex): Response<Vertex>
-
-    @POST("api/Vertex/{id}")
-    suspend fun updateAllVertex(@Path("id") id: Int, @Body vertex: Vertex): Response<Vertex>
-
-    @PATCH("api/Vertex/{id}")
-    suspend fun updateVertex(@Path("id") id: Int, @Body vertex: Vertex): Response<Vertex>
-
-    @DELETE("api/Vertex/{id}")
-    suspend fun deleteVertex(@Path("id") id: Int): Response<Vertex>
-
-
     @GET("api/Image/{id}")
     suspend fun getImage(@Path("id") id: Int): Response<Image>
 
@@ -344,7 +303,7 @@ interface ApiInterface {
     @GET("api/Board")
     suspend fun getAllBoards(): Response<List<Board>>
 
-    @GET("api/Board/getByTaskId/{id}")
+    @GET("api/Board/getByTaskId/{taskId}")
     suspend fun getTaskBoards(@Path("taskId") taskId: Int): Response<List<Board>>
 
     @PUT("api/Board")
@@ -363,7 +322,7 @@ interface ApiInterface {
     @GET("api/Tile")
     suspend fun getAllTiles(): Response<List<Tile>>
 
-    @GET("api/Tile/getByBoardId/{id}")
+    @GET("api/Tile/getByBoardId/{boardId}")
     suspend fun getBoardTiles(@Path("boardId") boardId: Int): Response<List<Tile>>
 
     @PUT("api/Tile")

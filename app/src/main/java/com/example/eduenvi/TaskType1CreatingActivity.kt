@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.eduenvi.adapters.BoardAdapter
+import com.example.eduenvi.adapters.CreatingBoardAdapter
 import com.example.eduenvi.adapters.ImageGridViewAdapter
 import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityTaskType1CreatingBinding
@@ -21,7 +21,7 @@ class TaskType1CreatingActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityTaskType1CreatingBinding
     private lateinit var boardMap: MutableList<Tile>
-    private lateinit var boardAdapter: BoardAdapter
+    private lateinit var boardAdapter: CreatingBoardAdapter
     private var boardMaps = mutableListOf<Board>()
     private var currentBoardIndex = -1
     private var updating = false
@@ -30,10 +30,14 @@ class TaskType1CreatingActivity : AppCompatActivity() {
     private lateinit var viewModel: MyViewModel
     private val fragment = ImageGalleryFragment()
     private var images = mutableListOf<Image?>(null, null, null, null)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTaskType1CreatingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        taskId = intent.extras?.getInt("TASK_ID")
+        loadBoardsIfExist()
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
@@ -53,7 +57,10 @@ class TaskType1CreatingActivity : AppCompatActivity() {
             binding.selectImagesPanel.visibility = View.VISIBLE
         }
 
-        taskId = intent.extras?.getInt("TASK_ID")
+        viewModel.getStartingPosition().observe(this) { position ->
+            boardMaps[currentBoardIndex].startIndex = position
+            setBoard(boardMaps[currentBoardIndex].columns)
+        }
 
         binding.numOfColumnsPicker.displayedValues =
             listOf("1", "2", "3", "4", "5", "6", "7", "8").toTypedArray()
@@ -73,12 +80,12 @@ class TaskType1CreatingActivity : AppCompatActivity() {
             boardMap =
                 (0..<(rows * columns)).map { i -> Tile(0, 0, i, false) }.toMutableList()
 
+            val board = Board(0, rows, columns, 0, taskId!!, 0, null, null, null, null, boardMap)
             if (updating) {
-                boardMaps[currentBoardIndex] =
-                    Board(0, rows, columns, taskId!!, 0, 0, 0, 0, boardMap)
+                boardMaps[currentBoardIndex] = board
                 updating = false
             } else {
-                boardMaps.add(Board(0, rows, columns, 0, 0, 0, 0, 0, boardMap))
+                boardMaps.add(board)
                 currentBoardIndex++
             }
             setBoard(columns)
@@ -123,7 +130,7 @@ class TaskType1CreatingActivity : AppCompatActivity() {
 
 
         binding.saveImages.setOnClickListener {
-            for (i in 0..3){
+            for (i in 0..3) {
                 val image = Constants.ImageGridImages[i]
                 if (image != null) images[i] = image
             }
@@ -175,19 +182,38 @@ class TaskType1CreatingActivity : AppCompatActivity() {
 
         binding.saveTask.setOnClickListener {
             closeButtonPanel()
-            //var task = Task(0, Constants.Teacher.id, Constants.TaskType1Id, name, text, deadline, visibleFrom)
+            CoroutineScope(Dispatchers.IO).launch {
+                deleteTaskBoards()
+                for ((i, boardMap) in boardMaps.withIndex()) {
+                    val tiles = boardMap.tiles
+                    boardMap.id = 0
+                    boardMap.tiles = null
+                    boardMap.index = i
+                    boardMap.freeImageId = images[Constants.freeImageIndex]?.id
+                    boardMap.itemImageId = images[Constants.itemImageIndex]?.id
+                    boardMap.startImageId = images[Constants.startImageIndex]?.id
+                    boardMap.wallImageId = images[Constants.wallImageIndex]?.id
+                    val board = ApiHelper.createBoard(boardMap)
+                    for (tile in tiles!!) {
+                        tile.id = 0
+                        tile.boardId = board!!.id
+                        ApiHelper.createTile(tile)
+                    }
+                }
+            }
 
-            //TODO prejst vsetky mapy, vytvorit Board pre kazdu, dat do db, potom zistit id,
-            // nastavit ho jednotlivym tiles, ulozit ich do db, vyrobit tabulku TaskBoards, vytvorit
-            // Task priradit mu boards, pridat do ttaskboards, ci je circle uloha
-            //boardMaps.forEach( )
+            //TODO ci je circle uloha
+            val intent = Intent(this, ClassroomTasksActivity::class.java)
+            startActivity(intent)
         }
 
         binding.deleteTask.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
+                deleteTaskBoards()
                 val task = ApiHelper.deleteTask(taskId!!)
                 withContext(Dispatchers.Main) {
                     if (task == null) {
+                        //TODO
                     }
                 }
             }
@@ -200,6 +226,33 @@ class TaskType1CreatingActivity : AppCompatActivity() {
             binding.selectImagesPanel.visibility = View.VISIBLE
             //supportFragmentManager.popBackStack()
         }
+
+        binding.backButton.setOnClickListener {
+            //TODO urcite? prides o zmeny
+            val intent = Intent(this, ClassroomTasksActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun loadBoardsIfExist() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val boards = ApiHelper.getTaskBoards(taskId!!) as MutableList<Board>?
+            if (!boards.isNullOrEmpty()) {
+                for (board in boards) {
+                    board.tiles = ApiHelper.getBoardTiles(board.id) as MutableList<Tile>?
+                }
+                boardMaps = boards
+                boardMap = boards[0].tiles!!
+                currentBoardIndex = 0
+                withContext(Dispatchers.Main) {
+                    setNextBoardButtonVisibility()
+                    setPrevBoardButtonVisibility()
+                    binding.mainPanel.visibility = View.VISIBLE
+                    binding.boardSizePickerPanel.visibility = View.GONE
+                    setBoard(boards[0].columns)
+                }
+            }
+        }
     }
 
     private fun closeButtonPanel() {
@@ -211,7 +264,7 @@ class TaskType1CreatingActivity : AppCompatActivity() {
     private fun setBoard(columns: Int) {
         binding.boardNumber.text = "${currentBoardIndex + 1}/${boardMaps.size}"
         binding.board.numColumns = columns
-        boardAdapter = BoardAdapter(this, boardMap)
+        boardAdapter = CreatingBoardAdapter(this, boardMap, boardMaps[currentBoardIndex])
         binding.board.adapter = boardAdapter
     }
 
@@ -234,5 +287,20 @@ class TaskType1CreatingActivity : AppCompatActivity() {
     private fun openNewBoardPanel() {
         binding.boardSizePickerPanel.visibility = View.VISIBLE
         binding.mainPanel.visibility = View.GONE
+    }
+
+    private suspend fun deleteTaskBoards(){
+        val boards = ApiHelper.getTaskBoards(taskId!!) as MutableList<Board>?
+        if (!boards.isNullOrEmpty()) {
+            for (board in boards) {
+                val tiles = ApiHelper.getBoardTiles(board.id)
+                if (!tiles.isNullOrEmpty()) {
+                    for (tile in tiles) {
+                        ApiHelper.deleteTile(tile.id)
+                    }
+                }
+                ApiHelper.deleteBoard(board.id)
+            }
+        }
     }
 }

@@ -110,7 +110,7 @@ class ClassroomsActivity : AppCompatActivity() {
                     }
                     withContext(Dispatchers.Main) {
                         if (res != null) {
-                            classrooms.add(classroom)
+                            classrooms.add(res!!)
                             adapter.notifyDataChanged()
                         } else {
                             Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
@@ -135,12 +135,11 @@ class ClassroomsActivity : AppCompatActivity() {
                 val res = ApiHelper.deleteClassroom(Constants.Classroom.id)
                 withContext(Dispatchers.Main) {
                     if (res != null) {
-                        if (classrooms != null) {
-                            classrooms!!.remove(Constants.Classroom)
-                        }
-                    } else Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG)
-                        .show()
-                    adapter.notifyDataChanged()
+                        classrooms.remove(Constants.Classroom)
+                        adapter.notifyDataChanged()
+                    } else {
+                        Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
+                    }
                     binding.deletePanel.visibility = View.GONE
                 }
             }

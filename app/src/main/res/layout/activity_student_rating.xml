@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Tertiary"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/studentName"
+        style="@style/headline"
+        android:text="Vitaj Meno!" />
+
+    <ImageButton
+        android:id="@+id/logoutButton"
+        style="@style/logoutButton"
+        android:contentDescription="@string/back" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="70dp"
+        android:background="@color/Background">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <LinearLayout style="@style/bottomNavigationLayout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/tasksButton"
+                style="@style/navButtonInConstraintLayout"
+                android:src="@mipmap/tasks"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/newTaskNotice"
+                style="@style/navButtonInConstraintLayoutMessage"
+                android:visibility="gone"
+                tools:ignore="MissingConstraints" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/ratingButton"
+                style="@style/navButtonInConstraintLayout"
+                android:src="@mipmap/star_highlighted"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/newRatingNotice"
+                style="@style/navButtonInConstraintLayoutMessage"
+                android:visibility="gone"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
