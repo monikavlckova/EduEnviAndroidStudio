@@ -37,7 +37,9 @@ class ClassroomsActivity : AppCompatActivity() {
         loadViewModel()
         loadClassroomsToLayout()
 
-        binding.menuButton.setOnClickListener { binding.menuPanel.visibility = View.VISIBLE }
+        binding.menuButton.setOnClickListener {
+            binding.menuPanel.visibility = if (binding.menuPanel.visibility == View.GONE) View.VISIBLE else View.GONE
+        }
 
         binding.logoutButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)

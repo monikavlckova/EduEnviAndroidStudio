@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="3dp"
-        android:background="@color/Primary" />
+        android:background="@color/tile"
+        android:importantForAccessibility="no" />
 
 </com.example.eduenvi.GridViewItem>

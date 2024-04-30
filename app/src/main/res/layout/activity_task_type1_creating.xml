@@ -14,7 +14,7 @@
 
         <ImageButton
             android:id="@+id/backButton"
-            style="@style/backButtonDark"
+            style="@style/backButtonOnBackground"
             android:contentDescription="@string/backCodeDescription" />
 
         <RelativeLayout
@@ -48,7 +48,7 @@
                 android:layout_centerVertical="true"
                 android:backgroundTint="@color/transparent"
                 android:contentDescription="@string/prevBoardCodeDescription"
-                android:src="@drawable/baseline_arrow_left_dark_24"
+                android:src="@drawable/baseline_arrow_left_on_background_24"
                 android:visibility="gone" />
 
             <ImageButton
@@ -59,7 +59,7 @@
                 android:layout_centerVertical="true"
                 android:backgroundTint="@color/transparent"
                 android:contentDescription="@string/nextBoardCodeDescription"
-                android:src="@drawable/baseline_arrow_right_dark_24"
+                android:src="@drawable/baseline_arrow_right_on_background_24"
                 android:visibility="gone" />
         </RelativeLayout>
 
@@ -88,7 +88,7 @@
                     android:id="@+id/setImages"
                     style="@style/addButtonMore"
                     android:contentDescription="@string/setImages"
-                    android:src="@drawable/baseline_add_photo_dark_24" />
+                    android:src="@drawable/baseline_add_photo_on_background_24" />
             </LinearLayout>
 
             <LinearLayout
@@ -104,7 +104,7 @@
                     android:id="@+id/deleteBoard"
                     style="@style/addButtonMore"
                     android:contentDescription="@string/deleteBoard"
-                    android:src="@drawable/baseline_disabled_by_default_dark_24" />
+                    android:src="@drawable/baseline_disabled_by_default_on_background_24" />
             </LinearLayout>
 
             <LinearLayout
@@ -120,7 +120,7 @@
                     android:id="@+id/resizeBoard"
                     style="@style/addButtonMore"
                     android:contentDescription="@string/resizeBoard"
-                    android:src="@drawable/baseline_replay_dark_24" />
+                    android:src="@drawable/baseline_replay_on_background_24" />
             </LinearLayout>
 
             <LinearLayout
@@ -136,7 +136,7 @@
                     android:id="@+id/addAnotherBoard"
                     style="@style/addButtonMore"
                     android:contentDescription="@string/addAnotherBoard"
-                    android:src="@drawable/baseline_new_window_dark_24" />
+                    android:src="@drawable/baseline_new_window_on_background_24" />
             </LinearLayout>
 
             <LinearLayout
@@ -152,7 +152,7 @@
                     android:id="@+id/deleteTask"
                     style="@style/addButtonMore"
                     android:contentDescription="@string/deleteTask"
-                    android:src="@drawable/baseline_delete_dark_24" />
+                    android:src="@drawable/baseline_delete_on_background_24" />
             </LinearLayout>
 
             <LinearLayout
@@ -168,7 +168,7 @@
                     android:id="@+id/saveTask"
                     style="@style/addButtonMore"
                     android:contentDescription="@string/saveTask"
-                    android:src="@drawable/baseline_save_dark_24" />
+                    android:src="@drawable/baseline_save_on_background_24" />
             </LinearLayout>
         </LinearLayout>
 
@@ -183,7 +183,7 @@
             style="@style/addButton"
             android:layout_marginBottom="16dp"
             android:contentDescription="@string/closeCodeDescription"
-            android:src="@drawable/baseline_close_24"
+            android:src="@drawable/baseline_close_on_primary_24"
             android:visibility="gone" />
     </RelativeLayout>
 
@@ -253,7 +253,7 @@
 
         <ImageButton
             android:id="@+id/closeSelectImagesPanel"
-            style="@style/backButtonDark"
+            style="@style/backButtonOnBackground"
             android:layout_margin="0dp"
             android:contentDescription="@string/closeCodeDescription"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -344,7 +344,7 @@
 
         <ImageButton
             android:id="@+id/closeFragmentButton"
-            style="@style/backButtonDark"
+            style="@style/backButtonOnBackground"
             android:contentDescription="@string/backCodeDescription" />
     </RelativeLayout>
 
@@ -356,7 +356,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="260dp"
-            android:background="@drawable/bottom_layout_background"
+            android:background="@drawable/bottom_layout_background_on_primary"
             android:orientation="vertical">
 
             <TextView

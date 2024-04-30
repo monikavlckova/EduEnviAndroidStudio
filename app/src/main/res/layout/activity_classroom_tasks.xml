@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Tertiary"
+    android:background="@color/Background"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/mainPanel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/Tertiary">
 
         <ImageButton
             android:id="@+id/backButton"
-            style="@style/backButton"
+            style="@style/backButtonOnPrimary"
             android:contentDescription="@string/backCodeDescription" />
 
         <TextView
@@ -64,7 +65,7 @@
 
         <ImageButton
             android:id="@+id/closeTaskPanel"
-            style="@style/backButtonDark"
+            style="@style/backButtonOnBackground"
             android:contentDescription="@string/closeCodeDescription" />
 
         <ScrollView
@@ -90,7 +91,7 @@
                         android:layout_height="100dp"
                         android:layout_gravity="center"
                         android:importantForAccessibility="no"
-                        android:src="@drawable/baseline_account_circle_dark_24" />
+                        android:src="@drawable/baseline_account_circle_on_background_24" />
 
                     <ImageButton
                         android:id="@+id/editTaskImage"
@@ -100,7 +101,7 @@
                         android:layout_alignParentBottom="true"
                         android:background="@drawable/oval_50_primary"
                         android:contentDescription="@string/editImageCodeDescription"
-                        android:src="@drawable/baseline_edit_24" />
+                        android:src="@drawable/baseline_edit_on_primary_24" />
                 </RelativeLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -125,7 +126,7 @@
                         android:id="@+id/text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/oval_50_background"
+                        android:background="@drawable/oval_50_surface_input_field"
                         android:hint="@string/text"
                         android:inputType="textMultiLine"
                         android:paddingStart="30dp"
@@ -372,7 +373,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="260dp"
-            android:background="@drawable/bottom_layout_background"
+            android:background="@drawable/bottom_layout_background_on_primary"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -381,19 +382,19 @@
 
                 <ImageButton
                     android:id="@+id/closeEditPanel"
-                    style="@style/closeButton"
+                    style="@style/closeButtonOnBackground"
                     android:contentDescription="@string/closeCodeDescription" />
             </RelativeLayout>
 
             <Button
                 android:id="@+id/editButton"
-                style="@style/actionButton"
+                style="@style/actionButtonEdit"
                 android:layout_marginHorizontal="25dp"
                 android:text="@string/edit" />
 
             <Button
                 android:id="@+id/deleteButton"
-                style="@style/actionButton"
+                style="@style/actionButtonDelete"
                 android:layout_marginHorizontal="25dp"
                 android:text="@string/delete" />
         </LinearLayout>
@@ -407,7 +408,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="260dp"
-            android:background="@drawable/bottom_layout_background"
+            android:background="@drawable/bottom_layout_background_on_primary"
             android:orientation="vertical">
 
             <TextView
@@ -451,7 +452,7 @@
 
         <ImageButton
             android:id="@+id/closeFragmentButton"
-            style="@style/backButtonDark"
+            style="@style/backButtonOnBackground"
             android:contentDescription="@string/backCodeDescription" />
 
     </RelativeLayout>

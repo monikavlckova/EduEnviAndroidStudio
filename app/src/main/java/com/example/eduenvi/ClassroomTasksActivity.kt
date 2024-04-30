@@ -1,5 +1,6 @@
 package com.example.eduenvi
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -46,6 +47,7 @@ class ClassroomTasksActivity : AppCompatActivity() {
     private var groupTask = false
     private var freeTask = true
 
+    @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClassroomTasksBinding.inflate(layoutInflater)

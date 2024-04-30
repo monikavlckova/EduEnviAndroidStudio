@@ -7,7 +7,7 @@
 
     <ImageButton
         android:id="@+id/backButton"
-        style="@style/backButtonDark"
+        style="@style/backButtonOnBackground"
         android:contentDescription="@string/backCodeDescription" />
 
     <LinearLayout

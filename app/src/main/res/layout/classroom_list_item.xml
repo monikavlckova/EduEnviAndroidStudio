@@ -17,7 +17,7 @@
 
         <ImageButton
             android:id="@+id/editClassroomButton"
-            style="@style/editButton"
+            style="@style/editButtonOnBackground"
             android:contentDescription="@string/editCodeDescription" />
     </RelativeLayout>
 

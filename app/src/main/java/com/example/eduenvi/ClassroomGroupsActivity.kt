@@ -242,20 +242,20 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         chip.setPadding(paddingDp, paddingDp, paddingDp, paddingDp)*/
         chip.text = tagName
         chip.layoutParams = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-        if (isInGroup) chip.setCloseIconResource(R.drawable.baseline_close_dark_24)
-        else chip.setCloseIconResource(R.drawable.baseline_add_24)
+        if (isInGroup) chip.setCloseIconResource(R.drawable.baseline_close_on_background_24)
+        else chip.setCloseIconResource(R.drawable.baseline_add_on_primary_24)
         chip.isCloseIconVisible = true
         chip.setOnCloseIconClickListener {
             //Constants.Student = student
             if (addedInGroup) {
-                chip.setCloseIconResource(R.drawable.baseline_add_24)
+                chip.setCloseIconResource(R.drawable.baseline_add_on_primary_24)
                 binding.chipGroupIn.removeView(chip)
                 binding.chipGroupNotIn.addView(chip)
                 addedInGroup = false
                 if (isInGroup) _delFromGroup.add(student)
                 else _addToGroup.remove(student)
             } else {
-                chip.setCloseIconResource(R.drawable.baseline_close_dark_24)
+                chip.setCloseIconResource(R.drawable.baseline_close_on_background_24)
                 binding.chipGroupNotIn.removeView(chip)
                 binding.chipGroupIn.addView(chip)
                 addedInGroup = true

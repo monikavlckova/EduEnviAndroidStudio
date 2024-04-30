@@ -142,20 +142,20 @@ class StudentTasksActivity : AppCompatActivity() {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        if (isInStudent) chip.setCloseIconResource(R.drawable.baseline_close_dark_24)
-        else chip.setCloseIconResource(R.drawable.baseline_add_24)
+        if (isInStudent) chip.setCloseIconResource(R.drawable.baseline_close_on_background_24)
+        else chip.setCloseIconResource(R.drawable.baseline_add_on_primary_24)
 
         chip.isCloseIconVisible = true
         chip.setOnCloseIconClickListener {
             if (addedInStudent) {
-                chip.setCloseIconResource(R.drawable.baseline_add_24)
+                chip.setCloseIconResource(R.drawable.baseline_add_on_primary_24)
                 binding.chipGroupIn.removeView(chip)
                 binding.chipGroupNotIn.addView(chip)
                 addedInStudent = false
                 if (isInStudent) _delFromStudent.add(task)
                 else _addToStudent.remove(task)
             } else {
-                chip.setCloseIconResource(R.drawable.baseline_close_dark_24)
+                chip.setCloseIconResource(R.drawable.baseline_close_on_background_24)
                 binding.chipGroupNotIn.removeView(chip)
                 binding.chipGroupIn.addView(chip)
                 addedInStudent = true

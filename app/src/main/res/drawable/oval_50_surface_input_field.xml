@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <solid
-        android:color="@color/Background"/>
+        android:color="@color/surfaceInputField"/>
 
     <size
         android:width="10dp"

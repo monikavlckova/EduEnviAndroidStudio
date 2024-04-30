@@ -22,7 +22,8 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="10dp" />
+                android:layout_marginVertical="10dp"
+                android:importantForAccessibility="no" />
         </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

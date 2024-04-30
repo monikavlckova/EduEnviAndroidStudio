@@ -80,11 +80,11 @@ object Constants {
     var TaskTypeActivity = mapOf(Pair(TaskType1Id, TaskType1Activity::class.java)/*,
         Pair(TaskType2Id, TaskType2Activity::class.java)*/)
 
-    val freeImageIndex = 0
-    val wallImageIndex = 1
-    val startImageIndex = 2
-    val itemImageIndex = 3
-    var ImageGridResources = mutableListOf(R.color.Primary, R.mipmap.wall, R.mipmap.start, R.mipmap.item)
+    const val freeImageIndex = 0
+    const val wallImageIndex = 1
+    const val startImageIndex = 2
+    const val itemImageIndex = 3
+    var ImageGridResources = mutableListOf(R.color.tile, R.mipmap.wall, R.mipmap.start, R.mipmap.item)
     var ImageGridImages= mutableListOf<Image?>(null, null, null, null)
 
     var paths = mutableListOf<MutableList<Int>>()

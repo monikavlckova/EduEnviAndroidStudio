@@ -8,7 +8,7 @@
 
     <ImageButton
         android:id="@+id/backButton"
-        style="@style/backButtonDark"
+        style="@style/backButtonOnBackground"
         android:contentDescription="@string/backCodeDescription" />
 
     <LinearLayout
@@ -83,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="260dp"
             android:layout_margin="25dp"
-            android:background="@drawable/center_layout_background"
+            android:background="@drawable/center_layout_background_on_primary"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -92,7 +92,7 @@
 
                 <ImageButton
                     android:id="@+id/backToLoginButton"
-                    style="@style/backButtonDark"
+                    style="@style/backButtonOnBackground"
                     android:contentDescription="@string/backCodeDescription" />
             </RelativeLayout>
 

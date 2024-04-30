@@ -13,7 +13,7 @@
 
     <ImageButton
         android:id="@+id/logoutButton"
-        style="@style/logoutButton"
+        style="@style/logoutButtonOnPrimary"
         android:contentDescription="@string/logOutDescription" />
 
     <ScrollView
@@ -33,43 +33,17 @@
 
     <LinearLayout style="@style/bottomNavigationLayout">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/tasksButton"
+            style="@style/navButtonInConstraintLayout"
+            android:contentDescription="@string/tasksCodeDescription"
+            android:src="@mipmap/tasks"
+            tools:ignore="MissingConstraints" />
 
-            <ImageButton
-                android:id="@+id/tasksButton"
-                style="@style/navButtonInConstraintLayout"
-                android:contentDescription="@string/tasksCodeDescription"
-                android:src="@mipmap/tasks"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/newTaskNotice"
-                style="@style/navButtonInConstraintLayoutMessage"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageButton
-                style="@style/navButtonInConstraintLayout"
-                android:importantForAccessibility="no"
-                android:src="@mipmap/star_highlighted"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/newRatingNotice"
-                style="@style/navButtonInConstraintLayoutMessage"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+        <ImageButton
+            style="@style/navButtonInConstraintLayout"
+            android:importantForAccessibility="no"
+            android:src="@mipmap/star_highlighted"
+            tools:ignore="MissingConstraints" />
     </LinearLayout>
-
 </RelativeLayout>

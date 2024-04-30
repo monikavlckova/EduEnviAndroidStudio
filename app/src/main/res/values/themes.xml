@@ -1,9 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<resources >
     <style name="Base.Theme.EduEnvi" parent="Theme.Material3.Light">
         <!-- <<style name="Base.Theme.EduEnvi" parent="Theme.AppCompat.Light.NoActionBar"> -->
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item>-->
         <item name="colorPrimary">@color/Primary</item>
         <item name="colorPrimaryContainer">@color/Primary</item>
         <item name="colorOnPrimary">@color/OnPrimary</item>
@@ -19,6 +16,7 @@
         <item name="colorSurface">@color/Surface</item>
         <item name="colorOnSurface">@color/OnSurface</item>
         <item name="colorSurfaceContainer">@color/Surface</item>
+        <item name="android:colorBackground">@color/Background</item>
         <item name="colorOnBackground">@color/OnBackground</item>
         <item name="colorAccent">@color/Accent</item>
     </style>
@@ -40,7 +38,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">100dp</item>
         <item name="android:layout_marginTop">5dp</item>
-        <item name="android:background">@drawable/oval_30_surface</item>
+        <item name="android:background">@drawable/oval_20_surface</item>
 
     </style>
 
@@ -69,46 +67,46 @@
         <item name="android:background">@color/transparent</item>
     </style>
 
-    <style name="backButton" parent="simpleButton">
+    <style name="backButtonOnPrimary" parent="simpleButton">
         <item name="android:layout_marginStart">10dp</item>
-        <item name="android:src">@drawable/baseline_arrow_back_24</item>
+        <item name="android:src">@drawable/baseline_arrow_back_on_primary_24</item>
     </style>
 
-    <style name="backButtonDark" parent="simpleButton">
+    <style name="backButtonOnBackground" parent="simpleButton">
         <item name="android:layout_marginStart">10dp</item>
-        <item name="android:src">@drawable/baseline_arrow_back_dark_24</item>
+        <item name="android:src">@drawable/baseline_arrow_back_on_background_24</item>
     </style>
 
-    <style name="menuButton" parent="simpleButton">
+    <style name="menuButtonOnPrimary" parent="simpleButton">
         <item name="android:layout_margin">10dp</item>
-        <item name="android:src">@drawable/baseline_menu_24</item>
+        <item name="android:src">@drawable/baseline_menu_on_primary_24</item>
         <item name="android:layout_alignParentEnd">true</item>
     </style>
 
-    <style name="profileButton" parent="simpleButton">
+    <style name="profileButtonOnPrimary" parent="simpleButton">
         <item name="android:layout_margin">10dp</item>
-        <item name="android:src">@drawable/baseline_account_circle_24</item>
+        <item name="android:src">@drawable/baseline_account_circle_on_primary_24</item>
     </style>
 
-    <style name="logoutButton" parent="simpleButton">
+    <style name="logoutButtonOnPrimary" parent="simpleButton">
         <item name="android:layout_margin">10dp</item>
-        <item name="android:src">@drawable/baseline_logout_24</item>
+        <item name="android:src">@drawable/baseline_logout_on_primary_24</item>
     </style>
 
-    <style name="editButton" parent="simpleButton">
+    <style name="editButtonOnBackground" parent="simpleButton">
         <item name="android:layout_marginTop">0dp</item>
-        <item name="android:src">@drawable/baseline_more_horiz_dark_24</item>
+        <item name="android:src">@drawable/baseline_more_horiz_on_background_24</item>
         <item name="android:layout_alignParentEnd">true</item>
     </style>
 
-    <style name="closeButtonLeft" parent="simpleButton">
+    <style name="closeButtonLeftOnBackground" parent="simpleButton">
         <item name="android:layout_marginStart">10dp</item>
-        <item name="android:src">@drawable/baseline_close_dark_24</item>
+        <item name="android:src">@drawable/baseline_close_on_background_24</item>
     </style>
 
-    <style name="closeButton" parent="simpleButton">
+    <style name="closeButtonOnBackground" parent="simpleButton">
         <item name="android:layout_marginEnd">10dp</item>
-        <item name="android:src">@drawable/baseline_close_dark_24</item>
+        <item name="android:src">@drawable/baseline_close_on_background_24</item>
         <item name="android:layout_alignParentEnd">true</item>
     </style>
 
@@ -117,7 +115,7 @@
         <item name="android:layout_height">56dp</item>
         <item name="android:layout_marginBottom">86dp</item>
         <item name="android:layout_marginEnd">16dp</item>
-        <item name="android:src">@drawable/baseline_add_24</item>
+        <item name="android:src">@drawable/baseline_add_on_primary_24</item>
         <item name="android:background">@drawable/oval_50_primary</item>
         <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_alignParentEnd">true</item>
@@ -134,7 +132,7 @@
     <style name="textToAddButtonMore">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/Background</item>
+        <item name="android:background">@color/Surface</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">16sp</item>
         <item name="android:padding">5dp</item>
@@ -158,18 +156,6 @@
         <item name="layout_constraintEnd_toEndOf">parent</item>
     </style>
 
-    <style name="navButtonInConstraintLayoutMessage">
-        <item name="android:layout_width">25dp</item>
-        <item name="android:layout_height">25dp</item>
-        <item name="android:layout_marginEnd">10dp</item>
-        <item name="android:background">@drawable/oval_30_surface</item>
-        <item name="android:backgroundTint">@color/Error</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/OnError</item>
-        <item name="layout_constraintEnd_toEndOf">parent</item>
-        <item name="layout_constraintTop_toTopOf">parent</item>
-    </style>
-
     <style name="actionButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">64dp</item>
@@ -180,14 +166,14 @@
     <style name="actionButtonEdit" parent="actionButton">
         <item name="android:layout_marginLeft">25dp</item>
         <item name="android:layout_marginRight">25dp</item>
-        <item name="android:backgroundTint">@color/gray</item>
+        <item name="android:backgroundTint">@color/Primary</item>
         <item name="android:text">@string/edit</item>
     </style>
 
     <style name="actionButtonDelete" parent="actionButton">
         <item name="android:layout_marginLeft">25dp</item>
         <item name="android:layout_marginRight">25dp</item>
-        <item name="android:backgroundTint">@color/Error</item>
+        <item name="android:backgroundTint">@color/Tertiary</item>
         <item name="android:text">@string/delete</item>
     </style>
 
@@ -225,7 +211,7 @@
     </style>
 
     <style name="inputFieldEditTextColor" parent="inputFieldEditText">
-        <item name="android:background">@drawable/oval_50_background</item>
+        <item name="android:background">@drawable/oval_50_surface_input_field</item>
     </style>
 
     <style name="headline">

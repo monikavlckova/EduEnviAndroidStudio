@@ -17,8 +17,8 @@ class ImageManager {
     fun setImage(url: String, context: Activity, imageView: ImageView) {
         val options: RequestOptions = RequestOptions()
             .centerCrop()
-            .placeholder(R.drawable.baseline_image_24)
-            .error(R.drawable.baseline_image_24)
+            .placeholder(R.drawable.baseline_image_on_primary_24)
+            .error(R.drawable.baseline_image_on_primary_24)
 
         Glide.with(context)
             .load(url)

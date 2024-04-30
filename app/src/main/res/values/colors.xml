@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="Primary">#738C4C</color>
+    <color name="Primary">#EAC234</color>
     <color name="OnPrimary">#FFFFFF</color>
-    <color name="Secondary">#7B5437</color>
+    <color name="Secondary">#EE882F</color>
     <color name="OnSecondary">#FFFFFF</color>
-    <color name="Tertiary">#F0BB41</color>
-    <color name="OnTertiary">#000000</color>
+    <color name="Tertiary">#DE456E</color>
+    <color name="OnTertiary">#FFFFFF</color>
+    <color name="Accent">#C55EBB</color>
+    <color name="OnAccent">#FFFFFF</color>
+    <color name="Background">#D0DD9D</color>
+    <color name="OnBackground">#000000</color>
     <color name="Surface">#FFFFFF</color>
     <color name="OnSurface">#000000</color>
-    <color name="Background">#F7F4EB</color>
-    <color name="OnBackground">#000000</color>
     <color name="Error">#B00020</color>
     <color name="OnError">#FFFFFF</color>
-    <color name="Accent">#8E5A7B</color>
-    <color name="OnAccent">#FFFFFF</color>
     <color name="Outline">#000000</color>
+    <color name="tile">#71B663</color>
+    <color name="surfaceInputField">#F7F2D9</color>
     <color name="transparent">#00000000</color>
     <color name="semitransparent">#90686868</color>
     <color name="gray">#999999</color>
-    <color name="light_blue_600">#FF039BE5</color>
-    <color name="light_blue_900">#FF01579B</color>
-    <color name="light_blue_A200">#FF40C4FF</color>
-    <color name="light_blue_A400">#FF00B0FF</color>
-    <color name="black_overlay">#66000000</color>
 </resources>

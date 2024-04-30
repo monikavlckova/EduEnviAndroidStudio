@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
 
-    var gson = GsonBuilder()
+    private var gson = GsonBuilder()
         .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         .create()
 

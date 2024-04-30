@@ -3,222 +3,228 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Tertiary"
+    android:background="@color/Background"
     android:orientation="vertical">
 
-    <TextView
-        style="@style/headline"
-        android:text="@string/myClassrooms" />
-
-    <ImageButton
-        android:id="@+id/menuButton"
-        style="@style/menuButton"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:contentDescription="@string/menuCodeDescription" />
-
-    <ListView
-        android:id="@+id/classroomLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="70dp"
-        android:background="@color/Background"
-        android:paddingHorizontal="5dp"
-        tools:listitem="@layout/classroom_list_item" />
-
-    <ImageButton
-        android:id="@+id/addButton"
-        style="@style/addButton"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="@string/addCodeDescription" />
-
     <RelativeLayout
-        android:id="@+id/menuPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="70dp"
-        android:background="@color/semitransparent"
-        android:visibility="gone">
+        android:background="@color/Tertiary">
 
-        <LinearLayout
-            android:layout_width="70dp"
+        <TextView
+            style="@style/headline"
+            android:text="@string/myClassrooms" />
+
+        <ImageButton
+            android:id="@+id/menuButton"
+            style="@style/menuButtonOnPrimary"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/menuCodeDescription" />
+
+        <ListView
+            android:id="@+id/classroomLayout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:background="@color/Accent"
-            android:orientation="vertical">
+            android:layout_marginTop="70dp"
+            android:background="@color/Background"
+            android:paddingHorizontal="5dp"
+            tools:listitem="@layout/classroom_list_item" />
 
-            <ImageButton
-                android:id="@+id/profileButton"
-                style="@style/profileButton"
-                android:contentDescription="@string/profile" />
+        <ImageButton
+            android:id="@+id/addButton"
+            style="@style/addButton"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/addCodeDescription" />
 
-            <ImageButton
-                android:id="@+id/logoutButton"
-                style="@style/logoutButton"
-                android:contentDescription="@string/logOutDescription" />
-        </LinearLayout>
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/classroomPanel"
-        style="@style/backgroundLayout"
-        android:gravity="center"
-        android:visibility="gone">
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/menuPanel"
             android:layout_width="match_parent"
-            android:layout_height="380dp"
-            android:layout_margin="25dp"
-            android:background="@drawable/center_layout_background"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_marginTop="70dp"
+            android:background="@color/semitransparent"
+            android:visibility="gone">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp">
+            <LinearLayout
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:background="@color/Accent"
+                android:orientation="vertical">
 
                 <ImageButton
-                    android:id="@+id/closeClassroomPanel"
-                    style="@style/backButtonDark"
-                    android:contentDescription="@string/backCodeDescription" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="20dp">
-
-                <ImageView
-                    android:id="@+id/ClassroomImage"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/baseline_account_circle_dark_24" />
+                    android:id="@+id/profileButton"
+                    style="@style/profileButtonOnPrimary"
+                    android:contentDescription="@string/profile" />
 
                 <ImageButton
-                    android:id="@+id/editClassroomImage"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/oval_50_primary"
-                    android:contentDescription="@string/editImageCodeDescription"
-                    android:src="@drawable/baseline_edit_24" />
-
-            </RelativeLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/classroomNameTextInputLayout"
-                style="@style/inputField"
-                android:layout_marginHorizontal="25dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/classroomName"
-                    style="@style/inputFieldEditTextColor"
-                    android:hint="@string/classroomName"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/saveButton"
-                style="@style/actionButton"
-                android:layout_marginHorizontal="25dp"
-                android:text="@string/create" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/editPanel"
-        style="@style/backgroundLayout"
-        android:visibility="gone">
+                    android:id="@+id/logoutButton"
+                    style="@style/logoutButtonOnPrimary"
+                    android:contentDescription="@string/logOutDescription" />
+            </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="260dp"
-            android:background="@drawable/bottom_layout_background"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp">
-
-                <ImageButton
-                    android:id="@+id/closeEditPanel"
-                    style="@style/closeButton"
-                    android:contentDescription="@string/closeCodeDescription" />
-            </RelativeLayout>
-
-            <Button
-                android:id="@+id/editButton"
-                style="@style/actionButton"
-                android:layout_marginHorizontal="25dp"
-                android:text="@string/edit" />
-
-            <Button
-                android:id="@+id/deleteButton"
-                style="@style/actionButton"
-                android:layout_marginHorizontal="25dp"
-                android:text="@string/delete" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/deletePanel"
-        style="@style/backgroundLayout"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="260dp"
-            android:background="@drawable/bottom_layout_background"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/deleteText"
-                style="@style/deletePanelText1" />
-
-            <TextView style="@style/deletePanelText2" />
+            android:id="@+id/classroomPanel"
+            style="@style/backgroundLayout"
+            android:gravity="center"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:layout_height="380dp"
+                android:layout_margin="25dp"
+                android:background="@drawable/center_layout_background_on_primary"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+
+                    <ImageButton
+                        android:id="@+id/closeClassroomPanel"
+                        style="@style/backButtonOnBackground"
+                        android:contentDescription="@string/backCodeDescription" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp">
+
+                    <ImageView
+                        android:id="@+id/ClassroomImage"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/baseline_account_circle_on_background_24" />
+
+                    <ImageButton
+                        android:id="@+id/editClassroomImage"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/oval_50_primary"
+                        android:contentDescription="@string/editImageCodeDescription"
+                        android:src="@drawable/baseline_edit_on_primary_24" />
+
+                </RelativeLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/classroomNameTextInputLayout"
+                    style="@style/inputField"
+                    android:layout_marginHorizontal="25dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/classroomName"
+                        style="@style/inputFieldEditTextColor"
+                        android:hint="@string/classroomName"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
-                    android:id="@+id/closeDeletePanel"
-                    style="@style/smallActionCancelButton"
-                    android:text="@string/cancel" />
-
-                <Button
-                    android:id="@+id/confirmDelete"
-                    style="@style/smallActionDeleteButton"
-                    android:text="@string/delete" />
+                    android:id="@+id/saveButton"
+                    style="@style/actionButton"
+                    android:layout_marginHorizontal="25dp"
+                    android:text="@string/create" />
 
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/fragmentLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/Background"
-        android:visibility="gone">
+        <LinearLayout
+            android:id="@+id/editPanel"
+            style="@style/backgroundLayout"
+            android:visibility="gone">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainer"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:background="@drawable/bottom_layout_background_on_primary"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+
+                    <ImageButton
+                        android:id="@+id/closeEditPanel"
+                        style="@style/closeButtonOnBackground"
+                        android:contentDescription="@string/closeCodeDescription" />
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/editButton"
+                    style="@style/actionButtonEdit"
+                    android:layout_marginHorizontal="25dp"
+                    android:text="@string/edit" />
+
+                <Button
+                    android:id="@+id/deleteButton"
+                    style="@style/actionButtonDelete"
+                    android:layout_marginHorizontal="25dp"
+                    android:text="@string/delete" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/deletePanel"
+            style="@style/backgroundLayout"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:background="@drawable/bottom_layout_background_on_primary"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/deleteText"
+                    style="@style/deletePanelText1" />
+
+                <TextView style="@style/deletePanelText2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/closeDeletePanel"
+                        style="@style/smallActionCancelButton"
+                        android:text="@string/cancel" />
+
+                    <Button
+                        android:id="@+id/confirmDelete"
+                        style="@style/smallActionDeleteButton"
+                        android:text="@string/delete" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragmentLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="70dp" />
+            android:background="@color/Background"
+            android:visibility="gone">
 
-        <ImageButton
-            android:id="@+id/closeFragmentButton"
-            style="@style/backButtonDark"
-            android:contentDescription="@string/backCodeDescription" />
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragmentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="70dp" />
 
+            <ImageButton
+                android:id="@+id/closeFragmentButton"
+                style="@style/backButtonOnBackground"
+                android:contentDescription="@string/backCodeDescription" />
+
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

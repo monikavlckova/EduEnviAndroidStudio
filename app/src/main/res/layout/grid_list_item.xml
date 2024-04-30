@@ -26,7 +26,7 @@
 
             <ImageButton
                 android:id="@+id/edit"
-                style="@style/editButton"
+                style="@style/editButtonOnBackground"
                 android:layout_marginTop="-3dp"
                 android:contentDescription="@string/editCodeDescription" />
         </RelativeLayout>
