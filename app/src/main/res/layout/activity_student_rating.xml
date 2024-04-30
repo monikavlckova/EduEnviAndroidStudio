@@ -9,12 +9,12 @@
     <TextView
         android:id="@+id/studentName"
         style="@style/headline"
-        android:text="Vitaj Meno!" />
+        android:text="@string/firstName" />
 
     <ImageButton
         android:id="@+id/logoutButton"
         style="@style/logoutButton"
-        android:contentDescription="@string/back" />
+        android:contentDescription="@string/logOutDescription" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -40,6 +40,7 @@
             <ImageButton
                 android:id="@+id/tasksButton"
                 style="@style/navButtonInConstraintLayout"
+                android:contentDescription="@string/tasksCodeDescription"
                 android:src="@mipmap/tasks"
                 tools:ignore="MissingConstraints" />
 
@@ -56,8 +57,8 @@
             android:layout_height="wrap_content">
 
             <ImageButton
-                android:id="@+id/ratingButton"
                 style="@style/navButtonInConstraintLayout"
+                android:importantForAccessibility="no"
                 android:src="@mipmap/star_highlighted"
                 tools:ignore="MissingConstraints" />
 

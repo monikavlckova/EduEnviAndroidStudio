@@ -33,28 +33,9 @@ class ClassroomsActivity : AppCompatActivity() {
         binding = ActivityClassroomsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .add(R.id.fragmentContainer, fragment)
-                .commit()
-        }
-
-        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
-        viewModel.getSelectedImage().observe(this) { image ->
-            imageId = image.id
-            Constants.imageManager.setImage(image.url, this, binding.ClassroomImage)
-            binding.fragmentLayout.visibility = View.GONE
-        }
-
-        CoroutineScope(Dispatchers.IO).launch {
-            classrooms =
-                ApiHelper.getTeachersClassrooms(Constants.Teacher.id) as MutableList<Classroom>
-
-            withContext(Dispatchers.Main) {
-                adapter = ClassroomAdapter(myContext, classrooms)
-                binding.classroomLayout.adapter = adapter
-            }
-        }
+        loadGalleryFragment(savedInstanceState)
+        loadViewModel()
+        loadClassroomsToLayout()
 
         binding.menuButton.setOnClickListener { binding.menuPanel.visibility = View.VISIBLE }
 
@@ -160,6 +141,35 @@ class ClassroomsActivity : AppCompatActivity() {
 
         binding.classroomName.addTextChangedListener {
             binding.classroomNameTextInputLayout.error = null
+        }
+    }
+
+    private fun loadGalleryFragment(savedInstanceState: Bundle?){
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, fragment)
+                .commit()
+        }
+    }
+
+    private fun loadViewModel(){
+        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
+        viewModel.getSelectedImage().observe(this) { image ->
+            imageId = image.id
+            Constants.imageManager.setImage(image.url, this, binding.ClassroomImage)
+            binding.fragmentLayout.visibility = View.GONE
+        }
+    }
+
+    private fun loadClassroomsToLayout(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val c = ApiHelper.getTeachersClassrooms(Constants.Teacher.id)
+            classrooms = if (c == null) mutableListOf() else c as MutableList<Classroom>
+
+            withContext(Dispatchers.Main) {
+                adapter = ClassroomAdapter(myContext, classrooms)
+                binding.classroomLayout.adapter = adapter
+            }
         }
     }
 

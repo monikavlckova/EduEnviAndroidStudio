@@ -28,20 +28,10 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
         val teacher = Constants.Teacher
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .add(R.id.fragmentContainer, fragment)
-                .commit()
-        }
-
-        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
-        viewModel.getSelectedImage().observe(this) { image ->
-            imageId = image.id
-            openEditPanel()
-        }
+        loadGalleryFragment(savedInstanceState)
+        loadViewModel()
 
         binding.firstNameLastName.text = "${teacher.firstName} ${teacher.lastName}"
-
         Constants.imageManager.setImage(teacher.imageId, myContext, binding.profileImage)
 
         binding.backButton.setOnClickListener {
@@ -136,6 +126,21 @@ class ProfileActivity : AppCompatActivity() {
         binding.password2.addTextChangedListener { binding.password2TextInputLayout.error = null }
     }
 
+    private fun loadGalleryFragment(savedInstanceState: Bundle?){
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, fragment)
+                .commit()
+        }
+    }
+
+    private fun loadViewModel(){
+        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
+        viewModel.getSelectedImage().observe(this) { image ->
+            imageId = image.id
+            openEditPanel()
+        }
+    }
     private fun openEditPanel() {
         setValuesInEditPanel()
         binding.fragmentLayout.visibility = View.GONE

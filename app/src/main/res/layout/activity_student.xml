@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/studentName"
         style="@style/headline"
-        android:text="Vitaj Meno!" />
+        android:text="@string/firstName" />
 
     <ImageButton
         android:id="@+id/logoutButton"
@@ -17,7 +17,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:contentDescription="@string/back" />
+        android:contentDescription="@string/backCodeDescription" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -35,60 +35,67 @@
                 android:id="@+id/imageLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:background="@color/Tertiary">
+                android:background="@color/Tertiary"
+                android:gravity="center">
 
                 <ImageView
                     android:id="@+id/profileImage"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/baseline_account_circle_24" />
             </LinearLayout>
 
             <TextView
-                android:layout_marginHorizontal="10dp"
                 android:id="@+id/soloTasksText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="samostatné úlohy"
-                android:layout_below="@+id/imageLayout"/>
+                android:layout_below="@+id/imageLayout"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/soloTasks"
+                android:textStyle="bold" />
 
             <GridView
                 android:id="@+id/soloTasksLayout"
                 style="@style/gridView"
+                android:layout_below="@+id/soloTasksText"
                 android:numColumns="3"
-                tools:listitem="@layout/grid_student_task_item"
-                android:layout_below="@+id/soloTasksText"/>
+                tools:listitem="@layout/grid_student_task_item" />
 
             <TextView
-                android:layout_marginHorizontal="10dp"
                 android:id="@+id/groupTasksText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="skupinová úlohy"
-                android:layout_below="@+id/soloTasksLayout"/>
+                android:layout_below="@+id/soloTasksLayout"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/groupTasks"
+                android:textStyle="bold" />
 
             <GridView
                 android:id="@+id/groupTasksLayout"
                 style="@style/gridView"
+                android:layout_below="@+id/groupTasksText"
                 android:numColumns="3"
-                tools:listitem="@layout/grid_student_task_item"
-                android:layout_below="@+id/groupTasksText"/>
+                tools:listitem="@layout/grid_student_task_item" />
 
             <TextView
-                android:layout_marginHorizontal="10dp"
                 android:id="@+id/terminatedTasksText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="minulé úlohy"
-                android:layout_below="@+id/groupTasksLayout"/>
+                android:layout_below="@+id/groupTasksLayout"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/terminatedTasks"
+                android:textStyle="bold" />
 
             <GridView
                 android:id="@+id/terminatedTasksLayout"
                 style="@style/gridView"
+                android:layout_below="@+id/terminatedTasksText"
                 android:numColumns="3"
-                tools:listitem="@layout/grid_student_task_item"
-                android:layout_below="@+id/terminatedTasksText"/>
+                tools:listitem="@layout/grid_student_task_item" />
 
         </RelativeLayout>
     </ScrollView>
@@ -102,6 +109,7 @@
             <ImageButton
                 android:id="@+id/tasksButton"
                 style="@style/navButtonInConstraintLayout"
+                android:contentDescription="@string/tasksCodeDescription"
                 android:src="@mipmap/tasks_highlighted"
                 tools:ignore="MissingConstraints" />
 
@@ -120,6 +128,7 @@
             <ImageButton
                 android:id="@+id/ratingButton"
                 style="@style/navButtonInConstraintLayout"
+                android:contentDescription="@string/rating"
                 android:src="@mipmap/star"
                 tools:ignore="MissingConstraints" />
 

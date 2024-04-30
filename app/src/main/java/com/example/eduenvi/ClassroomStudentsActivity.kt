@@ -1,8 +1,9 @@
 package com.example.eduenvi
+//TODO ked zatvaram sipkou upravu, opytat sa, ci nechcem ulozit zmeny
+//TODO fixnut v uprave a vytvarani tlacidlo dole, nech ho neskrolujem
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -23,7 +24,7 @@ class ClassroomStudentsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityClassroomStudentsBinding
     private var _creatingNew: Boolean? = null
-    private var students = mutableListOf<Student>() // TODO nebude problem ze som ho spravile nenullable
+    private var students = mutableListOf<Student>()
     private lateinit var adapter: ClassroomStudentsAdapter
     private var changeToClassroom = Constants.Classroom
     private val myContext = this
@@ -37,32 +38,11 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         binding = ActivityClassroomStudentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Log.v("DB", "Trieda: ${changeToClassroom.id}")
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .add(R.id.fragmentContainer, fragment)
-                .commit()
-        }
+        loadGalleryFragment(savedInstanceState)
+        loadViewModel()
+        loadStudentsToLayout()
 
-        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
-        viewModel.getSelectedImage().observe(this) { image ->
-            imageId = image.id
-            Constants.imageManager.setImage(image.url, this, binding.studentImage)
-            binding.fragmentLayout.visibility = View.GONE
-        }
-        //TODO ak sa nestihnu nacitat obrazky, po kliknuti na nejake tlacitko sa caka kym sa nacitaju, ako to spravit, aby sa nenacitavali
-        CoroutineScope(Dispatchers.IO).launch {
-            students =
-                ApiHelper.getStudentsInClassroom(Constants.Classroom.id) as MutableList<Student>
-            teachersClassrooms = ApiHelper.getTeachersClassrooms(Constants.Teacher.id)
-
-            withContext(Dispatchers.Main) {
-                adapter = ClassroomStudentsAdapter(myContext, students)
-                binding.studentsLayout.adapter = adapter
-            }
-        }
-        val classroom = Constants.Classroom
-        binding.classroomName.text = classroom.name
+        binding.classroomName.text = Constants.Classroom.name
 
         binding.backButton.setOnClickListener {
             val intent = Intent(this, ClassroomsActivity::class.java)
@@ -139,7 +119,7 @@ class ClassroomStudentsActivity : AppCompatActivity() {
                     withContext(Dispatchers.Main) {
                         if (res == null) {
                             Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
-                        }else if (changeToClassroom == Constants.Classroom) {
+                        } else if (changeToClassroom == Constants.Classroom) {
                             students.add(res!!)
                             adapter.notifyDataChanged()
                         }
@@ -186,7 +166,40 @@ class ClassroomStudentsActivity : AppCompatActivity() {
 
         binding.firstName.addTextChangedListener { binding.firstNameTextInputLayout.error = null }
         binding.lastName.addTextChangedListener { binding.lastNameTextInputLayout.error = null }
-        binding.loginCode.addTextChangedListener { binding.loginCode.error = null }
+        binding.loginCode.addTextChangedListener {
+            binding.loginCodeTextInputLayout.error = null
+            binding.generateLoginCode.visibility = View.VISIBLE
+        }
+    }
+
+    private fun loadGalleryFragment(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, fragment)
+                .commit()
+        }
+    }
+
+    private fun loadViewModel() {
+        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
+        viewModel.getSelectedImage().observe(this) { image ->
+            imageId = image.id
+            Constants.imageManager.setImage(image.url, this, binding.studentImage)
+            binding.fragmentLayout.visibility = View.GONE
+        }
+    }
+
+    private fun loadStudentsToLayout() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val s = ApiHelper.getStudentsInClassroom(Constants.Classroom.id)
+            students = if (s == null) mutableListOf() else s as MutableList<Student>
+            teachersClassrooms = ApiHelper.getTeachersClassrooms(Constants.Teacher.id)
+
+            withContext(Dispatchers.Main) {
+                adapter = ClassroomStudentsAdapter(myContext, students)
+                binding.studentsLayout.adapter = adapter
+            }
+        }
     }
 
     private fun closeStudentPanel() {
@@ -197,6 +210,7 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         binding.lastNameTextInputLayout.error = null
         binding.lastName.text = null
         binding.loginCodeTextInputLayout.error = null
+        binding.generateLoginCode.visibility = View.VISIBLE
         binding.loginCode.text = null
         changeToClassroom = Constants.Classroom
     }
@@ -244,6 +258,7 @@ class ClassroomStudentsActivity : AppCompatActivity() {
         var isValid = true
         if (binding.loginCode.text.toString().length < Constants.MinimalLoginCodeLength) {
             binding.loginCodeTextInputLayout.error = Constants.WrongLoginCodeFormatMessage
+            binding.generateLoginCode.visibility = View.GONE
             return false
         }
         CoroutineScope(Dispatchers.IO).launch {
@@ -252,6 +267,7 @@ class ClassroomStudentsActivity : AppCompatActivity() {
                 if (user != null && user.id != Constants.Student.id) {
                     binding.loginCodeTextInputLayout.error =
                         Constants.WrongLoginCodeAlreadyExistMessage
+                    binding.generateLoginCode.visibility = View.GONE
                     isValid = false
                 }
             }

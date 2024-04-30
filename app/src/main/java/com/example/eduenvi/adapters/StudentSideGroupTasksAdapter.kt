@@ -12,7 +12,7 @@ import com.example.eduenvi.Constants
 import com.example.eduenvi.R
 import com.example.eduenvi.models.Task
 
-class StudentTerminatedTasksAdapter (private val context: Activity, private val list: List<Task>) :
+class StudentSideGroupTasksAdapter (private val context: Activity, private val list: List<Task>) :
     ArrayAdapter<Task>(context, R.layout.grid_student_task_item, list) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -29,7 +29,7 @@ class StudentTerminatedTasksAdapter (private val context: Activity, private val 
 
         view?.setOnClickListener {
             Constants.Task = task
-            val intent = Intent(context, Constants.TaskTypeActivity[task.taskTypeId])//TODO zmen na progres skupin
+            val intent = Intent(context, Constants.TaskTypeActivity[task.taskTypeId])//TODO nacitaj ulozene riesenie skupiny
             intent.putExtra("TASK_ID", task.id)
             context.startActivity(intent)
         }

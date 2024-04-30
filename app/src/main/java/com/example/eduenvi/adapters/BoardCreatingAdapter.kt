@@ -1,6 +1,7 @@
 package com.example.eduenvi.adapters
 
 import android.app.Activity
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ import com.example.eduenvi.TaskType1CreatingActivity
 import com.example.eduenvi.models.Board
 import com.example.eduenvi.models.Tile
 
-class CreatingBoardAdapter(private val context: Activity, private val list: List<Tile>, private val board: Board) :
+class BoardCreatingAdapter(private val context: Activity, private val list: List<Tile>, private val board: Board) :
     ArrayAdapter<Tile>(context, R.layout.board_item, list) {
 
     private var changingStart = false
@@ -39,8 +40,10 @@ class CreatingBoardAdapter(private val context: Activity, private val list: List
                 if (position != board.startIndex){
                     val viewModel: MyViewModel = ViewModelProvider(context as TaskType1CreatingActivity)[MyViewModel::class.java]
                     viewModel.setStartingPosition(position)
-                    changingStart = false
+                }else{
+                    image.colorFilter = null
                 }
+                changingStart = false
             }
             else if (position != board.startIndex) {
                 list[position].isWall = !list[position].isWall
@@ -51,6 +54,7 @@ class CreatingBoardAdapter(private val context: Activity, private val list: List
                 }
             }else{
                 changingStart = true
+                image.setColorFilter((R.color.semitransparent), PorterDuff.Mode.SRC_OVER)
             }
         }
         return view

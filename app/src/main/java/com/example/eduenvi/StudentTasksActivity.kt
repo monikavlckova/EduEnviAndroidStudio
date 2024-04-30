@@ -2,7 +2,6 @@ package com.example.eduenvi
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -35,15 +34,7 @@ class StudentTasksActivity : AppCompatActivity() {
         binding = ActivityStudentTasksBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Log.v("...", Constants.Student.id.toString())
-        CoroutineScope(Dispatchers.IO).launch {
-            tasks = ApiHelper.getStudentsTasks(Constants.Student.id) as MutableList<Task>
-
-            withContext(Dispatchers.Main) {
-                adapter = StudentTasksAdapter(myContext, tasks)
-                binding.tasksLayout.adapter = adapter
-            }
-        }
+        loadTasksToLayout()
 
         binding.studentName.text = "${Constants.Student.firstName} ${Constants.Student.lastName}"
 
@@ -85,6 +76,18 @@ class StudentTasksActivity : AppCompatActivity() {
         binding.closeTasksPanel.setOnClickListener { closeTasksPanel() }
         binding.closeDeletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
+    }
+
+    private fun loadTasksToLayout(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val t = ApiHelper.getStudentsTasks(Constants.Student.id)
+            tasks = if (t == null) mutableListOf() else t as MutableList<Task>
+
+            withContext(Dispatchers.Main) {
+                adapter = StudentTasksAdapter(myContext, tasks)
+                binding.tasksLayout.adapter = adapter
+            }
+        }
     }
 
     private fun closeTasksPanel() {

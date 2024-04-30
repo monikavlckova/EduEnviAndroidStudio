@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.eduenvi.adapters.StudentsGroupsAdapter
+import com.example.eduenvi.adapters.StudentGroupsAdapter
 import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityStudentGroupsBinding
 import com.example.eduenvi.models.Group
@@ -26,7 +26,7 @@ class StudentGroupsActivity : AppCompatActivity() {
     private var _delFromStudent: HashSet<Group> = HashSet()
     private var _addToStudent: HashSet<Group> = HashSet()
     private var groups = mutableListOf<Group>()
-    private lateinit var adapter: StudentsGroupsAdapter
+    private lateinit var adapter: StudentGroupsAdapter
     private val myContext = this
 
 
@@ -35,18 +35,9 @@ class StudentGroupsActivity : AppCompatActivity() {
         binding = ActivityStudentGroupsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val student = Constants.Student
-        CoroutineScope(Dispatchers.IO).launch {
-            groups = ApiHelper.getStudentsGroups(student.id) as MutableList<Group>
+        loadGroupsToLayout()
 
-            withContext(Dispatchers.Main) {
-                adapter = StudentsGroupsAdapter(myContext, groups)
-                binding.groupsLayout.adapter = adapter
-
-            }
-        }
-
-        binding.studentName.text = "${student.firstName} ${student.lastName}"
+        binding.studentName.text = "${Constants.Student.firstName} ${Constants.Student.lastName}"
 
         binding.backButton.setOnClickListener {
             val intent = Intent(this, ClassroomStudentsActivity::class.java)
@@ -60,7 +51,7 @@ class StudentGroupsActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                val res = ApiHelper.deleteStudentGroup(student.id, Constants.Group.id)
+                val res = ApiHelper.deleteStudentGroup(Constants.Student.id, Constants.Group.id)
                 withContext(Dispatchers.Main) {
                     if (res != null) {
                         groups.remove(Constants.Group)
@@ -85,6 +76,19 @@ class StudentGroupsActivity : AppCompatActivity() {
         binding.closeGroupsPanel.setOnClickListener { closeGroupsPanel() }
         binding.closeDeletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
+    }
+
+    private fun loadGroupsToLayout(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val g = ApiHelper.getStudentsGroups(Constants.Student.id)
+            groups = if (g == null) mutableListOf() else g as MutableList<Group>
+
+            withContext(Dispatchers.Main) {
+                adapter = StudentGroupsAdapter(myContext, groups)
+                binding.groupsLayout.adapter = adapter
+
+            }
+        }
     }
 
     private fun closeGroupsPanel() {

@@ -8,7 +8,7 @@
     <ImageButton
         android:id="@+id/backButton"
         style="@style/backButtonDark"
-        android:contentDescription="@string/back" />
+        android:contentDescription="@string/backCodeDescription" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/loginCode"
                 style="@style/inputFieldEditText"
-                android:hint="Prihlasovací kód"
+                android:hint="@string/loginCode"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 

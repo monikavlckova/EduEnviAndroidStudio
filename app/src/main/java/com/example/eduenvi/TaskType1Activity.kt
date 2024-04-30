@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class TaskType1Activity : AppCompatActivity() {
-
+    //TODO pridat moznost oznacit ze nema riesenie
     lateinit var binding: ActivityTaskType1Binding
     private lateinit var boardAdapter: BoardAdapter
     private var boardMaps = mutableListOf<Board>()
@@ -26,20 +26,7 @@ class TaskType1Activity : AppCompatActivity() {
         setContentView(binding.root)
 
         Constants.paths = mutableListOf()
-        CoroutineScope(Dispatchers.IO).launch {
-            val boards = ApiHelper.getTaskBoards(Constants.Task.id) as MutableList<Board>?
-            if (!boards.isNullOrEmpty()) {
-                for (board in boards) {
-                    board.tiles = ApiHelper.getBoardTiles(board.id) as MutableList<Tile>?
-                    Constants.paths.add(mutableListOf(board.startIndex!!))
-                }
-                boardMaps = boards
-                currentBoardIndex = 0
-                withContext(Dispatchers.Main) {
-                    setBoard()
-                }
-            }
-        }
+        loadBoards()
 
         binding.prevBoard.setOnClickListener {
             currentBoardIndex--
@@ -56,13 +43,14 @@ class TaskType1Activity : AppCompatActivity() {
         }
 
         binding.save.setOnClickListener {
-        //TODO zisti ci je uloha spravne, ak ano, uoz do db, treba vytvorit tabulku, zisti, ci uz nie
-        // je ulozene riesenie, ak je nestane sa nic, ak nie ej ulozi sa, po resete si moze student
-        // riesit, ale nejak oznacit ako uspesne hotove
+            //TODO zisti ci je uloha spravne, ak ano, uoz do db, treba vytvorit tabulku, zisti, ci uz nie
+            // je ulozene riesenie, ak je nestane sa nic, ak nie ej ulozi sa, po resete si moze student
+            // riesit, ale nejak oznacit ako uspesne hotove
         }
 
         binding.reset.setOnClickListener {
-            Constants.paths[boardMaps[currentBoardIndex].index] = mutableListOf(boardMaps[currentBoardIndex].startIndex!!)
+            Constants.paths[boardMaps[currentBoardIndex].index] =
+                mutableListOf(boardMaps[currentBoardIndex].startIndex!!)
             setBoard()
         }
 
@@ -72,10 +60,31 @@ class TaskType1Activity : AppCompatActivity() {
         }
     }
 
+    private fun loadBoards() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val boards = ApiHelper.getTaskBoards(Constants.Task.id) as MutableList<Board>?
+            if (!boards.isNullOrEmpty()) {
+                for (board in boards) {
+                    board.tiles = ApiHelper.getBoardTiles(board.id) as MutableList<Tile>?
+                    Constants.paths.add(mutableListOf(board.startIndex!!))
+                }
+                boardMaps = boards
+                currentBoardIndex = 0
+                withContext(Dispatchers.Main) {
+                    setBoard()
+                }
+            }
+        }
+    }
+
     private fun setBoard() {
         binding.boardNumber.text = "${currentBoardIndex + 1}/${boardMaps.size}"
         binding.board.numColumns = boardMaps[currentBoardIndex].columns
-        boardAdapter = BoardAdapter(this, boardMaps[currentBoardIndex].tiles as List<Tile>, boardMaps[currentBoardIndex])
+        boardAdapter = BoardAdapter(
+            this,
+            boardMaps[currentBoardIndex].tiles as List<Tile>,
+            boardMaps[currentBoardIndex]
+        )
         binding.board.adapter = boardAdapter
         setPrevBoardButtonVisibility()
         setNextBoardButtonVisibility()

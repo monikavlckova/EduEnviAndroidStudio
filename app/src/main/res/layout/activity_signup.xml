@@ -9,7 +9,7 @@
     <ImageButton
         android:id="@+id/backButton"
         style="@style/backButtonDark"
-        android:contentDescription="@string/back" />
+        android:contentDescription="@string/backCodeDescription" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,8 +19,8 @@
         android:padding="25dp">
 
         <TextView
-            android:text="@string/signup"
-            style="@style/headlineVerticalLayout"/>
+            style="@style/headlineVerticalLayout"
+            android:text="@string/signup" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/firstNameTextInputLayout"

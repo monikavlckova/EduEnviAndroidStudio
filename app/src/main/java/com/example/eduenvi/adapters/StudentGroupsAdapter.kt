@@ -15,7 +15,7 @@ import com.example.eduenvi.R
 import com.example.eduenvi.StudentGroupsActivity
 import com.example.eduenvi.models.Group
 
-class StudentsGroupsAdapter(private val context: Activity, private val list: List<Group>) :
+class StudentGroupsAdapter(private val context: Activity, private val list: List<Group>) :
     ArrayAdapter<Group>(context, R.layout.grid_x_list_item, list) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

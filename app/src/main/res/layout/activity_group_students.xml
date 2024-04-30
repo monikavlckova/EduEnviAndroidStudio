@@ -15,12 +15,12 @@
         <ImageButton
             android:id="@+id/backButton"
             style="@style/backButton"
-            android:contentDescription="@string/back" />
+            android:contentDescription="@string/backCodeDescription" />
 
         <TextView
             android:id="@+id/groupName"
             style="@style/headline"
-            android:text="Meno skupiny" />
+            android:text="@string/groupName" />
 
         <GridView
             android:id="@+id/studentsLayout"
@@ -31,20 +31,20 @@
         <ImageButton
             android:id="@+id/addButton"
             style="@style/addButton"
-            android:contentDescription="@string/add" />
+            android:contentDescription="@string/addCodeDescription" />
 
         <LinearLayout style="@style/bottomNavigationLayout">
 
             <ImageButton
                 android:id="@+id/tasksButton"
                 style="@style/navButton"
-                android:contentDescription="@string/tasks"
+                android:contentDescription="@string/tasksCodeDescription"
                 android:src="@mipmap/tasks" />
 
             <ImageButton
                 android:id="@+id/studentsButton"
                 style="@style/navButton"
-                android:contentDescription="@string/students"
+                android:contentDescription="@string/studentsCodeDescription"
                 android:src="@mipmap/students_highlighted" />
         </LinearLayout>
     </RelativeLayout>
@@ -58,7 +58,8 @@
 
         <ImageButton
             android:id="@+id/closeStudentsPanel"
-            style="@style/backButtonDark" />
+            style="@style/backButtonDark"
+            android:contentDescription="@string/closeCodeDescription" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -67,13 +68,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textInGroup"
                     style="@style/chipTextView"
-                    android:text="V skupine" />
+                    android:text="@string/inGroup" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroupIn"
@@ -84,7 +85,7 @@
                 <TextView
                     android:id="@+id/textNotInGroup"
                     style="@style/chipTextView"
-                    android:text="Mimo skupiny" />
+                    android:text="@string/notInGroup" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroupNotIn"

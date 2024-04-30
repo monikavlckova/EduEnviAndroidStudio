@@ -35,17 +35,9 @@ class GroupTasksActivity : AppCompatActivity() {
         binding = ActivityGroupTasksBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val group = Constants.Group
-        CoroutineScope(Dispatchers.IO).launch {
-            tasks = ApiHelper.getGroupsTasks(group.id) as MutableList<Task>
+        loadTasksToLayout()
 
-            withContext(Dispatchers.Main) {
-                adapter = GroupTasksAdapter(myContext, tasks)
-                binding.tasksLayout.adapter = adapter
-            }
-        }
-
-        binding.groupName.text = group.name
+        binding.groupName.text = Constants.Group.name
 
         binding.backButton.setOnClickListener {
             val intent = Intent(this, ClassroomGroupsActivity::class.java)
@@ -59,7 +51,7 @@ class GroupTasksActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                val res = ApiHelper.deleteGroupTask(group.id, Constants.Task.id)
+                val res = ApiHelper.deleteGroupTask(Constants.Group.id, Constants.Task.id)
                 withContext(Dispatchers.Main) {
                     if (res != null) {
                         tasks.remove(Constants.Task)
@@ -82,6 +74,18 @@ class GroupTasksActivity : AppCompatActivity() {
         binding.closeTasksPanel.setOnClickListener { closeTasksPanel() }
         binding.closeDeletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
+    }
+
+    private fun loadTasksToLayout(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val t = ApiHelper.getGroupsTasks(Constants.Group.id)
+            tasks = if (t == null) mutableListOf() else t as MutableList<Task>
+
+            withContext(Dispatchers.Main) {
+                adapter = GroupTasksAdapter(myContext, tasks)
+                binding.tasksLayout.adapter = adapter
+            }
+        }
     }
 
     private fun closeTasksPanel() {

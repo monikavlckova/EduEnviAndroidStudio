@@ -14,7 +14,7 @@
         <ImageButton
             android:id="@+id/backButton"
             style="@style/backButtonDark"
-            android:contentDescription="@string/back" />
+            android:contentDescription="@string/backCodeDescription" />
 
         <Button
             android:id="@+id/edit_button"
@@ -34,6 +34,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
+                android:importantForAccessibility="no"
                 android:src="@drawable/baseline_account_circle_dark_24" />
 
             <TextView
@@ -41,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Meno Priezvisko"
+                android:text="@string/firstName"
                 android:textAlignment="center"
                 android:textSize="22sp" />
 
@@ -54,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="60dp"
                     android:gravity="center"
-                    android:text="Heslo" />
+                    android:text="@string/password" />
 
                 <Button
                     android:id="@+id/changePassword"
@@ -62,7 +63,7 @@
                     android:layout_height="60dp"
                     android:layout_alignParentEnd="true"
                     android:background="@color/transparent"
-                    android:text="Zmeniť heslo"
+                    android:text="@string/changePassword"
                     android:textAllCaps="false"
                     android:textColor="@color/Accent"
                     android:textStyle="bold" />
@@ -81,7 +82,7 @@
         <ImageButton
             android:id="@+id/closeEditPanel"
             style="@style/closeButtonLeft"
-            android:contentDescription="@string/close" />
+            android:contentDescription="@string/closeCodeDescription" />
 
         <Button
             android:id="@+id/saveButton"
@@ -106,6 +107,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/baseline_account_circle_dark_24" />
 
                 <ImageButton
@@ -115,6 +117,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:background="@drawable/oval_50_primary"
+                    android:contentDescription="@string/editImageCodeDescription"
                     android:src="@drawable/baseline_edit_24" />
 
             </RelativeLayout>
@@ -173,7 +176,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center"
-                    android:text="Heslo" />
+                    android:text="@string/password" />
 
                 <Button
                     android:id="@+id/editChangePassword"
@@ -181,7 +184,7 @@
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
                     android:background="@color/transparent"
-                    android:text="Zmeniť heslo"
+                    android:text="@string/changePassword"
                     android:textColor="@color/Accent"
                     android:textStyle="bold" />
 
@@ -211,7 +214,7 @@
                 <ImageButton
                     android:id="@+id/closePasswordPanel"
                     style="@style/closeButtonLeft"
-                    android:contentDescription="@string/close" />
+                    android:contentDescription="@string/closeCodeDescription" />
 
                 <Button
                     android:id="@+id/savePasswordButton"
@@ -261,12 +264,12 @@
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="70dp"/>
+            android:layout_marginTop="70dp" />
 
         <ImageButton
             android:id="@+id/closeFragmentButton"
             style="@style/backButtonDark"
-            android:contentDescription="@string/back" />
+            android:contentDescription="@string/backCodeDescription" />
 
     </RelativeLayout>
 

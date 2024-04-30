@@ -14,12 +14,13 @@
 
         <ImageButton
             android:id="@+id/backButton"
-            style="@style/backButton" />
+            style="@style/backButton"
+            android:contentDescription="@string/backCodeDescription" />
 
         <TextView
             android:id="@+id/studentName"
             style="@style/headline"
-            android:text="Meno žiaka" />
+            android:text="@string/firstName" />
 
         <GridView
             android:id="@+id/tasksLayout"
@@ -30,20 +31,20 @@
         <ImageButton
             android:id="@+id/addButton"
             style="@style/addButton"
-            android:contentDescription="@string/add" />
+            android:contentDescription="@string/addCodeDescription" />
 
         <LinearLayout style="@style/bottomNavigationLayout">
 
             <ImageButton
                 android:id="@+id/tasksButton"
                 style="@style/navButton"
-                android:contentDescription="@string/tasks"
+                android:contentDescription="@string/tasksCodeDescription"
                 android:src="@mipmap/tasks_highlighted" />
 
             <ImageButton
                 android:id="@+id/groupsButton"
                 style="@style/navButton"
-                android:contentDescription="@string/groups"
+                android:contentDescription="@string/groupsCodeDescription"
                 android:src="@mipmap/groups" />
         </LinearLayout>
     </RelativeLayout>
@@ -66,13 +67,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textIn"
                     style="@style/chipTextView"
-                    android:text="Priradené úlohy" />
+                    android:text="@string/tasksIn" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroupIn"
@@ -83,7 +84,7 @@
                 <TextView
                     android:id="@+id/textNotIn"
                     style="@style/chipTextView"
-                    android:text="Dostupné úloy" />
+                    android:text="@string/tasksNotIn" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroupNotIn"

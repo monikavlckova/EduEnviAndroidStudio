@@ -15,12 +15,12 @@
         <ImageButton
             android:id="@+id/backButton"
             style="@style/backButton"
-            android:contentDescription="@string/back" />
+            android:contentDescription="@string/backCodeDescription" />
 
         <TextView
             android:id="@+id/classroomName"
             style="@style/headline"
-            android:text="Meno triedy" />
+            android:text="@string/classroomName" />
 
         <GridView
             android:id="@+id/tasksLayout"
@@ -31,26 +31,26 @@
         <ImageButton
             android:id="@+id/addButton"
             style="@style/addButton"
-            android:contentDescription="@string/add" />
+            android:contentDescription="@string/addCodeDescription" />
 
         <LinearLayout style="@style/bottomNavigationLayout">
 
             <ImageButton
                 android:id="@+id/tasksButton"
                 style="@style/navButton"
-                android:contentDescription="@string/tasks"
+                android:contentDescription="@string/tasksCodeDescription"
                 android:src="@mipmap/tasks_highlighted" />
 
             <ImageButton
                 android:id="@+id/studentsButton"
                 style="@style/navButton"
-                android:contentDescription="@string/students"
+                android:contentDescription="@string/studentsCodeDescription"
                 android:src="@mipmap/students" />
 
             <ImageButton
                 android:id="@+id/groupsButton"
                 style="@style/navButton"
-                android:contentDescription="@string/groups"
+                android:contentDescription="@string/groupsCodeDescription"
                 android:src="@mipmap/groups" />
         </LinearLayout>
     </RelativeLayout>
@@ -64,7 +64,8 @@
 
         <ImageButton
             android:id="@+id/closeTaskPanel"
-            style="@style/backButtonDark" />
+            style="@style/backButtonDark"
+            android:contentDescription="@string/closeCodeDescription" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -73,7 +74,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -88,6 +89,7 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center"
+                        android:importantForAccessibility="no"
                         android:src="@drawable/baseline_account_circle_dark_24" />
 
                     <ImageButton
@@ -97,6 +99,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
                         android:background="@drawable/oval_50_primary"
+                        android:contentDescription="@string/editImageCodeDescription"
                         android:src="@drawable/baseline_edit_24" />
                 </RelativeLayout>
 
@@ -114,8 +117,8 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayout"
-                    android:layout_height = "wrap_content"
-                    android:layout_width = "match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -123,7 +126,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/oval_50_background"
-                        android:hint="Text"
+                        android:hint="@string/text"
                         android:inputType="textMultiLine"
                         android:paddingStart="30dp"
                         android:paddingEnd="30dp" />
@@ -137,7 +140,7 @@
 
                     <TextView
                         style="@style/chipTextView"
-                        android:text="Typ" />
+                        android:text="@string/type" />
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/chipTaskType"
@@ -168,17 +171,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:text="Typ"
-                        android:textSize="16dp" />
+                        android:layout_alignParentStart="true"
+                        android:text="@string/type"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/updatingTaskTypeText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:text=""
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                 </RelativeLayout>
 
@@ -189,7 +192,7 @@
 
                     <TextView
                         style="@style/textViewRight"
-                        android:text="Viditeľná od" />
+                        android:text="@string/visibleFrom" />
 
                     <TextView
                         android:id="@+id/dateTimeTaskVisibleFrom"
@@ -205,7 +208,7 @@
 
                     <TextView
                         style="@style/textViewRight"
-                        android:text="Deadline" />
+                        android:text="@string/deadline" />
 
                     <TextView
                         android:id="@+id/dateTimeTaskDeadline"
@@ -216,33 +219,33 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/soloTaskButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:backgroundTint="@color/gray"
                         android:padding="12dp"
-                        android:text="samostatná"
-                        android:backgroundTint="@color/Secondary"/>
+                        android:text="@string/solo" />
 
                     <Button
                         android:id="@+id/groupTaskButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
+                        android:backgroundTint="@color/gray"
                         android:padding="12dp"
-                        android:text="skupinová"
-                        android:backgroundTint="@color/gray"/>
+                        android:text="@string/group" />
 
                     <Button
                         android:id="@+id/freeTaskButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:backgroundTint="@color/Secondary"
                         android:padding="12dp"
-                        android:text="nepriradená"
-                        android:backgroundTint="@color/gray"/>
+                        android:text="@string/free" />
 
                 </LinearLayout>
 
@@ -264,48 +267,101 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/semitransparent"
+        android:gravity="center"
         android:visibility="gone">
 
-        <DatePicker
-            android:id="@+id/datePicker"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dateLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <DatePicker
+                android:id="@+id/datePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/Background"
+                android:datePickerMode="calendar"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="@color/Background"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/datePicker">
+
+                <Button
+                    android:id="@+id/closeDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/Background"
+                    android:text="@string/cancel"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/setDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/Background"
+                    android:text="@string/ok"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/timeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@color/Background"
-            android:datePickerMode="calendar" />
+            android:visibility="gone">
 
-        <Button
-            android:id="@+id/setDate"
-            style="@style/actionButton"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="25dp"
-            android:text="@string/set" />
+            <TimePicker
+                android:id="@+id/timePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/Background"
+                android:timePickerMode="spinner"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="@color/Background"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/timePicker">
 
-        <TimePicker
-            android:id="@+id/timePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@color/Background"
-            android:timePickerMode="spinner"
-            android:visibility="gone" />
+                <Button
+                    android:id="@+id/closeTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/Background"
+                    android:text="@string/cancel"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/setTime"
-            style="@style/actionButton"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="25dp"
-            android:text="@string/set"
-            android:visibility="gone" />
+                <Button
+                    android:id="@+id/setTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/Background"
+                    android:text="@string/ok"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 
     <LinearLayout
@@ -326,7 +382,7 @@
                 <ImageButton
                     android:id="@+id/closeEditPanel"
                     style="@style/closeButton"
-                    android:contentDescription="@string/close" />
+                    android:contentDescription="@string/closeCodeDescription" />
             </RelativeLayout>
 
             <Button
@@ -396,7 +452,7 @@
         <ImageButton
             android:id="@+id/closeFragmentButton"
             style="@style/backButtonDark"
-            android:contentDescription="@string/back" />
+            android:contentDescription="@string/backCodeDescription" />
 
     </RelativeLayout>
 </RelativeLayout>

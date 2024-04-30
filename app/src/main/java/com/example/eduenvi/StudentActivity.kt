@@ -4,9 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.example.eduenvi.adapters.StudentGroupTasksAdapter
-import com.example.eduenvi.adapters.StudentSoloTasksAdapter
-import com.example.eduenvi.adapters.StudentTerminatedTasksAdapter
+import com.example.eduenvi.adapters.StudentSideGroupTasksAdapter
+import com.example.eduenvi.adapters.StudentSideSoloTasksAdapter
+import com.example.eduenvi.adapters.StudentSideTerminatedTasksAdapter
 import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityStudentBinding
 import com.example.eduenvi.models.Task
@@ -22,9 +22,9 @@ class StudentActivity : AppCompatActivity() {
     private var soloTasks: List<Task>? = null
     private var groupTasks: List<Task>? = null
     private var terminatedTasks: List<Task>? = null
-    private lateinit var soloTasksAdapter: StudentSoloTasksAdapter
-    private lateinit var groupTasksAdapter: StudentGroupTasksAdapter
-    private lateinit var terminatedTasksAdapter: StudentTerminatedTasksAdapter
+    private lateinit var soloTasksAdapter: StudentSideSoloTasksAdapter
+    private lateinit var groupTasksAdapter: StudentSideGroupTasksAdapter
+    private lateinit var terminatedTasksAdapter: StudentSideTerminatedTasksAdapter
 
     private val myContext = this
 
@@ -62,7 +62,7 @@ class StudentActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (soloTasks != null) {
-                        soloTasksAdapter = StudentSoloTasksAdapter(myContext, soloTasks!!)
+                        soloTasksAdapter = StudentSideSoloTasksAdapter(myContext, soloTasks!!)
                         binding.soloTasksLayout.adapter = soloTasksAdapter
                     }
                 }
@@ -77,7 +77,7 @@ class StudentActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (groupTasks != null) {
-                        groupTasksAdapter = StudentGroupTasksAdapter(myContext, groupTasks!!)
+                        groupTasksAdapter = StudentSideGroupTasksAdapter(myContext, groupTasks!!)
                         binding.groupTasksLayout.adapter = groupTasksAdapter
                     }
                 }
@@ -94,7 +94,7 @@ class StudentActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (terminatedTasks != null) {
-                        terminatedTasksAdapter = StudentTerminatedTasksAdapter(myContext, terminatedTasks!!)
+                        terminatedTasksAdapter = StudentSideTerminatedTasksAdapter(myContext, terminatedTasks!!)
                         binding.terminatedTasksLayout.adapter = terminatedTasksAdapter
                     }
                 }

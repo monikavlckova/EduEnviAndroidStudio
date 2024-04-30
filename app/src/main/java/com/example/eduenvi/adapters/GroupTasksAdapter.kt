@@ -37,7 +37,7 @@ class GroupTasksAdapter (private val context: Activity, private val list: List<T
         }
         view?.setOnClickListener {
             Constants.Task = task
-            val intent = Intent(context, Constants.TaskTypeCreatingActivity[task.taskTypeId])//TODO zmen na progres skupin
+            val intent = Intent(context, Constants.TaskTypeActivity[task.taskTypeId])//TODO nacitaj ulozerne riesenie skupiny
             intent.putExtra("TASK_ID", task.id)
             context.startActivity(intent)
         }

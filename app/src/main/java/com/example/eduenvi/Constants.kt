@@ -59,6 +59,7 @@ object Constants {
     fun getDeleteGroupFromStudentString(g: Group) = "Odstrániť žiaka zo skupiny " + g.name + "?"
     fun getDeleteTaskFromGroupString(t: Task) = "Odstrániť úlohu " + t.name + " zo skupiny?"
     fun getDeleteTaskFromStudentString(t: Task) = "Odstrániť žiakovi úlohu " + t.name + "?"
+    fun getBackCreatingTaskNotSavedString() = "Naozaj chcete opustiť úpravu úlohy bez uloženia?"
 
     val emailSender = EmailSender()
     val imageManager = ImageManager()

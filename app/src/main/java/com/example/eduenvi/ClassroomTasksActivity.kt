@@ -27,7 +27,8 @@ import java.util.Calendar
 import java.util.Date
 
 //TODO ked odstranim tak odstarn studentTask aj classroom task aj grouptask
-
+//TODO chcek ci je satum od mensi ako do, odstranenie datumu
+//TODO daj o uroven vyssie, nech vytvara ulohu mimo triedy, do triedy potom len ulohy, kt maju ziaci/skupiny, ked a ne kliknem ze upravit tak mozem meit ziakova skupiny ako pri ziakovych skupinach ulohach skupinovych ziakoch ulohach
 class ClassroomTasksActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityClassroomTasksBinding
@@ -41,10 +42,9 @@ class ClassroomTasksActivity : AppCompatActivity() {
     private var imageId: Int? = null
     private lateinit var viewModel: MyViewModel
     private val fragment = ImageGalleryFragment()
-    private val classroom = Constants.Classroom
-    private var soloTask = true
+    private var soloTask = false
     private var groupTask = false
-    private var freeTask = false
+    private var freeTask = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +53,9 @@ class ClassroomTasksActivity : AppCompatActivity() {
 
         loadGalleryFragment(savedInstanceState)
         loadViewModel()
-        loadClassroomTasksToLayout()
+        loadTasksToLayout()
 
-        binding.classroomName.text = classroom.name
+        binding.classroomName.text = Constants.Classroom.name
 
         binding.backButton.setOnClickListener {
             val intent = Intent(this, ClassroomsActivity::class.java)
@@ -119,10 +119,8 @@ class ClassroomTasksActivity : AppCompatActivity() {
         }
 
         binding.setDate.setOnClickListener {
-            binding.setDate.visibility = View.GONE
-            binding.setTime.visibility = View.VISIBLE
-            binding.datePicker.visibility = View.GONE
-            binding.timePicker.visibility = View.VISIBLE
+            binding.dateLayout.visibility = View.GONE
+            binding.timeLayout.visibility = View.VISIBLE
         }
 
         binding.setTime.setOnClickListener {
@@ -213,6 +211,8 @@ class ClassroomTasksActivity : AppCompatActivity() {
 
         binding.closeTaskPanel.setOnClickListener { closeTaskPanel() }
         binding.dateTimePickerPanel.setOnClickListener { closeDateTimePanel() }
+        binding.closeDate.setOnClickListener { closeDateTimePanel() }
+        binding.closeTime.setOnClickListener { closeDateTimePanel() }
         binding.closeEditPanel.setOnClickListener { binding.editPanel.visibility = View.GONE }
         binding.editPanel.setOnClickListener { binding.editPanel.visibility = View.GONE }
         binding.closeDeletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
@@ -238,10 +238,10 @@ class ClassroomTasksActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadClassroomTasksToLayout() {
+    private fun loadTasksToLayout() {
         CoroutineScope(Dispatchers.IO).launch {
-            tasks = ApiHelper.getTasksInClassroom(Constants.Classroom.id) as MutableList<Task>
-            //TODO nebude to problem ze to castujem ako MutableList<Task> nenullable?
+            val t = ApiHelper.getTasksInClassroom(Constants.Classroom.id)
+            tasks = if (t == null) mutableListOf() else t as MutableList<Task>
 
             withContext(Dispatchers.Main) {
                 adapter = ClassroomTasksAdapter(myContext, tasks)
@@ -284,7 +284,6 @@ class ClassroomTasksActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             val taskTypes = ApiHelper.getAllTaskTypes()
             withContext(Dispatchers.Main) {
-                //TODO pridat aj plusko? pridanie nahranie noveho typu, aj niekde inde? len tu alebo len niekde inde
                 taskTypes?.forEach { taskType ->
                     val tagName = taskType.name
                     val chip = Chip(myContext)
@@ -337,14 +336,14 @@ class ClassroomTasksActivity : AppCompatActivity() {
     }
 
     private suspend fun setTaskToStudentsInClassroom(task: Task){
-        val students = ApiHelper.getStudentsInClassroom(classroom.id)
+        val students = ApiHelper.getStudentsInClassroom(Constants.Classroom.id)
         for (student in students!!){
             ApiHelper.createStudentTask(StudentTask(student.id, task.id))
         }
     }
 
     private suspend fun setTaskToGroupsInClassroom(task: Task){
-        val groups = ApiHelper.getGroupsInClassroom(classroom.id)
+        val groups = ApiHelper.getGroupsInClassroom(Constants.Classroom.id)
         for (group in groups!!){
             ApiHelper.createGroupTask(GroupTask(group.id, task.id))
         }
@@ -368,10 +367,8 @@ class ClassroomTasksActivity : AppCompatActivity() {
 
     private fun closeDateTimePanel() {
         binding.dateTimePickerPanel.visibility = View.GONE
-        binding.setDate.visibility = View.VISIBLE
-        binding.setTime.visibility = View.GONE
-        binding.datePicker.visibility = View.VISIBLE
-        binding.timePicker.visibility = View.GONE
+        binding.dateLayout.visibility = View.VISIBLE
+        binding.timeLayout.visibility = View.GONE
     }
 
     private fun validName(): Boolean {

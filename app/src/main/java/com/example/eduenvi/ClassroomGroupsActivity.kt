@@ -41,27 +41,9 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         binding = ActivityClassroomGroupsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .add(R.id.fragmentContainer, fragment)
-                .commit()
-        }
-
-        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
-        viewModel.getSelectedImage().observe(this) { image ->
-            imageId = image.id
-            Constants.imageManager.setImage(image.url, this, binding.GroupImage)
-            binding.fragmentLayout.visibility = View.GONE
-        }
-
-        CoroutineScope(Dispatchers.IO).launch {
-            groups = ApiHelper.getGroupsInClassroom(classroom.id) as MutableList<Group>
-
-            withContext(Dispatchers.Main) {
-                adapter = ClassroomGroupsAdapter(myContext, groups)
-                binding.groupsLayout.adapter = adapter
-            }
-        }
+        loadGalleryFragment(savedInstanceState)
+        loadViewModel()
+        loadGroupsToLayout()
 
         binding.classroomName.text = classroom.name
 
@@ -169,6 +151,34 @@ class ClassroomGroupsActivity : AppCompatActivity() {
         binding.groupName.addTextChangedListener { binding.groupNameTextInputLayout.error = null }
     }
 
+    private fun loadGalleryFragment(savedInstanceState: Bundle?){
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, fragment)
+                .commit()
+        }
+    }
+
+    private fun loadViewModel(){
+        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
+        viewModel.getSelectedImage().observe(this) { image ->
+            imageId = image.id
+            Constants.imageManager.setImage(image.url, this, binding.GroupImage)
+            binding.fragmentLayout.visibility = View.GONE
+        }
+    }
+
+    private fun loadGroupsToLayout(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val g =  ApiHelper.getGroupsInClassroom(classroom.id)
+            groups = if (g == null) mutableListOf() else g as MutableList<Group>
+
+            withContext(Dispatchers.Main) {
+                adapter = ClassroomGroupsAdapter(myContext, groups)
+                binding.groupsLayout.adapter = adapter
+            }
+        }
+    }
     private fun closeGroupPanel() {
         binding.groupPanel.visibility = View.GONE
         binding.mainPanel.visibility = View.VISIBLE

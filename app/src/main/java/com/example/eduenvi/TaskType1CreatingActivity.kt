@@ -3,9 +3,10 @@ package com.example.eduenvi
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.eduenvi.adapters.CreatingBoardAdapter
+import com.example.eduenvi.adapters.BoardCreatingAdapter
 import com.example.eduenvi.adapters.ImageGridViewAdapter
 import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityTaskType1CreatingBinding
@@ -16,12 +17,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
+//TODO ci je circle uloha - spravit dalsi typ? dat dext do board nie do tasku? alebo aj aj
 class TaskType1CreatingActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityTaskType1CreatingBinding
     private lateinit var boardMap: MutableList<Tile>
-    private lateinit var boardAdapter: CreatingBoardAdapter
+    private lateinit var boardAdapter: BoardCreatingAdapter
     private var boardMaps = mutableListOf<Board>()
     private var currentBoardIndex = -1
     private var updating = false
@@ -30,6 +31,7 @@ class TaskType1CreatingActivity : AppCompatActivity() {
     private lateinit var viewModel: MyViewModel
     private val fragment = ImageGalleryFragment()
     private var images = mutableListOf<Image?>(null, null, null, null)
+    private val myContext = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,28 +41,12 @@ class TaskType1CreatingActivity : AppCompatActivity() {
         taskId = intent.extras?.getInt("TASK_ID")
         loadBoardsIfExist()
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .add(R.id.fragmentContainer, fragment)
-                .commit()
-        }
+        loadGalleryFragment(savedInstanceState)
 
-        imageGridViewAdapter = ImageGridViewAdapter(this)
+        imageGridViewAdapter = ImageGridViewAdapter(myContext)
         binding.imageGridView.adapter = imageGridViewAdapter
 
-        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
-        viewModel.getSelectedImage().observe(this) { image ->
-            Constants.ImageGridImages[viewModel.getChangingImageIndex().value!!] = image
-            imageGridViewAdapter.notifyDataChanged()
-
-            binding.fragmentLayout.visibility = View.GONE
-            binding.selectImagesPanel.visibility = View.VISIBLE
-        }
-
-        viewModel.getStartingPosition().observe(this) { position ->
-            boardMaps[currentBoardIndex].startIndex = position
-            setBoard(boardMaps[currentBoardIndex].columns)
-        }
+        loadViewModel()
 
         binding.numOfColumnsPicker.displayedValues =
             listOf("1", "2", "3", "4", "5", "6", "7", "8").toTypedArray()
@@ -171,7 +157,7 @@ class TaskType1CreatingActivity : AppCompatActivity() {
             openNewBoardPanel()
         }
 
-        binding.addAnotherMap.setOnClickListener {
+        binding.addAnotherBoard.setOnClickListener {
             if (boardMaps.size > 0) {
                 boardMaps[currentBoardIndex].tiles = boardMap
                 currentBoardIndex = boardMaps.size - 1
@@ -202,8 +188,7 @@ class TaskType1CreatingActivity : AppCompatActivity() {
                 }
             }
 
-            //TODO ci je circle uloha
-            val intent = Intent(this, ClassroomTasksActivity::class.java)
+            val intent = Intent(myContext, ClassroomTasksActivity::class.java)
             startActivity(intent)
         }
 
@@ -213,11 +198,11 @@ class TaskType1CreatingActivity : AppCompatActivity() {
                 val task = ApiHelper.deleteTask(taskId!!)
                 withContext(Dispatchers.Main) {
                     if (task == null) {
-                        //TODO
+                        Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     }
                 }
             }
-            val intent = Intent(this, ClassroomTasksActivity::class.java)
+            val intent = Intent(myContext, ClassroomTasksActivity::class.java)
             startActivity(intent)
         }
 
@@ -228,9 +213,41 @@ class TaskType1CreatingActivity : AppCompatActivity() {
         }
 
         binding.backButton.setOnClickListener {
-            //TODO urcite? prides o zmeny
-            val intent = Intent(this, ClassroomTasksActivity::class.java)
+            binding.deletePanel.visibility = View.VISIBLE
+            binding.deleteText.text = Constants.getBackCreatingTaskNotSavedString()
+        }
+
+        binding.confirmDelete.setOnClickListener {
+            val intent = Intent(myContext, ClassroomTasksActivity::class.java)
             startActivity(intent)
+        }
+
+        binding.closeDeletePanel.setOnClickListener{
+            binding.deletePanel.visibility = View.GONE
+        }
+    }
+
+    private fun loadGalleryFragment(savedInstanceState: Bundle?){
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, fragment)
+                .commit()
+        }
+    }
+
+    private fun loadViewModel(){
+        viewModel = ViewModelProvider(myContext)[MyViewModel::class.java]
+        viewModel.getSelectedImage().observe(myContext) { image ->
+            Constants.ImageGridImages[viewModel.getChangingImageIndex().value!!] = image
+            imageGridViewAdapter.notifyDataChanged()
+
+            binding.fragmentLayout.visibility = View.GONE
+            binding.selectImagesPanel.visibility = View.VISIBLE
+        }
+
+        viewModel.getStartingPosition().observe(myContext) { position ->
+            boardMaps[currentBoardIndex].startIndex = position
+            setBoard(boardMaps[currentBoardIndex].columns)
         }
     }
 
@@ -264,7 +281,7 @@ class TaskType1CreatingActivity : AppCompatActivity() {
     private fun setBoard(columns: Int) {
         binding.boardNumber.text = "${currentBoardIndex + 1}/${boardMaps.size}"
         binding.board.numColumns = columns
-        boardAdapter = CreatingBoardAdapter(this, boardMap, boardMaps[currentBoardIndex])
+        boardAdapter = BoardCreatingAdapter(myContext, boardMap, boardMaps[currentBoardIndex])
         binding.board.adapter = boardAdapter
     }
 

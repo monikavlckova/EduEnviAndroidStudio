@@ -14,7 +14,8 @@
 
         <ImageButton
             android:id="@+id/backButton"
-            style="@style/backButtonDark"/>
+            style="@style/backButtonDark"
+            android:contentDescription="@string/backCodeDescription" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -46,6 +47,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:backgroundTint="@color/transparent"
+                android:contentDescription="@string/prevBoardCodeDescription"
                 android:src="@drawable/baseline_arrow_left_dark_24"
                 android:visibility="gone" />
 
@@ -56,6 +58,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:backgroundTint="@color/transparent"
+                android:contentDescription="@string/nextBoardCodeDescription"
                 android:src="@drawable/baseline_arrow_right_dark_24"
                 android:visibility="gone" />
         </RelativeLayout>
@@ -79,12 +82,12 @@
 
                 <TextView
                     style="@style/textToAddButtonMore"
-                    android:text="Nastaviť obrázky" />
+                    android:text="@string/setImages" />
 
                 <ImageButton
                     android:id="@+id/setImages"
                     style="@style/addButtonMore"
-                    android:contentDescription="Vyber obrázky"
+                    android:contentDescription="@string/setImages"
                     android:src="@drawable/baseline_add_photo_dark_24" />
             </LinearLayout>
 
@@ -95,12 +98,12 @@
 
                 <TextView
                     style="@style/textToAddButtonMore"
-                    android:text="Zahodiť plochu" />
+                    android:text="@string/deleteBoard" />
 
                 <ImageButton
                     android:id="@+id/deleteBoard"
                     style="@style/addButtonMore"
-                    android:contentDescription="Zahodiť plochu"
+                    android:contentDescription="@string/deleteBoard"
                     android:src="@drawable/baseline_disabled_by_default_dark_24" />
             </LinearLayout>
 
@@ -111,12 +114,12 @@
 
                 <TextView
                     style="@style/textToAddButtonMore"
-                    android:text="Zmeniť veľkosť plochy" />
+                    android:text="@string/resizeBoard" />
 
                 <ImageButton
                     android:id="@+id/resizeBoard"
                     style="@style/addButtonMore"
-                    android:contentDescription="Zahodiť"
+                    android:contentDescription="@string/resizeBoard"
                     android:src="@drawable/baseline_replay_dark_24" />
             </LinearLayout>
 
@@ -127,12 +130,12 @@
 
                 <TextView
                     style="@style/textToAddButtonMore"
-                    android:text="Vytvoriť ďaľši plochu" />
+                    android:text="@string/addAnotherBoard" />
 
                 <ImageButton
-                    android:id="@+id/addAnotherMap"
+                    android:id="@+id/addAnotherBoard"
                     style="@style/addButtonMore"
-                    android:contentDescription="Vytvoriť ďaľšiu"
+                    android:contentDescription="@string/addAnotherBoard"
                     android:src="@drawable/baseline_new_window_dark_24" />
             </LinearLayout>
 
@@ -143,12 +146,12 @@
 
                 <TextView
                     style="@style/textToAddButtonMore"
-                    android:text="Zahodiť úlohu" />
+                    android:text="@string/deleteTask" />
 
                 <ImageButton
                     android:id="@+id/deleteTask"
                     style="@style/addButtonMore"
-                    android:contentDescription="Zahodiť úlohu"
+                    android:contentDescription="@string/deleteTask"
                     android:src="@drawable/baseline_delete_dark_24" />
             </LinearLayout>
 
@@ -159,12 +162,12 @@
 
                 <TextView
                     style="@style/textToAddButtonMore"
-                    android:text="Uložiť úlohu" />
+                    android:text="@string/saveTask" />
 
                 <ImageButton
                     android:id="@+id/saveTask"
                     style="@style/addButtonMore"
-                    android:contentDescription="Uložiť úlohu"
+                    android:contentDescription="@string/saveTask"
                     android:src="@drawable/baseline_save_dark_24" />
             </LinearLayout>
         </LinearLayout>
@@ -173,12 +176,13 @@
             android:id="@+id/moreButtons"
             style="@style/addButton"
             android:layout_marginBottom="16dp"
-            android:contentDescription="@string/add" />
+            android:contentDescription="@string/addCodeDescription" />
 
         <ImageButton
             android:id="@+id/closeButtonPanel"
             style="@style/addButton"
             android:layout_marginBottom="16dp"
+            android:contentDescription="@string/closeCodeDescription"
             android:src="@drawable/baseline_close_24"
             android:visibility="gone" />
     </RelativeLayout>
@@ -196,7 +200,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
             android:gravity="center"
-            android:text="Veľkosť plochy"
+            android:text="@string/boardSize"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/numOfColumnsAndRowsPickerLayout" />
 
@@ -205,7 +209,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
-            app:layout_constraintBottom_toTopOf="@id/icCircle"
+            app:layout_constraintBottom_toTopOf="@id/setBoardSize"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 
@@ -219,7 +223,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="x"
+                android:text="@string/x"
                 android:textSize="20sp" />
 
             <NumberPicker
@@ -229,15 +233,6 @@
                 android:layout_margin="20dp" />
         </LinearLayout>
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/icCircle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:text="kružnica"
-            app:layout_constraintBottom_toTopOf="@id/setBoardSize"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
 
         <Button
             android:id="@+id/setBoardSize"
@@ -252,44 +247,47 @@
         android:id="@+id/selectImagesPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
         android:background="@color/Surface"
+        android:padding="20dp"
         android:visibility="gone">
 
         <ImageButton
             android:id="@+id/closeSelectImagesPanel"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
             style="@style/backButtonDark"
-            android:layout_margin="0dp"/>
+            android:layout_margin="0dp"
+            android:contentDescription="@string/closeCodeDescription"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/imageLayout"
             app:layout_constraintLeft_toLeftOf="parent">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
                 android:layout_gravity="fill"
                 android:gravity="center"
-                android:text="Voľné políčko"/>
+                android:text="@string/emptyTile" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
                 android:layout_gravity="fill"
                 android:gravity="center"
-                android:text="Zátarasa"/>
+                android:text="@string/wallTile" />
         </GridLayout>
 
         <com.example.eduenvi.GridViewItem
             android:id="@id/imageLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <GridView
                 android:id="@+id/imageGridView"
@@ -297,34 +295,36 @@
                 android:layout_height="match_parent"
                 android:numColumns="2"
                 android:padding="10dp"
-                tools:listitem="@layout/board_item"/>
+                tools:listitem="@layout/board_item" />
         </com.example.eduenvi.GridViewItem>
 
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/imageLayout"
-            app:layout_constraintLeft_toLeftOf="parent">
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageLayout">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
                 android:layout_gravity="fill"
                 android:gravity="center"
-                android:text="Štartovné políčko"/>
+                android:text="@string/startTile" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
                 android:layout_gravity="fill"
                 android:gravity="center"
-                android:text="Označenie cesty"/>
+                android:text="@string/pathTile" />
         </GridLayout>
 
         <Button
             android:id="@+id/saveImages"
             style="@style/actionButton"
-            android:text="@string/set"
+            android:text="@string/save"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:ignore="MissingConstraints" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -345,8 +345,44 @@
         <ImageButton
             android:id="@+id/closeFragmentButton"
             style="@style/backButtonDark"
-            android:contentDescription="@string/back" />
-
+            android:contentDescription="@string/backCodeDescription" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/deletePanel"
+        style="@style/backgroundLayout"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:background="@drawable/bottom_layout_background"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/deleteText"
+                style="@style/deletePanelText1" />
+
+            <TextView style="@style/deletePanelText2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/closeDeletePanel"
+                    style="@style/smallActionCancelButton"
+                    android:text="@string/cancel" />
+
+                <Button
+                    android:id="@+id/confirmDelete"
+                    style="@style/smallActionDeleteButton"
+                    android:text="@string/confirm" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

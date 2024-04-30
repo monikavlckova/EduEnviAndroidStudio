@@ -36,7 +36,7 @@ class ClassroomTasksAdapter(private val context: Activity, private val list: Lis
         }
         view?.setOnClickListener {
             Constants.Task = task
-            val intent = Intent(context, Constants.TaskTypeCreatingActivity[task.taskTypeId])//TODO zmen na progres ziakov?
+            val intent = Intent(context, Constants.TaskTypeCreatingActivity[task.taskTypeId])//TODO zmen zoznam ziakov/skuipin, kt maju ulohu
             intent.putExtra("TASK_ID", task.id)
             context.startActivity(intent)
         }

@@ -8,14 +8,15 @@
 
     <TextView
         style="@style/headline"
-        android:text="Moje triedy" />
+        android:text="@string/myClassrooms" />
 
     <ImageButton
         android:id="@+id/menuButton"
         style="@style/menuButton"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/menuCodeDescription" />
 
     <ListView
         android:id="@+id/classroomLayout"
@@ -30,19 +31,20 @@
         android:id="@+id/addButton"
         style="@style/addButton"
         android:layout_marginBottom="16dp"
-        android:contentDescription="@string/add" />
+        android:contentDescription="@string/addCodeDescription" />
 
     <RelativeLayout
         android:id="@+id/menuPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        android:background="@color/semitransparent"
         android:visibility="gone">
 
         <LinearLayout
             android:layout_width="70dp"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="70dp"
+            android:layout_alignParentEnd="true"
             android:background="@color/Accent"
             android:orientation="vertical">
 
@@ -54,7 +56,7 @@
             <ImageButton
                 android:id="@+id/logoutButton"
                 style="@style/logoutButton"
-                android:contentDescription="@string/back" />
+                android:contentDescription="@string/logOutDescription" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -78,7 +80,7 @@
                 <ImageButton
                     android:id="@+id/closeClassroomPanel"
                     style="@style/backButtonDark"
-                    android:contentDescription="@string/back" />
+                    android:contentDescription="@string/backCodeDescription" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -92,6 +94,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/baseline_account_circle_dark_24" />
 
                 <ImageButton
@@ -101,6 +104,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:background="@drawable/oval_50_primary"
+                    android:contentDescription="@string/editImageCodeDescription"
                     android:src="@drawable/baseline_edit_24" />
 
             </RelativeLayout>
@@ -144,7 +148,7 @@
                 <ImageButton
                     android:id="@+id/closeEditPanel"
                     style="@style/closeButton"
-                    android:contentDescription="@string/close" />
+                    android:contentDescription="@string/closeCodeDescription" />
             </RelativeLayout>
 
             <Button
@@ -214,7 +218,7 @@
         <ImageButton
             android:id="@+id/closeFragmentButton"
             style="@style/backButtonDark"
-            android:contentDescription="@string/back" />
+            android:contentDescription="@string/backCodeDescription" />
 
     </RelativeLayout>
 </RelativeLayout>

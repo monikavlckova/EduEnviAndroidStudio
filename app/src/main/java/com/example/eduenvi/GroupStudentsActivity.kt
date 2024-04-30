@@ -35,18 +35,9 @@ class GroupStudentsActivity : AppCompatActivity() {
         binding = ActivityGroupStudentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val group = Constants.Group
-        CoroutineScope(Dispatchers.IO).launch {
-            students = ApiHelper.getStudentsInGroup(group.id) as MutableList<Student>
+        loadGroupsToLayout()
 
-            withContext(Dispatchers.Main) {
-                adapter = GroupStudentsAdapter(myContext, students)
-                binding.studentsLayout.adapter = adapter
-
-            }
-        }
-
-        binding.groupName.text = group.name
+        binding.groupName.text = Constants.Group.name
 
         binding.backButton.setOnClickListener {
             val intent = Intent(this, ClassroomGroupsActivity::class.java)
@@ -60,7 +51,7 @@ class GroupStudentsActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                val res = ApiHelper.deleteStudentGroup(Constants.Student.id, group.id)
+                val res = ApiHelper.deleteStudentGroup(Constants.Student.id, Constants.Group.id)
                 withContext(Dispatchers.Main) {
                     if (res != null) {
                         students.remove(Constants.Student)
@@ -90,6 +81,19 @@ class GroupStudentsActivity : AppCompatActivity() {
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
     }
 
+    private fun loadGroupsToLayout(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val s = ApiHelper.getStudentsInGroup(Constants.Group.id)
+            students = if (s == null) mutableListOf() else s as MutableList<Student>
+
+            withContext(Dispatchers.Main) {
+                adapter = GroupStudentsAdapter(myContext, students)
+                binding.studentsLayout.adapter = adapter
+
+            }
+        }
+    }
+
     private fun closeStudentsPanel() {
         binding.studentsPanel.visibility = View.GONE
         binding.mainPanel.visibility = View.VISIBLE
@@ -113,10 +117,7 @@ class GroupStudentsActivity : AppCompatActivity() {
         binding.mainPanel.visibility = View.GONE
         CoroutineScope(Dispatchers.IO).launch {
             val studentsInGroup = ApiHelper.getStudentsInGroup(Constants.Group.id)
-            val studentsNotInGroup = ApiHelper.getStudentsFromClassroomNotInGroup(
-                Constants.Classroom.id,
-                Constants.Group.id
-            )
+            val studentsNotInGroup = ApiHelper.getStudentsFromClassroomNotInGroup(Constants.Classroom.id, Constants.Group.id)
 
             withContext(Dispatchers.Main) {
                 addStudentsToLists(studentsInGroup, studentsNotInGroup)
@@ -124,10 +125,7 @@ class GroupStudentsActivity : AppCompatActivity() {
         }
     }
 
-    private fun addStudentsToLists(
-        studentsInGroup: List<Student>?,
-        studentsNotInGroup: List<Student>?
-    ) {
+    private fun addStudentsToLists(studentsInGroup: List<Student>?, studentsNotInGroup: List<Student>?) {
         studentsInGroup?.forEach { student ->
             addStudentToList(student, binding.chipGroupIn, true)
         }

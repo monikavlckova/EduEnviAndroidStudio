@@ -9,15 +9,15 @@
     <GridView
         android:id="@+id/imagesLayout"
         style="@style/scrollGridView"
+        android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
         android:numColumns="4"
-        tools:listitem="@layout/grid_image_list_item"
-        android:layout_marginTop="0dp"/>
+        tools:listitem="@layout/grid_image_list_item" />
 
     <ImageButton
         android:id="@+id/addButton"
         style="@style/addButton"
         android:layout_marginBottom="16dp"
-        android:contentDescription="@string/add" />
+        android:contentDescription="@string/addCodeDescription" />
 
 </RelativeLayout>

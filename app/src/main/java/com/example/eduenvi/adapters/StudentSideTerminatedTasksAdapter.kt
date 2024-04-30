@@ -12,7 +12,7 @@ import com.example.eduenvi.Constants
 import com.example.eduenvi.R
 import com.example.eduenvi.models.Task
 
-class StudentSoloTasksAdapter (private val context: Activity, private val list: List<Task>) :
+class StudentSideTerminatedTasksAdapter (private val context: Activity, private val list: List<Task>) :
     ArrayAdapter<Task>(context, R.layout.grid_student_task_item, list) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

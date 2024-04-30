@@ -14,12 +14,12 @@
         <ImageButton
             android:id="@+id/backButton"
             style="@style/backButton"
-            android:contentDescription="@string/back" />
+            android:contentDescription="@string/backCodeDescription" />
 
         <TextView
             android:id="@+id/classroomName"
             style="@style/headline"
-            android:text="Meno triedy" />
+            android:text="@string/classroomName" />
 
         <GridView
             android:id="@+id/studentsLayout"
@@ -30,26 +30,26 @@
         <ImageButton
             android:id="@+id/addButton"
             style="@style/addButton"
-            android:contentDescription="@string/add" />
+            android:contentDescription="@string/addCodeDescription" />
 
         <LinearLayout style="@style/bottomNavigationLayout">
 
             <ImageButton
                 android:id="@+id/tasksButton"
                 style="@style/navButton"
-                android:contentDescription="@string/tasks"
+                android:contentDescription="@string/tasksCodeDescription"
                 android:src="@mipmap/tasks" />
 
             <ImageButton
                 android:id="@+id/studentsButton"
                 style="@style/navButton"
-                android:contentDescription="@string/students"
+                android:contentDescription="@string/studentsCodeDescription"
                 android:src="@mipmap/students_highlighted" />
 
             <ImageButton
                 android:id="@+id/groupsButton"
                 style="@style/navButton"
-                android:contentDescription="@string/groups"
+                android:contentDescription="@string/groupsCodeDescription"
                 android:src="@mipmap/groups" />
         </LinearLayout>
 
@@ -65,7 +65,7 @@
         <ImageButton
             android:id="@+id/closeStudentPanel"
             style="@style/backButtonDark"
-            android:contentDescription="@string/close" />
+            android:contentDescription="@string/closeCodeDescription" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,6 +86,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/baseline_account_circle_dark_24" />
 
                 <ImageButton
@@ -95,6 +96,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:background="@drawable/oval_50_primary"
+                    android:contentDescription="@string/edit"
                     android:src="@drawable/baseline_edit_24" />
 
             </RelativeLayout>
@@ -143,6 +145,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="5dp"
                     android:backgroundTint="@color/transparent"
+                    android:contentDescription="@string/generateCodeDescription"
                     android:src="@drawable/baseline_renew_dark_24" />
             </RelativeLayout>
 
@@ -161,7 +164,7 @@
                 <AutoCompleteTextView
                     android:id="@+id/classroom"
                     style="@style/inputFieldEditTextColor"
-                    android:hint="@string/classroom"
+                    android:hint="@string/classroomCodeDescription"
                     android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -191,7 +194,7 @@
                 <ImageButton
                     android:id="@+id/closeEditPanel"
                     style="@style/closeButton"
-                    android:contentDescription="@string/close" />
+                    android:contentDescription="@string/closeCodeDescription" />
             </RelativeLayout>
 
             <Button
@@ -261,7 +264,7 @@
         <ImageButton
             android:id="@+id/closeFragmentButton"
             style="@style/backButtonDark"
-            android:contentDescription="@string/back" />
+            android:contentDescription="@string/backCodeDescription" />
 
     </RelativeLayout>
 </RelativeLayout>
