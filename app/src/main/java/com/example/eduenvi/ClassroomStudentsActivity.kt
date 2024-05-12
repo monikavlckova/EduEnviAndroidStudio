@@ -1,6 +1,5 @@
 package com.example.eduenvi
 //TODO ked zatvaram sipkou upravu, opytat sa, ci nechcem ulozit zmeny
-//TODO fixnut v uprave a vytvarani tlacidlo dole, nech ho neskrolujem
 
 import android.content.Intent
 import android.os.Bundle

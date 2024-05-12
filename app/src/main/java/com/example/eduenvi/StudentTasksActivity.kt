@@ -68,9 +68,12 @@ class StudentTasksActivity : AppCompatActivity() {
             binding.mainPanel.visibility = View.GONE
         }
 
-        binding.saveButton.setOnClickListener {//TODO znovu nacitaj loadTasksToLayout
+        binding.saveButton.setOnClickListener {
             val saveSuccessful = assignTaskFragment.save()
-            if (saveSuccessful) closeAssignTaskFragmentLayout()
+            if (saveSuccessful) {
+                closeAssignTaskFragmentLayout()
+                loadTasksToLayout()
+            }
         }
 
         binding.createNewTask.setOnClickListener {

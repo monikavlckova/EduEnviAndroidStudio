@@ -30,7 +30,7 @@
             android:layout_marginTop="70dp"
             android:background="@color/Background"
             android:paddingHorizontal="5dp"
-            tools:listitem="@layout/task_list_item" />
+            tools:listitem="@layout/task_x_list_item" />
 
         <ImageButton
             android:id="@+id/addButton"

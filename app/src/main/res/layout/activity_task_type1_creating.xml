@@ -9,7 +9,7 @@
         android:id="@+id/mainPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageButton
             android:id="@+id/backButton"
@@ -191,8 +191,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/Surface"
-        android:padding="20dp"
-        android:visibility="gone">
+        android:padding="20dp" >
 
         <TextView
             android:layout_width="match_parent"

@@ -11,78 +11,85 @@
         style="@style/backButtonOnBackground"
         android:contentDescription="@string/backCodeDescription" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        android:orientation="vertical"
-        android:padding="25dp">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:fadingEdgeLength="80dp"
+        android:requiresFadingEdge="vertical">
 
-        <TextView
-            style="@style/headlineVerticalLayout"
-            android:text="@string/signup" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:padding="25dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/firstNameTextInputLayout"
-            style="@style/inputField">
+            <TextView
+                style="@style/headlineVerticalLayout"
+                android:text="@string/signup" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/firstName"
-                style="@style/inputFieldEditText"
-                android:hint="@string/firstName"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/firstNameTextInputLayout"
+                style="@style/inputField">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/lastNameTextInputLayout"
-            style="@style/inputField">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/firstName"
+                    style="@style/inputFieldEditText"
+                    android:hint="@string/firstName"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/lastName"
-                style="@style/inputFieldEditText"
-                android:hint="@string/lastName"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lastNameTextInputLayout"
+                style="@style/inputField">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/userNameTextInputLayout"
-            style="@style/inputField">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/lastName"
+                    style="@style/inputFieldEditText"
+                    android:hint="@string/lastName"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/userName"
-                style="@style/inputFieldEditText"
-                android:hint="@string/userName"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/userNameTextInputLayout"
+                style="@style/inputField">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@id/emailTextInputLayout"
-            style="@style/inputField">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/userName"
+                    style="@style/inputFieldEditText"
+                    android:hint="@string/userName"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email"
-                style="@style/inputFieldEditText"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@id/emailTextInputLayout"
+                style="@style/inputField">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@id/passwordTextInputLayout"
-            style="@style/inputField"
-            app:passwordToggleEnabled="true">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email"
+                    style="@style/inputFieldEditText"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password"
-                style="@style/inputFieldEditText"
-                android:hint="@string/password"
-                android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@id/passwordTextInputLayout"
+                style="@style/inputField"
+                app:passwordToggleEnabled="true">
 
-        <Button
-            android:id="@+id/login_button"
-            style="@style/actionButton"
-            android:text="@string/createAccount" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    style="@style/inputFieldEditText"
+                    android:hint="@string/password"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/login_button"
+                style="@style/actionButton"
+                android:text="@string/createAccount" />
 
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

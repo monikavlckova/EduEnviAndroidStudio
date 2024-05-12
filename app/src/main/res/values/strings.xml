@@ -81,4 +81,5 @@
     <string name="deleteCodeDescription">odstrániť</string>
     <string name="groups">Skupiny</string>
     <string name="students">Žiaci</string>
+    <string name="emptyDate">...</string>
 </resources>

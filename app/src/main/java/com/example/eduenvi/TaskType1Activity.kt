@@ -43,7 +43,7 @@ class TaskType1Activity : AppCompatActivity() {
         }
 
         binding.save.setOnClickListener {
-            //TODO zisti ci je uloha spravne, ak ano, uoz do db, treba vytvorit tabulku, zisti, ci uz nie
+            //TODO zisti ci je uloha spravne(alebo aj nie, nemusi byt spatn vazba), ak ano, uloz do db, treba vytvorit tabulku, zisti, ci uz nie
             // je ulozene riesenie, ak je nestane sa nic, ak nie ej ulozi sa, po resete si moze student
             // riesit, ale nejak oznacit ako uspesne hotove
         }

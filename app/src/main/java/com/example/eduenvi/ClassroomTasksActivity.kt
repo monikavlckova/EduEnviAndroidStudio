@@ -28,7 +28,7 @@ class ClassroomTasksActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         loadAssignTaskFragment(savedInstanceState)
-        setTasksListViewAdapter()
+        loadTasksToLayout()
 
         binding.classroomName.text = Constants.Classroom.name
 
@@ -60,9 +60,12 @@ class ClassroomTasksActivity : AppCompatActivity() {
             binding.editPanel.visibility = View.GONE
         }
 
-        binding.saveButton.setOnClickListener {//TODO znovu nacitaj setTasksListViewAdapter
+        binding.saveButton.setOnClickListener {
             val saveSuccessful = assignTaskFragment.save()
-            if (saveSuccessful) closeAssignTaskFragmentLayout()
+            if (saveSuccessful) {
+                closeAssignTaskFragmentLayout()
+                loadTasksToLayout()
+            }
         }
 
         binding.createNewTask.setOnClickListener {
@@ -97,7 +100,7 @@ class ClassroomTasksActivity : AppCompatActivity() {
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
     }
 
-    private fun setTasksListViewAdapter() {
+    private fun loadTasksToLayout() {
         CoroutineScope(Dispatchers.IO).launch {
             val t = ApiHelper.getTasksInClassroom(Constants.Classroom.id)
             classroomTasks = if (t == null) mutableListOf() else t as MutableList<Task>

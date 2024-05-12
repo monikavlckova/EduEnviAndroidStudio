@@ -188,7 +188,7 @@ class TaskType1CreatingActivity : AppCompatActivity() {
                 }
             }
 
-            val intent = Intent(myContext, ClassroomTasksActivity::class.java)
+            val intent = Intent(myContext, TasksActivity::class.java)
             startActivity(intent)
         }
 
@@ -202,7 +202,7 @@ class TaskType1CreatingActivity : AppCompatActivity() {
                     }
                 }
             }
-            val intent = Intent(myContext, ClassroomTasksActivity::class.java)
+            val intent = Intent(myContext, TasksActivity::class.java)
             startActivity(intent)
         }
 
@@ -218,7 +218,7 @@ class TaskType1CreatingActivity : AppCompatActivity() {
         }
 
         binding.confirmDelete.setOnClickListener {
-            val intent = Intent(myContext, ClassroomTasksActivity::class.java)
+            val intent = Intent(myContext, TasksActivity::class.java)
             startActivity(intent)
         }
 

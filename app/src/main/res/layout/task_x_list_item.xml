@@ -43,9 +43,11 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/edit"
-            style="@style/editButtonOnBackground"
-            android:contentDescription="@string/editCodeDescription" />
+            android:id="@+id/delete"
+            style="@style/closeButtonOnBackground"
+            android:layout_marginTop="-5dp"
+            android:layout_marginEnd="-5dp"
+            android:contentDescription="@string/deleteCodeDescription" />
     </RelativeLayout>
 
 </LinearLayout>

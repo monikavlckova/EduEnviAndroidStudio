@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
-
+//TODO vyhadzovat upozornenie ked nie je spojenie s internetom, namiesto errorov ze nespravny login alebo heslo, ked je to z dovodu nepripojenia k db
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
