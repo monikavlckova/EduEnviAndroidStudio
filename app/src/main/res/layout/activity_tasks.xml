@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/mainPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/Tertiary">
+
+        <TextView
+            style="@style/headline"
+            android:text="Moje úlohy" />
+
+        <ImageButton
+            android:id="@+id/menuButton"
+            style="@style/menuButtonOnPrimary"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/menuCodeDescription" />
+
+        <GridView
+            android:id="@+id/tasksLayout"
+            style="@style/scrollGridView"
+            android:numColumns="3"
+            tools:listitem="@layout/grid_list_item" />
+
+        <ImageButton
+            android:id="@+id/addButton"
+            style="@style/addButton"
+            android:contentDescription="@string/addCodeDescription" />
+
+        <LinearLayout style="@style/bottomNavigationLayout">
+            <ImageButton
+                android:id="@+id/classroomsButton"
+                style="@style/navButton"
+                android:contentDescription="triedy"
+                android:src="@drawable/classrooms_button_wrapper" />
+
+            <ImageButton
+                android:id="@+id/tasksButton"
+                style="@style/navButton"
+                android:contentDescription="@string/tasksCodeDescription"
+                android:src="@drawable/tasks_highlighted_button_wrapper" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/menuPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        android:background="@color/semitransparent"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@color/Accent"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/profileButton"
+                style="@style/profileButtonOnPrimary"
+                android:contentDescription="@string/profile" />
+
+            <ImageButton
+                android:id="@+id/logoutButton"
+                style="@style/logoutButtonOnPrimary"
+                android:contentDescription="@string/logOutDescription" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/taskPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/Surface"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/closeTaskPanel"
+            style="@style/backButtonOnBackground"
+            android:contentDescription="@string/closeCodeDescription" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="70dp"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="80dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/imageLayout"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp">
+
+                    <ImageView
+                        android:id="@+id/taskImage"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/baseline_account_circle_on_background_24" />
+
+                    <ImageButton
+                        android:id="@+id/editTaskImage"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/oval_50_primary"
+                        android:contentDescription="@string/editImageCodeDescription"
+                        android:src="@drawable/baseline_edit_on_primary_24" />
+                </RelativeLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/taskNameTextInputLayout"
+                    style="@style/inputField"
+                    android:layout_marginHorizontal="20dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/taskName"
+                        style="@style/inputFieldEditTextColor"
+                        android:hint="@string/taskName"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/oval_50_surface_input_field"
+                        android:hint="@string/text"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="30dp"
+                        android:paddingEnd="30dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:id="@+id/taskTypeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/chipTextView"
+                        android:text="@string/type" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipTaskType"
+                        style="@style/chipGroup"
+                        app:singleLine="false"
+                        app:singleSelection="true" />
+
+                    <TextView
+                        android:id="@+id/chipTaskTypeError"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="50dp"
+                        android:layout_marginVertical="0dp"
+                        android:textColor="@color/Error"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/updatingTaskTypeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="25dp"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:text="@string/type"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/updatingTaskTypeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text=""
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/saveButton"
+                    style="@style/actionButton"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="25dp"
+                    android:text="@string/create" />
+            </LinearLayout>
+        </ScrollView>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/editPanel"
+        style="@style/backgroundLayout"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:background="@drawable/bottom_layout_background_on_primary"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <ImageButton
+                    android:id="@+id/closeEditPanel"
+                    style="@style/closeButtonOnBackground"
+                    android:contentDescription="@string/closeCodeDescription" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/editButton"
+                style="@style/actionButtonEdit"
+                android:layout_marginHorizontal="25dp"
+                android:text="@string/edit" />
+
+            <Button
+                android:id="@+id/deleteButton"
+                style="@style/actionButtonDelete"
+                android:layout_marginHorizontal="25dp"
+                android:text="@string/delete" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/deletePanel"
+        style="@style/backgroundLayout"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:background="@drawable/bottom_layout_background_on_primary"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/deleteText"
+                style="@style/deletePanelText1" />
+
+            <TextView style="@style/deletePanelText2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/closeDeletePanel"
+                    style="@style/smallActionCancelButton"
+                    android:text="@string/cancel" />
+
+                <Button
+                    android:id="@+id/confirmDelete"
+                    style="@style/smallActionDeleteButton"
+                    android:text="@string/delete" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragmentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/Background"
+        android:visibility="gone">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="70dp" />
+
+        <ImageButton
+            android:id="@+id/closeFragmentButton"
+            style="@style/backButtonOnBackground"
+            android:contentDescription="@string/backCodeDescription" />
+
+    </RelativeLayout>
+</RelativeLayout>

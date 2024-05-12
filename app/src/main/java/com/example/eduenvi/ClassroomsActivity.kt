@@ -11,7 +11,7 @@ import com.example.eduenvi.adapters.ClassroomAdapter
 import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityClassroomsBinding
 import com.example.eduenvi.models.Classroom
-import com.example.eduenvi.models.StudentTask
+import com.example.eduenvi.models.Group
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,6 +39,11 @@ class ClassroomsActivity : AppCompatActivity() {
 
         binding.menuButton.setOnClickListener {
             binding.menuPanel.visibility = if (binding.menuPanel.visibility == View.GONE) View.VISIBLE else View.GONE
+        }
+
+        binding.tasksButton.setOnClickListener {
+            val intent = Intent(this, TasksActivity::class.java)
+            startActivity(intent)
         }
 
         binding.logoutButton.setOnClickListener {
@@ -112,9 +117,8 @@ class ClassroomsActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                switchClassroomTasksToStudentTasks()
-                switchGroupTasksToStudentTasks()
-                removeStudentsFromClassroom()
+                deleteGroupsInClassroom()
+                deleteStudentsInClassroom()
                 val res = ApiHelper.deleteClassroom(Constants.Classroom.id)
                 withContext(Dispatchers.Main) {
                     if (res != null) {
@@ -181,46 +185,33 @@ class ClassroomsActivity : AppCompatActivity() {
         binding.classroomName.text = null
     }
 
-    private fun switchClassroomTasksToStudentTasks() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val students = ApiHelper.getStudentsInClassroom(Constants.Classroom.id)
-            val classroomTasks = ApiHelper.getTasksInClassroom(Constants.Classroom.id)
-
-            if (students != null && classroomTasks != null) {
-                for (student in students) for (task in classroomTasks) {
-                    val studentTask = StudentTask(student.id, task.id)
-                    ApiHelper.createStudentTask(studentTask)
-                }
-            }
-        }
-    }
-
-    private fun switchGroupTasksToStudentTasks() {
+    private fun deleteGroupsInClassroom() {
         CoroutineScope(Dispatchers.IO).launch {
             val groups = ApiHelper.getGroupsInClassroom(Constants.Classroom.id)
-
             if (groups != null) {
                 for (group in groups) {
-                    val studentsInGroup = ApiHelper.getStudentsInGroup(group.id)
-                    val groupTasks = ApiHelper.getGroupsTasks(group.id)
-                    if (studentsInGroup != null && groupTasks != null) {
-                        for (student in studentsInGroup) for (task in groupTasks) {
-                            val studentTask = StudentTask(student.id, task.id)
-                            ApiHelper.createStudentTask(studentTask)
-                        }
-                    }
+                    deleteStudentsFromGroup(group)
+                    ApiHelper.deleteGroup(group.id)
                 }
             }
         }
     }
 
-    private fun removeStudentsFromClassroom() {
+    private suspend fun deleteStudentsFromGroup(group: Group){
+        val studentsGroup = ApiHelper.getStudentGroupsByGroupId(group.id)
+        if (studentsGroup != null) {
+            for (studentGroup in studentsGroup) {
+                ApiHelper.deleteStudentGroup(studentGroup.studentId, studentGroup.groupId)
+            }
+        }
+    }
+
+    private fun deleteStudentsInClassroom() {
         CoroutineScope(Dispatchers.IO).launch {
             val students = ApiHelper.getStudentsInClassroom(Constants.Classroom.id)
             if (students != null) {
                 for (student in students) {
-                    student.classroomId = null
-                    ApiHelper.updateStudent(student.id, student)
+                    ApiHelper.deleteStudent(student.id)
                 }
             }
         }

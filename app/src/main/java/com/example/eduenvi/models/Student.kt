@@ -6,8 +6,10 @@ class Student(
     var firstName: String,
     var lastName: String,
     var loginCode: String,
-    var imageId: Int?
+    var imageId: Int?,
+
+    var selected: Boolean? = false,
+    var inTask: Boolean? = false
 ) {
-    override fun equals(other: Any?): Boolean =
-        other is Student && other.id == id
+    override fun equals(other: Any?): Boolean = other is Student && other.id == id
 }

@@ -27,7 +27,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">130dp</item>
         <item name="android:layout_marginTop">10dp</item>
-        <item name="android:paddingLeft">40dp</item>
+        <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">50dp</item>
         <item name="android:textSize">26sp</item>
         <item name="android:textAlignment">textEnd</item>
@@ -47,7 +47,6 @@
         <item name="android:layout_height">80dp</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_marginLeft">20dp</item>
-        <item name="android:src">@mipmap/classroom</item>
     </style>
 
     <style name="classroomTextPrefab">
@@ -188,11 +187,11 @@
     </style>
 
     <style name="smallActionDeleteButton" parent="smallActionButton">
-        <item name="android:backgroundTint">@color/Error</item>
+        <item name="android:backgroundTint">@color/Tertiary</item>
     </style>
 
     <style name="smallActionCancelButton" parent="smallActionButton">
-        <item name="android:backgroundTint">@color/gray</item>
+        <item name="android:backgroundTint">@color/Primary</item>
     </style>
 
     <style name="inputField">
@@ -241,16 +240,6 @@
         <item name="android:layout_marginTop">70dp</item>
         <item name="android:layout_marginBottom">70dp</item>
         <item name="android:isScrollContainer">true</item>
-        <item name="android:background">@color/Background</item>
-        <item name="android:paddingTop">3dp</item>
-        <item name="android:paddingStart">3dp</item>
-        <item name="android:paddingEnd">3dp</item>
-    </style>
-
-    <style name="gridView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:isScrollContainer">false</item>
         <item name="android:background">@color/Background</item>
         <item name="android:paddingTop">3dp</item>
         <item name="android:paddingStart">3dp</item>

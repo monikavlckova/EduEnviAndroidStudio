@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        style="@style/classroomPrefab"
+        android:layout_height="130dp">
+
+        <ImageView
+            android:id="@+id/image"
+            style="@style/classroomImagePrefab"
+            android:importantForAccessibility="no" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginVertical="20dp"
+            android:layout_toEndOf="@id/image"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/taskName" />
+
+            <TextView
+                android:id="@+id/visibleFrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01.02.2024 10:00" />
+
+            <TextView
+                android:id="@+id/deadline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01.02.2024 11:00" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/edit"
+            style="@style/editButtonOnBackground"
+            android:contentDescription="@string/editCodeDescription" />
+    </RelativeLayout>
+
+</LinearLayout>

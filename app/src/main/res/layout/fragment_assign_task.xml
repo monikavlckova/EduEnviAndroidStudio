@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/taskPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="90dp"
+        android:background="@color/Surface">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="80dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/taskNameTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:inputType="none">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/taskName"
+                        style="@style/inputFieldEditTextColor"
+                        android:hint="@string/taskName"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:id="@+id/taskPanelInformation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/taskNameEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="27dp"
+                        android:layout_marginVertical="5dp"
+                        android:text="@string/taskName"
+                        android:textSize="22sp"
+                        android:visibility="gone" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp">
+
+                        <TextView
+                            style="@style/textViewRight"
+                            android:text="@string/visibleFrom" />
+
+                        <TextView
+                            android:id="@+id/dateTimeTaskVisibleFrom"
+                            style="@style/textViewLeft"
+                            android:text="@string/set" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp">
+
+                        <TextView
+                            style="@style/textViewRight"
+                            android:text="@string/deadline" />
+
+                        <TextView
+                            android:id="@+id/dateTimeTaskDeadline"
+                            style="@style/textViewLeft"
+                            android:text="@string/set" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/datesError"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="50dp"
+                        android:layout_marginVertical="0dp"
+                        android:textColor="@color/Error"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        style="@style/chipTextView"
+                        android:text="@string/groups" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupGroups"
+                        style="@style/chipGroup"
+                        app:singleLine="false"
+                        app:singleSelection="false" />
+
+                    <TextView
+                        style="@style/chipTextView"
+                        android:text="@string/students" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupStudents"
+                        style="@style/chipGroup"
+                        app:singleLine="false"
+                        app:singleSelection="false" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/dateTimePickerPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/semitransparent"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dateLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <DatePicker
+                android:id="@+id/datePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/Background"
+                android:backgroundTint="@color/Surface"
+                android:datePickerMode="calendar"
+                android:headerBackground="@color/Tertiary"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="@color/Surface"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/datePicker">
+
+                <Button
+                    android:id="@+id/closeDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/Surface"
+                    android:text="@string/cancel"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/setDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/Surface"
+                    android:text="@string/ok"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/timeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TimePicker
+                android:id="@+id/timePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/Surface"
+                android:timePickerMode="spinner"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="@color/Surface"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/timePicker">
+
+                <Button
+                    android:id="@+id/closeTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/Surface"
+                    android:text="@string/cancel"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/setTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/Surface"
+                    android:text="@string/ok"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

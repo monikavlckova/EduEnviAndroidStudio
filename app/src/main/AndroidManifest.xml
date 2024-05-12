@@ -23,8 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ClassroomsActivity" />
+        <activity android:name=".AssignTaskFragment" />
         <activity android:name=".ClassroomGroupsActivity" />
+        <activity android:name=".ClassroomsActivity" />
         <activity android:name=".ClassroomStudentsActivity" />
         <activity android:name=".ClassroomTasksActivity" />
         <activity android:name=".GroupStudentsActivity" />
@@ -34,10 +35,11 @@
         <activity android:name=".LoginStudentActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".StudentGroupsActivity" />
-        <activity android:name=".StudentTasksActivity" />
         <activity android:name=".StudentActivity" />
+        <activity android:name=".StudentGroupsActivity" />
         <activity android:name=".StudentRatingActivity" />
+        <activity android:name=".StudentTasksActivity" />
+        <activity android:name=".TasksActivity" />
         <activity android:name=".TaskType1CreatingActivity" />
         <activity android:name=".TaskType1Activity" />
         <activity android:name=".TaskType2CreatingActivity" />

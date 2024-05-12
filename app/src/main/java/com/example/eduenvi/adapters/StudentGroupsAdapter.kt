@@ -38,7 +38,7 @@ class StudentGroupsAdapter(private val context: Activity, private val list: List
         }
         view?.setOnClickListener {
             Constants.Group = group
-            val intent = Intent((context as StudentGroupsActivity), GroupTasksActivity::class.java)
+            val intent = Intent((context as StudentGroupsActivity), GroupTasksActivity::class.java)//TODO zmen, nechod nikam?
             context.startActivity(intent)
         }
 

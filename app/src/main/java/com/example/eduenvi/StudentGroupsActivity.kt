@@ -114,7 +114,7 @@ class StudentGroupsActivity : AppCompatActivity() {
         binding.mainPanel.visibility = View.GONE
         CoroutineScope(Dispatchers.IO).launch {
             val groupsInStudent = ApiHelper.getStudentsGroups(Constants.Student.id)
-            val groupsNotInStudent = ApiHelper.getGroupsFromInClassroomNotInStudent(
+            val groupsNotInStudent = ApiHelper.getGroupsFromClassroomNotInStudent(
                 Constants.Classroom.id,
                 Constants.Student.id
             )

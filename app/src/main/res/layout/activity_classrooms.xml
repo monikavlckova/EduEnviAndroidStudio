@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Background"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -35,8 +34,21 @@
         <ImageButton
             android:id="@+id/addButton"
             style="@style/addButton"
-            android:layout_marginBottom="16dp"
             android:contentDescription="@string/addCodeDescription" />
+
+        <LinearLayout style="@style/bottomNavigationLayout">
+            <ImageButton
+                android:id="@+id/classroomsButton"
+                style="@style/navButton"
+                android:contentDescription="triedy"
+                android:src="@drawable/classrooms_highlighted_button_wrapper" />
+
+            <ImageButton
+                android:id="@+id/tasksButton"
+                style="@style/navButton"
+                android:contentDescription="@string/tasksCodeDescription"
+                android:src="@drawable/tasks_button_wrapper" />
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/menuPanel"

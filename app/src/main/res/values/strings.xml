@@ -79,4 +79,6 @@
     <string name="resetCodeDescription">vynulovať</string>
     <string name="editCodeDescription">upraviť</string>
     <string name="deleteCodeDescription">odstrániť</string>
+    <string name="groups">Skupiny</string>
+    <string name="students">Žiaci</string>
 </resources>

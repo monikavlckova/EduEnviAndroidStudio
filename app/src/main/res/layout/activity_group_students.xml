@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Background"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -40,13 +39,13 @@
                 android:id="@+id/tasksButton"
                 style="@style/navButton"
                 android:contentDescription="@string/tasksCodeDescription"
-                android:src="@mipmap/tasks" />
+                android:src="@drawable/tasks_button_wrapper" />
 
             <ImageButton
                 android:id="@+id/studentsButton"
                 style="@style/navButton"
                 android:contentDescription="@string/studentsCodeDescription"
-                android:src="@mipmap/students_highlighted" />
+                android:src="@drawable/students_highlighted_button_wrapper" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -65,7 +64,9 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="70dp">
+            android:layout_marginTop="70dp"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="80dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,15 +94,15 @@
                     style="@style/chipGroup"
                     app:singleLine="false"
                     app:singleSelection="true" />
-
-                <Button
-                    android:id="@+id/saveButton"
-                    style="@style/actionButton"
-                    android:layout_margin="25dp"
-                    android:text="@string/save" />
             </LinearLayout>
         </ScrollView>
 
+        <Button
+            android:id="@+id/saveButton"
+            style="@style/actionButton"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="25dp"
+            android:text="@string/save" />
     </RelativeLayout>
 
     <LinearLayout

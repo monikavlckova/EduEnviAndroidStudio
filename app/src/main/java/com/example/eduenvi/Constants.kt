@@ -45,6 +45,7 @@ object Constants {
     const val WrongUserNameOrPasswordMessage = "Nesprávny login alebo heslo!"
     const val WrongLoginCodeMessage = "Nesprávny prihlasovací kód!"
     const val WrongTaskTypeNotSelected = "Typ úlohy nie je označený!"
+    const val WrongDatesDeadlineIsSoonerThenVisibility = "Deadline je skôr, ako sa zobrazí úloha!"
 
     const val SaveError = "Ups, niečo sa pokazilo, zmeny sa nepodarilo uložiť"
     const val DeleteError = "Ups, niečo sa pokazilo, odstránenie sa nepodarilo"
@@ -67,7 +68,7 @@ object Constants {
     var Classroom = Classroom(0, 0, "", null)
     var Group = Group(0, 0, "", null)
     var Student = Student(0, 0, "", "", "", null)
-    var Task = Task(0, 0, 0, "", "", null, null, null)
+    var Task = Task(0, 0, 0, "", "", null)
     var TaskType = TaskType(0, "", null)
     var Teacher = Teacher(0, "", "", "", "", "", null)
 

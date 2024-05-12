@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Tertiary"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/Tertiary">
 
     <TextView
         android:id="@+id/studentName"
@@ -19,86 +19,39 @@
         android:layout_marginBottom="10dp"
         android:contentDescription="@string/backCodeDescription" />
 
-    <ScrollView
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
         android:layout_marginBottom="70dp"
-        android:background="@color/Background">
+        android:orientation="horizontal">
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/imageLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:gravity="center">
 
-            <LinearLayout
-                android:id="@+id/imageLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/Tertiary"
-                android:gravity="center">
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/baseline_account_circle_on_primary_24" />
+        </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/profileImage"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/baseline_account_circle_on_primary_24" />
-            </LinearLayout>
 
-            <TextView
-                android:id="@+id/soloTasksText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/imageLayout"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/soloTasks"
-                android:textStyle="bold" />
-
-            <GridView
-                android:id="@+id/soloTasksLayout"
-                style="@style/gridView"
-                android:layout_below="@+id/soloTasksText"
-                android:numColumns="3"
-                tools:listitem="@layout/grid_student_task_item" />
-
-            <TextView
-                android:id="@+id/groupTasksText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/soloTasksLayout"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/groupTasks"
-                android:textStyle="bold" />
-
-            <GridView
-                android:id="@+id/groupTasksLayout"
-                style="@style/gridView"
-                android:layout_below="@+id/groupTasksText"
-                android:numColumns="3"
-                tools:listitem="@layout/grid_student_task_item" />
-
-            <TextView
-                android:id="@+id/terminatedTasksText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/groupTasksLayout"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/terminatedTasks"
-                android:textStyle="bold" />
-
-            <GridView
-                android:id="@+id/terminatedTasksLayout"
-                style="@style/gridView"
-                android:layout_below="@+id/terminatedTasksText"
-                android:numColumns="3"
-                tools:listitem="@layout/grid_student_task_item" />
-
-        </RelativeLayout>
-    </ScrollView>
+        <GridView
+            android:id="@+id/tasksLayout"
+            style="@style/scrollGridView"
+            android:layout_margin="0dp"
+            android:layout_below="@+id/imageLayout"
+            android:isScrollContainer="true"
+            android:nestedScrollingEnabled="true"
+            android:numColumns="3"
+            tools:listitem="@layout/grid_student_task_item" />
+    </RelativeLayout>
 
     <LinearLayout style="@style/bottomNavigationLayout">
 
@@ -106,7 +59,7 @@
             android:id="@+id/tasksButton"
             style="@style/navButtonInConstraintLayout"
             android:contentDescription="@string/tasksCodeDescription"
-            android:src="@mipmap/tasks_highlighted"
+            android:src="@drawable/tasks_highlighted_button_wrapper"
             tools:ignore="MissingConstraints" />
 
         <ImageButton

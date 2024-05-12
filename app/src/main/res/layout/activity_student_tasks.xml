@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Background"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -23,11 +22,14 @@
             style="@style/headline"
             android:text="@string/firstName" />
 
-        <GridView
+        <ListView
             android:id="@+id/tasksLayout"
-            style="@style/scrollGridView"
-            android:numColumns="3"
-            tools:listitem="@layout/grid_x_list_item" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="70dp"
+            android:background="@color/Background"
+            android:paddingHorizontal="5dp"
+            tools:listitem="@layout/task_list_item" />
 
         <ImageButton
             android:id="@+id/addButton"
@@ -40,69 +42,96 @@
                 android:id="@+id/tasksButton"
                 style="@style/navButton"
                 android:contentDescription="@string/tasksCodeDescription"
-                android:src="@mipmap/tasks_highlighted" />
+                android:src="@drawable/tasks_highlighted_button_wrapper" />
 
             <ImageButton
                 android:id="@+id/groupsButton"
                 style="@style/navButton"
                 android:contentDescription="@string/groupsCodeDescription"
-                android:src="@mipmap/groups" />
+                android:src="@drawable/groups_button_wrapper" />
         </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/tasksPanel"
+        android:id="@+id/assignTaskFragmentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/Surface"
         android:visibility="gone">
 
         <ImageButton
-            android:id="@+id/closeTasksPanel"
+            android:id="@+id/closeAssignTaskFragmentButton"
             style="@style/backButtonOnBackground"
-            android:contentDescription="@string/closeCodeDescription" />
+            android:contentDescription="@string/backCodeDescription" />
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="70dp">
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="25dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:text="@string/save"
+                android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/textIn"
-                    style="@style/chipTextView"
-                    android:text="@string/tasksIn" />
+            <ImageButton
+                android:id="@+id/createNewTask"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/oval_50_gray"
+                android:src="@drawable/baseline_add_on_primary_24" />
+        </LinearLayout>
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroupIn"
-                    style="@style/chipGroup"
-                    app:singleLine="false"
-                    app:singleSelection="true" />
-
-                <TextView
-                    android:id="@+id/textNotIn"
-                    style="@style/chipTextView"
-                    android:text="@string/tasksNotIn" />
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroupNotIn"
-                    style="@style/chipGroup"
-                    app:singleLine="false"
-                    app:singleSelection="true" />
-
-                <Button
-                    android:id="@+id/saveButton"
-                    style="@style/actionButton"
-                    android:layout_margin="25dp"
-                    android:text="@string/save" />
-            </LinearLayout>
-        </ScrollView>
-
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/assignTaskFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/editPanel"
+        style="@style/backgroundLayout"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:background="@drawable/bottom_layout_background_on_primary"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <ImageButton
+                    android:id="@+id/closeEditPanel"
+                    style="@style/closeButtonOnBackground"
+                    android:contentDescription="@string/closeCodeDescription" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/editButton"
+                style="@style/actionButtonEdit"
+                android:layout_marginHorizontal="25dp"
+                android:text="@string/edit" />
+
+            <Button
+                android:id="@+id/deleteButton"
+                style="@style/actionButtonDelete"
+                android:layout_marginHorizontal="25dp"
+                android:text="@string/delete" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/deletePanel"

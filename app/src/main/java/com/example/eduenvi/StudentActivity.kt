@@ -4,9 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.example.eduenvi.adapters.StudentSideGroupTasksAdapter
-import com.example.eduenvi.adapters.StudentSideSoloTasksAdapter
-import com.example.eduenvi.adapters.StudentSideTerminatedTasksAdapter
+import com.example.eduenvi.adapters.StudentSideTasksAdapter
 import com.example.eduenvi.api.ApiHelper
 import com.example.eduenvi.databinding.ActivityStudentBinding
 import com.example.eduenvi.models.Task
@@ -19,12 +17,8 @@ import java.util.Calendar
 class StudentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityStudentBinding
-    private var soloTasks: List<Task>? = null
-    private var groupTasks: List<Task>? = null
-    private var terminatedTasks: List<Task>? = null
-    private lateinit var soloTasksAdapter: StudentSideSoloTasksAdapter
-    private lateinit var groupTasksAdapter: StudentSideGroupTasksAdapter
-    private lateinit var terminatedTasksAdapter: StudentSideTerminatedTasksAdapter
+    private var tasks: MutableList<Task>? = null
+    private lateinit var tasksAdapter: StudentSideTasksAdapter
 
     private val myContext = this
 
@@ -38,9 +32,17 @@ class StudentActivity : AppCompatActivity() {
         if (Constants.Student.imageId == null) binding.imageLayout.visibility = View.GONE
         binding.studentName.text = "Vitaj ${Constants.Student.firstName}!"
 
-        setSoloStudentTasksLayout()
-        setGroupTasksLayout()
-        setTerminatedTasksLayout()
+        CoroutineScope(Dispatchers.IO).launch {
+            tasks = getSoloStudentTasks()
+            val groupTasks = getGroupTasks()
+            if (groupTasks != null) tasks?.addAll(groupTasks)
+            withContext(Dispatchers.Main) {
+                if (tasks != null) {
+                    tasksAdapter = StudentSideTasksAdapter(myContext, tasks!!)
+                    binding.tasksLayout.adapter = tasksAdapter
+                }
+            }
+        }
 
         binding.logoutButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -53,53 +55,27 @@ class StudentActivity : AppCompatActivity() {
         }
     }
 
-    private fun setSoloStudentTasksLayout(){
-        if (soloTasks == null){
-            CoroutineScope(Dispatchers.IO).launch {
-                soloTasks = ApiHelper.getStudentsTasks(Constants.Student.id)?.filter { task: Task ->
-                    task.deadline == null || task.deadline!! > Calendar.getInstance().time
+    private suspend fun getSoloStudentTasks(): MutableList<Task>? {
+        return ApiHelper.getStudentsTasks(Constants.Student.id)
+            ?.map { task: Task ->
+                task.isSolo = true
+                if (task.deadline != null && task.deadline!! <= Calendar.getInstance().time) {
+                    task.isTerminated = true
                 }
-
-                withContext(Dispatchers.Main) {
-                    if (soloTasks != null) {
-                        soloTasksAdapter = StudentSideSoloTasksAdapter(myContext, soloTasks!!)
-                        binding.soloTasksLayout.adapter = soloTasksAdapter
-                    }
-                }
-            }
-        }
+                task
+            } as MutableList<Task>?
     }
 
-    private fun setGroupTasksLayout(){
-        if (groupTasks == null){
-            CoroutineScope(Dispatchers.IO).launch {
-                groupTasks = ApiHelper.getTasksInStudentsGroups(Constants.Student.id)
-
-                withContext(Dispatchers.Main) {
-                    if (groupTasks != null) {
-                        groupTasksAdapter = StudentSideGroupTasksAdapter(myContext, groupTasks!!)
-                        binding.groupTasksLayout.adapter = groupTasksAdapter
-                    }
+    private suspend fun getGroupTasks(): Collection<Task>? {
+        return ApiHelper.getTasksInStudentsGroups(Constants.Student.id)
+            ?.map { task: Task ->
+                task.isGroup = true
+                if (task.deadline != null && task.deadline!! <= Calendar.getInstance().time) {
+                    task.isTerminated = true
                 }
+                task
             }
-        }
     }
 
-    private fun setTerminatedTasksLayout(){
-        if (terminatedTasks == null){
-            CoroutineScope(Dispatchers.IO).launch {
-                terminatedTasks = ApiHelper.getStudentsTasks(Constants.Student.id)?.filter { task: Task ->
-                    task.deadline != null && task.deadline!! < Calendar.getInstance().time
-                }
-
-                withContext(Dispatchers.Main) {
-                    if (terminatedTasks != null) {
-                        terminatedTasksAdapter = StudentSideTerminatedTasksAdapter(myContext, terminatedTasks!!)
-                        binding.terminatedTasksLayout.adapter = terminatedTasksAdapter
-                    }
-                }
-            }
-        }
-    }
 
 }

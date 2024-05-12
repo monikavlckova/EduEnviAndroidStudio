@@ -6,17 +6,49 @@ import retrofit2.http.*
 
 interface ApiInterface {
 
-    @GET("api/Classroom/{id}")
-    suspend fun getClassroom(@Path("id") id: Int): Response<Classroom>
+    @GET("api/AssignedTask")
+    suspend fun getAllAssignedTasks(): Response<List<AssignedTask>>
+
+    @PUT("api/AssignedTask")
+    suspend fun createAssignedTask(@Body assignedTask: AssignedTask): Response<AssignedTask>
+
+    @POST("api/AssignedTask/{id}")
+    suspend fun updateAllAssignedTask(
+        @Path("id") id: Int,
+        @Body assignedTask: AssignedTask
+    ): Response<AssignedTask>
+
+    @DELETE("api/AssignedTask/{id}")
+    suspend fun deleteAssignedTask(@Path("id") id: Int): Response<AssignedTask>
+
+
+    @GET("api/Board")
+    suspend fun getAllBoards(): Response<List<Board>>
+
+    @PUT("api/Board")
+    suspend fun createBoard(@Body board: Board): Response<Board>
+
+    @GET("api/Board/{id}")
+    suspend fun getBoard(@Path("id") id: Int): Response<Board>
+
+    @POST("api/Board/{id}")
+    suspend fun updateAllBoard(@Path("id") id: Int, @Body board: Board): Response<Board>
+
+    @DELETE("api/Board/{id}")
+    suspend fun deleteBoard(@Path("id") id: Int): Response<Board>
+
+    @GET("api/Board/getByTaskId/{taskId}")
+    suspend fun getTaskBoards(@Path("taskId") taskId: Int): Response<List<Board>>
+
 
     @GET("api/Classroom")
     suspend fun getAllClassrooms(): Response<List<Classroom>>
 
-    @GET("api/Classroom/getByTeacherId/{teacherId}")
-    suspend fun getTeachersClassroom(@Path("teacherId") teacherId: Int): Response<List<Classroom>>
-
     @PUT("api/Classroom")
     suspend fun createClassroom(@Body classroom: Classroom): Response<Classroom>
+
+    @GET("api/Classroom/{id}")
+    suspend fun getClassroom(@Path("id") id: Int): Response<Classroom>
 
     @POST("api/Classroom/{id}")
     suspend fun updateAllClassroom(
@@ -33,50 +65,18 @@ interface ApiInterface {
     @DELETE("api/Classroom/{id}")
     suspend fun deleteClassroom(@Path("id") id: Int): Response<Classroom>
 
+    @GET("api/Classroom/getByTeacherId/{teacherId}")
+    suspend fun getTeachersClassroom(@Path("teacherId") teacherId: Int): Response<List<Classroom>>
 
-    @GET("api/ClassroomTask/{classroomId}/{taskId}")
-    suspend fun getClassroomTask(
-        @Path("classroomId") classroomId: Int,
-        @Path("taskId") taskId: Int
-    ): Response<ClassroomTask>
-
-    @PUT("api/ClassroomTask")
-    suspend fun createClassroomTask(@Body classroomTask: ClassroomTask): Response<ClassroomTask>
-
-    @POST("api/ClassroomTask/{classroomId}/{taskId}")
-    suspend fun updateAllClassroomTask(
-        @Path("classroomId") classroomId: Int,
-        @Path("taskId") taskId: Int,
-        @Body classroomTask: ClassroomTask
-    ): Response<ClassroomTask>
-
-    @DELETE("api/ClassroomTask/{classroomId}/{taskId}")
-    suspend fun deleteClassroomTask(
-        @Path("classroomId") classroomId: Int,
-        @Path("taskId") taskId: Int
-    ): Response<ClassroomTask>
-
-
-    @GET("api/Group/{id}")
-    suspend fun getGroup(@Path("id") id: Int): Response<Group>
 
     @GET("api/Group")
     suspend fun getAllGroups(): Response<List<Group>>
 
-    @GET("api/Group/getByClassroomId/{classroomId}")
-    suspend fun getGroupsInClassroom(@Path("classroomId") classroomId: Int): Response<List<Group>>
-
-    @GET("api/Group/getByStudentId/{id}")
-    suspend fun getStudentsGroups(@Path("id") id: Int): Response<List<Group>>
-
-    @GET("api/Group/getByClassroomIdNotInStudentId/{classroomId}/{studentId}")
-    suspend fun getGroupsFromInClassroomNotInStudent(
-        @Path("classroomId") classroomId: Int,
-        @Path("studentId") studentId: Int,
-    ): Response<List<Group>>
-
     @PUT("api/Group")
     suspend fun createGroup(@Body group: Group): Response<Group>
+
+    @GET("api/Group/{id}")
+    suspend fun getGroup(@Path("id") id: Int): Response<Group>
 
     @POST("api/Group/{id}")
     suspend fun updateAllGroup(@Path("id") id: Int, @Body group: Group): Response<Group>
@@ -87,53 +87,55 @@ interface ApiInterface {
     @DELETE("api/Group/{id}")
     suspend fun deleteGroup(@Path("id") id: Int): Response<Group>
 
+    @GET("api/Group/getByAssignedTaskId/{assignedTaskId}")
+    suspend fun getGroupsInAssignedTask(@Path("assignedTaskId") assignedTaskId: Int): Response<List<Group>>
 
-    @GET("api/GroupTask/{groupId}/{taskId}")
-    suspend fun getGroupTask(
-        @Path("groupId") groupId: Int,
-        @Path("taskId") taskId: Int
-    ): Response<GroupTask>
+    @GET("api/Group/getByClassroomId/{classroomId}")
+    suspend fun getGroupsInClassroom(@Path("classroomId") classroomId: Int): Response<List<Group>>
 
-    @PUT("api/GroupTask")
-    suspend fun createGroupTask(@Body groupTask: GroupTask): Response<GroupTask>
+    @GET("api/Group/getByStudentId/{id}")
+    suspend fun getStudentsGroups(@Path("id") id: Int): Response<List<Group>>
 
-    @POST("api/GroupTask/{groupId}/{taskId}")
-    suspend fun updateAllGroupTask(
-        @Path("groupId") groupId: Int,
-        @Path("taskId") taskId: Int,
-        @Body groupTask: GroupTask
-    ): Response<GroupTask>
-
-    @DELETE("api/GroupTask/{groupId}/{taskId}")
-    suspend fun deleteGroupTask(
-        @Path("groupId") groupId: Int,
-        @Path("taskId") taskId: Int
-    ): Response<GroupTask>
+    @GET("api/Group/getByClassroomIdNotInStudentId/{classroomId}/{studentId}")
+    suspend fun getGroupsFromClassroomNotInStudent(
+        @Path("classroomId") classroomId: Int,
+        @Path("studentId") studentId: Int,
+    ): Response<List<Group>>
 
 
-    @GET("api/Student/{id}")
-    suspend fun getStudent(@Path("id") id: Int): Response<Student>
+    @GET("api/GroupAssignedTask")
+    suspend fun getAllGroupAssignedTasks(): Response<List<GroupAssignedTask>>
 
-    @GET("api/Student/getByLogin/{loginCode}")
-    suspend fun getStudentByLoginCode(@Path("loginCode") loginCode: String): Response<Student>
+    @PUT("api/GroupAssignedTask")
+    suspend fun createGroupAssignedTask(@Body groupAssignedTask: GroupAssignedTask): Response<GroupAssignedTask>
+
+    @DELETE("api/GroupAssignedTask/{groupId}/{assignedTaskId}")
+    suspend fun deleteGroupAssignedTask(@Path("groupId") groupId: Int, @Path("assignedTaskId") assignedTaskId: Int): Response<GroupAssignedTask>
+
+    @GET("api/Image")
+    suspend fun getAllImages(): Response<List<Image>>
+
+    @PUT("api/Image")
+    suspend fun createImage(@Body dbImage: Image): Response<Image>
+
+    @GET("api/Image/{id}")
+    suspend fun getImage(@Path("id") id: Int): Response<Image>
+
+    @POST("api/Image/{id}")
+    suspend fun updateAllImage(@Path("id") id: Int, @Body dbImage: Image): Response<Image>
+
+    @DELETE("api/Image/{id}")
+    suspend fun deleteImage(@Path("id") id: Int): Response<Image>
+
 
     @GET("api/Student")
     suspend fun getAllStudents(): Response<List<Student>>
 
-    @GET("api/Student/getByGroupId/{groupId}")
-    suspend fun getStudentsInGroup(@Path("groupId") groupId: Int): Response<List<Student>>
-
-    @GET("api/Student/getByClassroomIdNotInGroupId/{classroomId}/{groupId}")
-    suspend fun getStudentsFromClassroomNotInGroup(
-        @Path("classroomId") classroomId: Int,
-        @Path("groupId") groupId: Int
-    ): Response<List<Student>>
-
-    @GET("api/Student/getByClassroomId/{classroomId}")
-    suspend fun getStudentsInClassroom(@Path("classroomId") classroomId: Int): Response<List<Student>>
-
     @PUT("api/Student")
     suspend fun createStudent(@Body student: Student): Response<Student>
+
+    @GET("api/Student/{id}")
+    suspend fun getStudent(@Path("id") id: Int): Response<Student>
 
     @POST("api/Student/{id}")
     suspend fun updateAllStudent(@Path("id") id: Int, @Body student: Student): Response<Student>
@@ -144,22 +146,43 @@ interface ApiInterface {
     @DELETE("api/Student/{id}")
     suspend fun deleteStudent(@Path("id") id: Int): Response<Student>
 
+    @GET("api/Student/getByAssignedTaskId/{assignedTaskId}")
+    suspend fun getStudentsInAssignedTask(@Path("assignedTaskId") assignedTaskId: Int): Response<List<Student>>
 
-    @GET("api/StudentGroup/{studentId}/{groupId}")
-    suspend fun getStudentGroup(
-        @Path("studentId") studentId: Int,
+    @GET("api/Student/getByLogin/{loginCode}")
+    suspend fun getStudentByLoginCode(@Path("loginCode") loginCode: String): Response<Student>
+
+    @GET("api/Student/getByClassroomId/{classroomId}")
+    suspend fun getStudentsInClassroom(@Path("classroomId") classroomId: Int): Response<List<Student>>
+
+    @GET("api/Student/getByGroupId/{groupId}")
+    suspend fun getStudentsInGroup(@Path("groupId") groupId: Int): Response<List<Student>>
+
+    @GET("api/Student/getByClassroomIdNotInGroupId/{classroomId}/{groupId}")
+    suspend fun getStudentsFromClassroomNotInGroup(
+        @Path("classroomId") classroomId: Int,
         @Path("groupId") groupId: Int
-    ): Response<StudentGroup>
+    ): Response<List<Student>>
+
+
+    @GET("api/StudentAssignedTask/")
+    suspend fun getAllStudentAssignedTask(): Response<List<StudentAssignedTask>>
+
+    @PUT("api/StudentAssignedTask")
+    suspend fun createStudentAssignedTask(@Body studentAssignedTask: StudentAssignedTask): Response<StudentAssignedTask>
+
+    @DELETE("api/StudentAssignedTask/{studentId}/{assignedTaskId}")
+    suspend fun deleteStudentAssignedTask(@Path("studentId") studentId: Int, @Path("assignedTaskId") assignedTaskId: Int): Response<StudentAssignedTask>
+
 
     @PUT("api/StudentGroup")
     suspend fun createStudentGroup(@Body studentgroup: StudentGroup): Response<StudentGroup>
 
-    @POST("api/StudentGroup/{studentId}/{groupId}")
-    suspend fun updateAllStudentGroup(
-        @Path("studentId") studentId: Int,
-        @Path("groupId") groupId: Int,
-        @Body studentgroup: StudentGroup
-    ): Response<StudentGroup>
+    @GET("api/StudentGroup/getByStudentId/{studentId}")
+    suspend fun getStudentGroupsByStudentId(@Path("studentId") studentId: Int): Response<List<StudentGroup>>
+
+    @GET("api/StudentGroup/getByGroupId/{groupId}")
+    suspend fun getStudentGroupsByGroupId(@Path("groupId") groupId: Int): Response<List<StudentGroup>>
 
     @DELETE("api/StudentGroup/{studentId}/{groupId}")
     suspend fun deleteStudentGroup(
@@ -168,58 +191,11 @@ interface ApiInterface {
     ): Response<StudentGroup>
 
 
-    @GET("api/StudentTask/{studentId}/{taskId}")
-    suspend fun getStudentTask(
-        @Path("studentId") studentId: Int,
-        @Path("taskId") taskId: Int
-    ): Response<StudentTask>
-
-    @PUT("api/StudentTask")
-    suspend fun createStudentTask(@Body studentTask: StudentTask): Response<StudentTask>
-
-    @POST("api/StudentTask/{studentId}/{taskId}")
-    suspend fun updateAllStudentTask(
-        @Path("studentId") studentId: Int,
-        @Path("taskId") taskId: Int,
-        @Body studentTask: StudentTask
-    ): Response<StudentTask>
-
-    @DELETE("api/StudentTask/{studentId}/{taskId}")
-    suspend fun deleteStudentTask(
-        @Path("studentId") studentId: Int,
-        @Path("taskId") taskId: Int
-    ): Response<StudentTask>
-
+    @PUT("api/Task")
+    suspend fun createTask(@Body task: Task): Response<Task>
 
     @GET("api/Task/{id}")
     suspend fun getTask(@Path("id") id: Int): Response<Task>
-
-    @GET("api/Task/getByClassroomId/{classroomId}")
-    suspend fun getTasksInClassroom(@Path("classroomId") classroomId: Int): Response<List<Task>>
-
-    @GET("api/Task/getByGroupId/{groupId}")
-    suspend fun getGroupsTasks(@Path("groupId") groupId: Int): Response<List<Task>>
-
-    @GET("api/Task/getByStudentId/{studentId}")
-    suspend fun getStudentsTasks(@Path("studentId") studentId: Int): Response<List<Task>>
-
-    @GET("api/Task/getByTeacherIdNotInGroupId/{teacherId}/{groupId}")
-    suspend fun getTasksFromTeacherNotInGroup(
-        @Path("teacherId") teacherId: Int,
-        @Path("groupId") groupId: Int
-    ): Response<List<Task>>
-
-    @GET("api/Task/getByTeacherIdNotInStudentId/{teacherId}/{studentId}")
-    suspend fun getTasksFromTeacherNotInStudent(
-        @Path("teacherId") teacherId: Int,
-        @Path("studentId") studentId: Int
-    ): Response<List<Task>>
-
-    @GET("api/Task/getByStudentIdInAllGroups/{studentId}")
-    suspend fun getTasksInStudentsGroups(@Path("studentId") studentId: Int): Response<List<Task>>
-
-    @PUT("api/Task")
-    suspend fun createTask(@Body task: Task): Response<Task>
 
     @POST("api/Task/{id}")
     suspend fun updateAllTask(@Path("id") id: Int, @Body task: Task): Response<Task>
@@ -230,15 +206,36 @@ interface ApiInterface {
     @DELETE("api/Task/{id}")
     suspend fun deleteTask(@Path("id") id: Int): Response<Task>
 
+    @GET("api/Task/getByTeacherId/{teacherId}")
+    suspend fun getTeacherTasks(@Path("teacherId") teacherId: Int): Response<List<Task>>
 
-    @GET("api/TaskType/{id}")
-    suspend fun getTaskType(@Path("id") id: Int): Response<TaskType>
+    @GET("api/Task/getAssignedByTeacherId/{teacherId}")
+    suspend fun getTeacherAssignedTasks(@Path("teacherId") teacherId: Int): Response<List<Task>>
+
+    @GET("api/Task/getAllByTeacherId/{teacherId}")
+    suspend fun getTeachersTasksAndAssignedTasks(@Path("teacherId") teacherId: Int): Response<List<Task>>
+
+    @GET("api/Task/getByClassroomId/{classroomId}")
+    suspend fun getTasksInClassroom(@Path("classroomId") classroomId: Int): Response<List<Task>>
+
+    @GET("api/Task/getByGroupId/{groupId}")
+    suspend fun getGroupsTasks(@Path("groupId") groupId: Int): Response<List<Task>>
+
+    @GET("api/Task/getByStudentId/{studentId}")
+    suspend fun getStudentsTasks(@Path("studentId") studentId: Int): Response<List<Task>>
+
+    @GET("api/Task/getByStudentIdInAllGroups/{studentId}")
+    suspend fun getTasksInStudentsGroups(@Path("studentId") studentId: Int): Response<List<Task>>
+
 
     @GET("api/TaskType")
     suspend fun getAllTaskTypes(): Response<List<TaskType>>
 
     @PUT("api/TaskType")
     suspend fun createTaskType(@Body taskType: TaskType): Response<TaskType>
+
+    @GET("api/TaskType/{id}")
+    suspend fun getTaskType(@Path("id") id: Int): Response<TaskType>
 
     @POST("api/TaskType/{id}")
     suspend fun updateAllTaskType(@Path("id") id: Int, @Body taskType: TaskType): Response<TaskType>
@@ -250,8 +247,23 @@ interface ApiInterface {
     suspend fun deleteTaskType(@Path("id") id: Int): Response<TaskType>
 
 
+    @GET("api/Teacher")
+    suspend fun getAllTeachers(): Response<List<Teacher>>
+
+    @PUT("api/Teacher")
+    suspend fun createTeacher(@Body teacher: Teacher): Response<Teacher>
+
     @GET("api/Teacher/{id}")
     suspend fun getTeacher(@Path("id") id: Int): Response<Teacher>
+
+    @POST("api/Teacher/{id}")
+    suspend fun updateAllTeacher(@Path("id") id: Int, @Body teacher: Teacher): Response<Teacher>
+
+    @PATCH("api/Teacher/{id}")
+    suspend fun updateTeacher(@Path("id") id: Int, @Body teacher: Teacher): Response<Teacher>
+
+    @DELETE("api/Teacher/{id}")
+    suspend fun deleteTeacher(@Path("id") id: Int): Response<Teacher>
 
     @GET("api/Teacher/getByEmail/{email}")
     suspend fun getTeacherByEmail(@Path("email") email: String): Response<Teacher>
@@ -265,68 +277,15 @@ interface ApiInterface {
         @Path("password") password: String
     ): Response<Teacher>
 
-    @GET("api/Teacher")
-    suspend fun getAllTeachers(): Response<List<Teacher>>
-
-    @PUT("api/Teacher")
-    suspend fun createTeacher(@Body teacher: Teacher): Response<Teacher>
-
-    @POST("api/Teacher/{id}")
-    suspend fun updateAllTeacher(@Path("id") id: Int, @Body teacher: Teacher): Response<Teacher>
-
-    @PATCH("api/Teacher/{id}")
-    suspend fun updateTeacher(@Path("id") id: Int, @Body teacher: Teacher): Response<Teacher>
-
-    @DELETE("api/Teacher/{id}")
-    suspend fun deleteTeacher(@Path("id") id: Int): Response<Teacher>
-
-
-    @GET("api/Image/{id}")
-    suspend fun getImage(@Path("id") id: Int): Response<Image>
-
-    @GET("api/Image")
-    suspend fun getAllImages(): Response<List<Image>>
-
-    @PUT("api/Image")
-    suspend fun createImage(@Body dbImage: Image): Response<Image>
-
-    @POST("api/Image/{id}")
-    suspend fun updateAllImage(@Path("id") id: Int, @Body dbImage: Image): Response<Image>
-
-    @DELETE("api/Image/{id}")
-    suspend fun deleteImage(@Path("id") id: Int): Response<Image>
-
-
-    @GET("api/Board/{id}")
-    suspend fun getBoard(@Path("id") id: Int): Response<Board>
-
-    @GET("api/Board")
-    suspend fun getAllBoards(): Response<List<Board>>
-
-    @GET("api/Board/getByTaskId/{taskId}")
-    suspend fun getTaskBoards(@Path("taskId") taskId: Int): Response<List<Board>>
-
-    @PUT("api/Board")
-    suspend fun createBoard(@Body board: Board): Response<Board>
-
-    @POST("api/Board/{id}")
-    suspend fun updateAllBoard(@Path("id") id: Int, @Body board: Board): Response<Board>
-
-    @DELETE("api/Board/{id}")
-    suspend fun deleteBoard(@Path("id") id: Int): Response<Board>
-
-
-    @GET("api/Tile/{id}")
-    suspend fun getTile(@Path("id") id: Int): Response<Tile>
 
     @GET("api/Tile")
     suspend fun getAllTiles(): Response<List<Tile>>
 
-    @GET("api/Tile/getByBoardId/{boardId}")
-    suspend fun getBoardTiles(@Path("boardId") boardId: Int): Response<List<Tile>>
-
     @PUT("api/Tile")
     suspend fun createTile(@Body tile: Tile): Response<Tile>
+
+    @GET("api/Tile/{id}")
+    suspend fun getTile(@Path("id") id: Int): Response<Tile>
 
     @POST("api/Tile/{id}")
     suspend fun updateAllTile(@Path("id") id: Int, @Body tile: Tile): Response<Tile>
@@ -334,4 +293,6 @@ interface ApiInterface {
     @DELETE("api/Tile/{id}")
     suspend fun deleteTile(@Path("id") id: Int): Response<Tile>
 
+    @GET("api/Tile/getByBoardId/{boardId}")
+    suspend fun getBoardTiles(@Path("boardId") boardId: Int): Response<List<Tile>>
 }

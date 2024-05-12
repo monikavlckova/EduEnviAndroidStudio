@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Background"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -39,19 +38,19 @@
                 android:id="@+id/tasksButton"
                 style="@style/navButton"
                 android:contentDescription="@string/tasksCodeDescription"
-                android:src="@mipmap/tasks" />
+                android:src="@drawable/tasks_button_wrapper" />
 
             <ImageButton
                 android:id="@+id/studentsButton"
                 style="@style/navButton"
                 android:contentDescription="@string/studentsCodeDescription"
-                android:src="@mipmap/students_highlighted" />
+                android:src="@drawable/students_highlighted_button_wrapper" />
 
             <ImageButton
                 android:id="@+id/groupsButton"
                 style="@style/navButton"
                 android:contentDescription="@string/groupsCodeDescription"
-                android:src="@mipmap/groups" />
+                android:src="@drawable/groups_button_wrapper" />
         </LinearLayout>
 
     </RelativeLayout>
@@ -68,113 +67,122 @@
             style="@style/backButtonOnBackground"
             android:contentDescription="@string/closeCodeDescription" />
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="70dp"
-            android:gravity="top"
-            android:orientation="vertical"
-            android:padding="25dp">
+            android:fadingEdgeLength="80dp"
+            android:requiresFadingEdge="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="70dp"
+                android:gravity="top"
+                android:orientation="vertical"
+                android:padding="25dp">
 
 
-            <RelativeLayout
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center">
-
-                <ImageView
-                    android:id="@+id/studentImage"
+                <RelativeLayout
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/baseline_account_circle_on_background_24" />
+                    android:layout_gravity="center">
 
-                <ImageButton
-                    android:id="@+id/editStudentImage"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/oval_50_primary"
-                    android:contentDescription="@string/edit"
-                    android:src="@drawable/baseline_edit_on_primary_24" />
+                    <ImageView
+                        android:id="@+id/studentImage"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/baseline_account_circle_on_background_24" />
 
-            </RelativeLayout>
+                    <ImageButton
+                        android:id="@+id/editStudentImage"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/oval_50_primary"
+                        android:contentDescription="@string/edit"
+                        android:src="@drawable/baseline_edit_on_primary_24" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/firstNameTextInputLayout"
-                style="@style/inputField">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/firstName"
-                    style="@style/inputFieldEditTextColor"
-                    android:hint="@string/firstName"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/lastNameTextInputLayout"
-                style="@style/inputField">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/lastName"
-                    style="@style/inputFieldEditTextColor"
-                    android:hint="@string/lastName"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                </RelativeLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/loginCodeTextInputLayout"
+                    android:id="@+id/firstNameTextInputLayout"
                     style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/loginCode"
+                        android:id="@+id/firstName"
                         style="@style/inputFieldEditTextColor"
-                        android:hint="@string/loginCode"
+                        android:hint="@string/firstName"
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageButton
-                    android:id="@+id/generateLoginCode"
-                    android:layout_width="60dp"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/lastNameTextInputLayout"
+                    style="@style/inputField">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/lastName"
+                        style="@style/inputFieldEditTextColor"
+                        android:hint="@string/lastName"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/loginCodeTextInputLayout"
+                        style="@style/inputField">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/loginCode"
+                            style="@style/inputFieldEditTextColor"
+                            android:hint="@string/loginCode"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageButton
+                        android:id="@+id/generateLoginCode"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="5dp"
+                        android:backgroundTint="@color/transparent"
+                        android:contentDescription="@string/generateCodeDescription"
+                        android:src="@drawable/baseline_renew_on_background_24" />
+                </RelativeLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/classroomTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="5dp"
-                    android:backgroundTint="@color/transparent"
-                    android:contentDescription="@string/generateCodeDescription"
-                    android:src="@drawable/baseline_renew_on_background_24" />
-            </RelativeLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/classroomTextInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:inputType="none"
+                    android:visibility="gone">
 
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="false"
-                android:inputType="none"
-                android:visibility="gone">
+                    <AutoCompleteTextView
+                        android:id="@+id/classroom"
+                        style="@style/inputFieldEditTextColor"
+                        android:hint="@string/classroomCodeDescription"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </ScrollView>
 
-                <AutoCompleteTextView
-                    android:id="@+id/classroom"
-                    style="@style/inputFieldEditTextColor"
-                    android:hint="@string/classroomCodeDescription"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/saveButton"
-                style="@style/actionButton"
-                android:text="@string/create" />
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/saveButton"
+            style="@style/actionButton"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="25dp"
+            android:text="@string/create" />
     </RelativeLayout>
 
     <LinearLayout
@@ -266,6 +274,5 @@
             android:id="@+id/closeFragmentButton"
             style="@style/backButtonOnBackground"
             android:contentDescription="@string/backCodeDescription" />
-
     </RelativeLayout>
 </RelativeLayout>

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:ellipsize="end"
-    android:maxLines="1"
+    android:singleLine="false"
     android:padding="16dp"
-    android:textAppearance="?attr/textAppearanceSubtitle1" />
+    android:textAppearance="?attr/textAppearanceSubtitle1"
+    />

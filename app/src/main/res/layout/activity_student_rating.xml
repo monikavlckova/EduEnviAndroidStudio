@@ -37,7 +37,7 @@
             android:id="@+id/tasksButton"
             style="@style/navButtonInConstraintLayout"
             android:contentDescription="@string/tasksCodeDescription"
-            android:src="@mipmap/tasks"
+            android:src="@drawable/tasks_button_wrapper"
             tools:ignore="MissingConstraints" />
 
         <ImageButton
