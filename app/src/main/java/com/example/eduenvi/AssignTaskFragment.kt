@@ -101,6 +101,9 @@ class AssignTaskFragment : Fragment() {
         chipGroupStudents = view.findViewById(R.id.chipGroupStudents)
         datesError = view.findViewById(R.id.datesError)
 
+        chipGroupGroups.chipSpacingVertical = 1
+        chipGroupStudents.chipSpacingVertical = 1
+
         CoroutineScope(Dispatchers.IO).launch {
             val sic = ApiHelper.getStudentsInClassroom(Constants.Classroom.id)
             studentsInClassroom = sic ?: listOf()
@@ -288,16 +291,15 @@ class AssignTaskFragment : Fragment() {
     }
 
     private fun loadChips(assignedTaskId: Int?) {
-        studentsInClassroom.map {
-            it.selected = false
-            it.inTask = false
-        }
-        groupsInClassroom.map {
-            it.selected = false
-            it.inTask = false
-        }
-
         CoroutineScope(Dispatchers.IO).launch {
+            studentsInClassroom.map {
+                it.selected = false
+                it.inTask = false
+            }
+            groupsInClassroom.map {
+                it.selected = false
+                it.inTask = false
+            }
             if (assignedTaskId != null) {
 
                 val studentsAssigned = ApiHelper.getStudentsInAssignedTask(assignedTaskId)

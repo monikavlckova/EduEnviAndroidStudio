@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -23,27 +21,42 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AssignTaskFragment" />
-        <activity android:name=".ClassroomGroupsActivity" />
-        <activity android:name=".ClassroomsActivity" />
-        <activity android:name=".ClassroomStudentsActivity" />
-        <activity android:name=".ClassroomTasksActivity" />
-        <activity android:name=".GroupStudentsActivity" />
-        <activity android:name=".GroupTasksActivity" />
-        <activity android:name=".ImageGalleryFragment" />
+
         <activity android:name=".LoginActivity" />
         <activity android:name=".LoginStudentActivity" />
-        <activity android:name=".ProfileActivity" />
+
         <activity android:name=".SignupActivity" />
-        <activity android:name=".StudentActivity" />
-        <activity android:name=".StudentGroupsActivity" />
-        <activity android:name=".StudentRatingActivity" />
-        <activity android:name=".StudentTasksActivity" />
-        <activity android:name=".TasksActivity" />
+        <activity android:name=".ClassroomsActivity" /> <!-- TODO ze ked kliknem spat, nic sa nestane, ide to?-->
+        <activity android:name=".TasksActivity" />  <!-- TODO ze ked kliknem spat, nic sa nestane, ide to?-->
+        <activity android:name=".StudentActivity" /> <!-- TODO ze ked kliknem spat, nic sa nestane, ide to?-->
+        <activity android:name=".StudentRatingActivity" /> <!-- TODO ze ked kliknem spat, nic sa nestane, ide to?-->
+
+        <activity android:name=".ClassroomGroupsActivity" />
+        <activity android:name=".ClassroomStudentsActivity" />
+        <activity android:name=".ClassroomTasksActivity" />
+        <activity android:name=".ProfileActivity" android:launchMode="singleTop" />
         <activity android:name=".TaskType1CreatingActivity" />
-        <activity android:name=".TaskType1Activity" />
         <activity android:name=".TaskType2CreatingActivity" />
+        <!-- <activity android:name=".TaskType3CreatingActivity" /> -->
+        <activity android:name=".TaskType1Activity" />
         <activity android:name=".TaskType2Activity" />
+        <!-- <activity android:name=".TaskType3Activity" /> -->
+
+        <activity android:name=".TaskAssignedGroupsActivity" />
+        <activity android:name=".TaskAssignedStudentsActivity" />
+        <activity android:name=".GroupStudentsActivity" />
+        <activity android:name=".GroupTasksActivity" />
+        <activity android:name=".StudentGroupsActivity" />
+        <activity android:name=".StudentTasksActivity" />
+
+        <activity android:name=".TaskType1SolutionActivity" />
+        <activity android:name=".TaskType2SolutionActivity" />
+        <!-- <activity android:name=".TaskType3SolutionActivity" /> -->
+
+        <activity android:name=".AssignTaskFragment" />
+        <activity android:name=".ImageGalleryFragment" />
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

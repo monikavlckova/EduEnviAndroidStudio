@@ -27,6 +27,8 @@ class SignupActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
 

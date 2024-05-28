@@ -34,11 +34,14 @@ class StudentTasksActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener {
             val intent = Intent(this, ClassroomStudentsActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
 
         binding.groupsButton.setOnClickListener {
             val intent = Intent(this, StudentGroupsActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             startActivity(intent)
         }
 

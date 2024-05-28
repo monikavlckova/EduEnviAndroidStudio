@@ -48,15 +48,19 @@ class TasksActivity : AppCompatActivity() {
 
         binding.classroomsButton.setOnClickListener {
             val intent = Intent(this, ClassroomsActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             startActivity(intent)
         }
 
         binding.logoutButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
 
         binding.profileButton.setOnClickListener {
+            binding.menuPanel.visibility = View.GONE
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
@@ -68,6 +72,7 @@ class TasksActivity : AppCompatActivity() {
             binding.taskName.text = null
             binding.text.text = null
             binding.saveButton.text = Constants.SaveButtonTextCreate
+            binding.editGraphicPart.visibility = View.GONE
             Constants.imageManager.setImage("", this, binding.taskImage)
             binding.taskPanel.visibility = View.VISIBLE
             binding.mainPanel.visibility = View.GONE
@@ -80,6 +85,7 @@ class TasksActivity : AppCompatActivity() {
             binding.taskName.setText(Constants.Task.name)
             binding.text.setText(Constants.Task.text)
             binding.saveButton.text = Constants.SaveButtonTextUpdate
+            binding.editGraphicPart.visibility = View.VISIBLE
             Constants.imageManager.setImage(Constants.Task.imageId, this, binding.taskImage)
             binding.taskPanel.visibility = View.VISIBLE
             binding.editPanel.visibility = View.GONE
@@ -103,8 +109,18 @@ class TasksActivity : AppCompatActivity() {
                 val text = binding.text.text.toString()
                 val task = Task(0, teacherId, taskTypeId, name, text, imageId)
                 saveTask(task)
-                closeTaskPanel()
+                //closeTaskPanel()
+
             }
+        }
+
+        binding.editGraphicPart.setOnClickListener {
+            openTaskTypeActivity()
+        }
+
+        binding.closeEditGraphicPartPanel.setOnClickListener {
+            binding.editGraphicPartPanel.visibility = View.GONE
+            closeTaskPanel()
         }
 
         binding.deleteButton.setOnClickListener {
@@ -223,9 +239,9 @@ class TasksActivity : AppCompatActivity() {
                 if (res != null) {
                     tasks.add(res!!)
                     adapter.notifyDataChanged()
-                    val intent = Intent(myContext, Constants.TaskTypeCreatingActivity[res!!.taskTypeId])
-                    intent.putExtra("TASK_ID", res!!.id)
-                    myContext.startActivity(intent)
+                    Constants.Task = res!!
+                    if (_creatingNew) openTaskTypeActivity()
+                    else binding.editGraphicPartPanel.visibility = View.VISIBLE
                 } else {
                     Toast.makeText(myContext, Constants.SaveError, Toast.LENGTH_LONG).show()
                 }
@@ -256,6 +272,12 @@ class TasksActivity : AppCompatActivity() {
             val chip = binding.chipTaskType.getChildAt(i)
             binding.chipTaskType.removeView(chip)
         }
+    }
+
+    private fun openTaskTypeActivity(){
+        val intent = Intent(myContext, Constants.TaskTypeCreatingActivity[Constants.Task.taskTypeId])
+        intent.putExtra("TASK_ID", Constants.Task.id)
+        myContext.startActivity(intent)
     }
 
     private fun validName(): Boolean {

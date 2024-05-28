@@ -82,4 +82,6 @@
     <string name="groups">Skupiny</string>
     <string name="students">Žiaci</string>
     <string name="emptyDate">...</string>
+    <string name="editGraphicPartTask">Upraviť grafické zadenie</string>
+    <string name="close">Zatvoriť</string>
 </resources>

@@ -168,6 +168,18 @@ object ApiHelper {
         }
     }
 
+    suspend fun getGroupsFromClassroomNotInAssignedTask(
+        classroomId: Int,
+        assignedTaskId: Int
+    ): List<Group>? {
+        return performApiCall {
+            RetrofitInstance.api.getGroupsFromClassroomNotInAssignedTask(
+                classroomId,
+                assignedTaskId
+            )
+        }
+    }
+
 
     suspend fun getAllGroupAssignedTasks(): List<GroupAssignedTask>? {
         return performApiCall { RetrofitInstance.api.getAllGroupAssignedTasks() }
@@ -254,6 +266,18 @@ object ApiHelper {
             RetrofitInstance.api.getStudentsFromClassroomNotInGroup(
                 classroomId,
                 groupId
+            )
+        }
+    }
+
+    suspend fun getStudentsFromClassroomNotInAssignedTask(
+        classroomId: Int,
+        assignedTaskId: Int
+    ): List<Student>? {
+        return performApiCall {
+            RetrofitInstance.api.getStudentsFromClassroomNotInAssignedTask(
+                classroomId,
+                assignedTaskId
             )
         }
     }

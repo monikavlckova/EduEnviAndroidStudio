@@ -17,6 +17,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+//TODO ked zahodim plochu, a je len jedna, tak otvorit boardSizePickerPanel
+
 //TODO ci je circle uloha - spravit dalsi typ? dat dext do board nie do tasku? alebo aj aj
 class TaskType1CreatingActivity : AppCompatActivity() {
 
@@ -144,7 +146,8 @@ class TaskType1CreatingActivity : AppCompatActivity() {
                 } else {
                     currentBoardIndex = -1
                     boardMap = mutableListOf()
-                    setBoard(0)
+                    binding.mainPanel.visibility = View.GONE
+                    binding.boardSizePickerPanel.visibility = View.VISIBLE
                 }
             }
         }
@@ -189,10 +192,12 @@ class TaskType1CreatingActivity : AppCompatActivity() {
             }
 
             val intent = Intent(myContext, TasksActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
 
-        binding.deleteTask.setOnClickListener {
+        binding.deleteTask.setOnClickListener {//TODO opytaj sa ze ci ozaj?
             CoroutineScope(Dispatchers.IO).launch {
                 deleteTaskBoards()
                 val task = ApiHelper.deleteTask(taskId!!)
@@ -200,10 +205,12 @@ class TaskType1CreatingActivity : AppCompatActivity() {
                     if (task == null) {
                         Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     }
+                    val intent = Intent(myContext, TasksActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(intent)
                 }
             }
-            val intent = Intent(myContext, TasksActivity::class.java)
-            startActivity(intent)
         }
 
         binding.closeFragmentButton.setOnClickListener {
@@ -219,11 +226,20 @@ class TaskType1CreatingActivity : AppCompatActivity() {
 
         binding.confirmDelete.setOnClickListener {
             val intent = Intent(myContext, TasksActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
         }
 
         binding.closeDeletePanel.setOnClickListener{
             binding.deletePanel.visibility = View.GONE
+        }
+
+        binding.numOfColumnsPicker.setOnValueChangedListener{ _, _, newVal ->
+            binding.numOfRowsPicker.value = newVal
+        }
+
+        binding.numOfRowsPicker.setOnValueChangedListener { _, _, newVal ->
+            binding.numOfColumnsPicker.value = newVal
         }
     }
 

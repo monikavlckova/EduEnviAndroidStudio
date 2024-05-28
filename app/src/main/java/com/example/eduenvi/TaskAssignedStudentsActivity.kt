@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.eduenvi.adapters.StudentGroupsAdapter
+import com.example.eduenvi.adapters.TaskAssignedStudentsAdapter
 import com.example.eduenvi.api.ApiHelper
-import com.example.eduenvi.databinding.ActivityStudentGroupsBinding
-import com.example.eduenvi.models.Group
-import com.example.eduenvi.models.StudentGroup
+import com.example.eduenvi.databinding.ActivityTaskAssignedStudentsBinding
+import com.example.eduenvi.models.Student
+import com.example.eduenvi.models.StudentAssignedTask
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.CoroutineScope
@@ -19,49 +19,50 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class StudentGroupsActivity : AppCompatActivity() {
+class TaskAssignedStudentsActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityStudentGroupsBinding
+    lateinit var binding: ActivityTaskAssignedStudentsBinding
 
-    private var _delFromStudent: HashSet<Group> = HashSet()
-    private var _addToStudent: HashSet<Group> = HashSet()
-    private var groups = mutableListOf<Group>()
-    private lateinit var adapter: StudentGroupsAdapter
+    private var _delFromTask: HashSet<Student> = HashSet()
+    private var _addToTask: HashSet<Student> = HashSet()
+    private var students = mutableListOf<Student>()
+    private lateinit var adapter: TaskAssignedStudentsAdapter
     private val myContext = this
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityStudentGroupsBinding.inflate(layoutInflater)
+        binding = ActivityTaskAssignedStudentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loadGroupsToLayout()
+        loadStudentsToLayout()
 
         binding.chipGroupIn.chipSpacingVertical = 1
         binding.chipGroupNotIn.chipSpacingVertical = 1
 
-        binding.studentName.text = "${Constants.Student.firstName} ${Constants.Student.lastName}"
+        binding.taskName.text = Constants.Task.name
 
         binding.backButton.setOnClickListener {
-            val intent = Intent(this, ClassroomStudentsActivity::class.java)
+            val intent = Intent(this, ClassroomTasksActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
 
-        binding.tasksButton.setOnClickListener {
-            val intent = Intent(this, StudentTasksActivity::class.java)
+        binding.groupsButton.setOnClickListener {
+            val intent = Intent(this, TaskAssignedGroupsActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             startActivity(intent)
         }
 
         binding.confirmDelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                val res = ApiHelper.deleteStudentGroup(Constants.Student.id, Constants.Group.id)
+                val res = ApiHelper.deleteStudentAssignedTask(Constants.Student.id, Constants.Task.assignedTaskId!!)
                 withContext(Dispatchers.Main) {
                     if (res != null) {
-                        groups.remove(Constants.Group)
+                        students.remove(Constants.Student)
                         adapter.notifyDataChanged()
+
                     } else {
                         Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
                     }
@@ -71,34 +72,33 @@ class StudentGroupsActivity : AppCompatActivity() {
         }
 
         binding.addButton.setOnClickListener {
-            setActiveGroupsPanel()
+            setActiveStudentsPanel()
         }
 
         binding.saveButton.setOnClickListener {
-            manageGroups()
-            closeGroupsPanel()
+            manageStudents()
+            closeStudentsPanel()
         }
 
-        binding.closeGroupsPanel.setOnClickListener { closeGroupsPanel() }
+        binding.closeStudentsPanel.setOnClickListener { closeStudentsPanel() }
         binding.closeDeletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
     }
 
-    private fun loadGroupsToLayout(){
+    private fun loadStudentsToLayout(){
         CoroutineScope(Dispatchers.IO).launch {
-            val g = ApiHelper.getStudentsGroups(Constants.Student.id)
-            groups = if (g == null) mutableListOf() else g as MutableList<Group>
+            val s = ApiHelper.getStudentsInAssignedTask(Constants.Task.assignedTaskId!!)
+            students = if (s == null) mutableListOf() else s as MutableList<Student>
 
             withContext(Dispatchers.Main) {
-                adapter = StudentGroupsAdapter(myContext, groups)
-                binding.groupsLayout.adapter = adapter
-
+                adapter = TaskAssignedStudentsAdapter(myContext, students)
+                binding.studentsLayout.adapter = adapter
             }
         }
     }
 
-    private fun closeGroupsPanel() {
-        binding.groupsPanel.visibility = View.GONE
+    private fun closeStudentsPanel() {
+        binding.studentsPanel.visibility = View.GONE
         binding.mainPanel.visibility = View.VISIBLE
         empty()
     }
@@ -115,78 +115,73 @@ class StudentGroupsActivity : AppCompatActivity() {
         }
     }
 
-    private fun setActiveGroupsPanel() {
-        binding.groupsPanel.visibility = View.VISIBLE
+    private fun setActiveStudentsPanel() {
+        binding.studentsPanel.visibility = View.VISIBLE
         binding.mainPanel.visibility = View.GONE
         CoroutineScope(Dispatchers.IO).launch {
-            val groupsInStudent = ApiHelper.getStudentsGroups(Constants.Student.id)
-            val groupsNotInStudent = ApiHelper.getGroupsFromClassroomNotInStudent(
-                Constants.Classroom.id,
-                Constants.Student.id
-            )
+            val studentsInTask = ApiHelper.getStudentsInAssignedTask(Constants.Task.assignedTaskId!!)
+            val studentsNotInTask = ApiHelper.getStudentsFromClassroomNotInAssignedTask(Constants.Classroom.id, Constants.Task.assignedTaskId!!)
 
             withContext(Dispatchers.Main) {
-                addGroupsToLists(groupsInStudent, groupsNotInStudent)
+                addStudentsToLists(studentsInTask, studentsNotInTask)
             }
         }
     }
 
-    private fun addGroupsToLists(groupsInStudent: List<Group>?, groupsNotInStudent: List<Group>?) {
-        groupsInStudent?.forEach { group ->
-            addGroupToList(group, binding.chipGroupIn, true)
+    private fun addStudentsToLists(studentsInTask: List<Student>?, studentsNotInTask: List<Student>?) {
+        studentsInTask?.forEach { student ->
+            addStudentToList(student, binding.chipGroupIn, true)
         }
-        groupsNotInStudent?.forEach { group ->
-            addGroupToList(group, binding.chipGroupNotIn, false)
+        studentsNotInTask?.forEach { student ->
+            addStudentToList(student, binding.chipGroupNotIn, false)
         }
     }
 
-    private fun addGroupToList(group: Group, chipGroup: ChipGroup, isInGroup: Boolean) {
-        var addedInGroup = isInGroup
-        val tagName = group.name
+    private fun addStudentToList(student: Student, chipGroup: ChipGroup, isInTask: Boolean) {
+        var addedInTask = isInTask
+        val tagName = student.firstName + " " + student.lastName
         val chip = Chip(this)
         chip.text = tagName
         chip.layoutParams = FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        if (isInGroup) chip.setCloseIconResource(R.drawable.baseline_close_on_background_24)
+        if (isInTask) chip.setCloseIconResource(R.drawable.baseline_close_on_background_24)
         else chip.setCloseIconResource(R.drawable.baseline_add_on_primary_24)
 
         chip.isCloseIconVisible = true
         chip.setOnClickListener {
-            //Constants.Student = student
-            if (addedInGroup) {
+            if (addedInTask) {
                 chip.setCloseIconResource(R.drawable.baseline_add_on_primary_24)
                 binding.chipGroupIn.removeView(chip)
                 binding.chipGroupNotIn.addView(chip)
-                addedInGroup = false
-                if (isInGroup) _delFromStudent.add(group)
-                else _addToStudent.remove(group)
+                addedInTask = false
+                if (isInTask) _delFromTask.add(student)
+                else _addToTask.remove(student)
             } else {
                 chip.setCloseIconResource(R.drawable.baseline_close_on_background_24)
                 binding.chipGroupNotIn.removeView(chip)
                 binding.chipGroupIn.addView(chip)
-                addedInGroup = true
-                if (!isInGroup) _addToStudent.add(group)
-                else _delFromStudent.remove(group)
+                addedInTask = true
+                if (!isInTask) _addToTask.add(student)
+                else _delFromTask.remove(student)
             }
         }
         chipGroup.addView(chip)
     }
 
-    private fun manageGroups() {
+    private fun manageStudents() {
         var showSaveToast = false
         var showDeleteToast = false
         CoroutineScope(Dispatchers.IO).launch {
-            for (group in _addToStudent) {
-                val newGroup =
-                    ApiHelper.createStudentGroup(StudentGroup(Constants.Student.id, group.id))
-                if (newGroup != null) groups.add(group)
+            for (student in _addToTask) {
+                val res = ApiHelper.createStudentAssignedTask(StudentAssignedTask(student.id, Constants.Task.assignedTaskId!!))
+                if (res != null) students.add(student)
                 else showSaveToast = true
             }
-            for (group in _delFromStudent) {
-                val res = ApiHelper.deleteStudentGroup(Constants.Student.id, group.id)
-                if (res != null) groups.remove(group)
+            for (student in _delFromTask) {
+                val res = ApiHelper.deleteStudentAssignedTask(student.id, Constants.Task.assignedTaskId!!)
+                if (res != null) students.remove(student)
                 else showDeleteToast = true
             }
             withContext(Dispatchers.Main) {
@@ -196,8 +191,8 @@ class StudentGroupsActivity : AppCompatActivity() {
                     Toast.makeText(myContext, Constants.DeleteError, Toast.LENGTH_LONG).show()
 
                 adapter.notifyDataChanged()
-                _delFromStudent = HashSet()
-                _addToStudent = HashSet()
+                _delFromTask = HashSet()
+                _addToTask = HashSet()
             }
         }
     }

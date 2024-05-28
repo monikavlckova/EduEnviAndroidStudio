@@ -38,20 +38,25 @@ class ClassroomsActivity : AppCompatActivity() {
         loadClassroomsToLayout()
 
         binding.menuButton.setOnClickListener {
-            binding.menuPanel.visibility = if (binding.menuPanel.visibility == View.GONE) View.VISIBLE else View.GONE
+            binding.menuPanel.visibility =
+                if (binding.menuPanel.visibility == View.GONE) View.VISIBLE else View.GONE
         }
 
         binding.tasksButton.setOnClickListener {
             val intent = Intent(this, TasksActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             startActivity(intent)
         }
 
         binding.logoutButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
 
         binding.profileButton.setOnClickListener {
+            binding.menuPanel.visibility = View.GONE
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
@@ -150,7 +155,7 @@ class ClassroomsActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadGalleryFragment(savedInstanceState: Bundle?){
+    private fun loadGalleryFragment(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragmentContainer, fragment)
@@ -158,7 +163,7 @@ class ClassroomsActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadViewModel(){
+    private fun loadViewModel() {
         viewModel = ViewModelProvider(this)[MyViewModel::class.java]
         viewModel.getSelectedImage().observe(this) { image ->
             imageId = image.id
@@ -167,7 +172,7 @@ class ClassroomsActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadClassroomsToLayout(){
+    private fun loadClassroomsToLayout() {
         CoroutineScope(Dispatchers.IO).launch {
             val c = ApiHelper.getTeachersClassrooms(Constants.Teacher.id)
             classrooms = if (c == null) mutableListOf() else c as MutableList<Classroom>
@@ -185,19 +190,17 @@ class ClassroomsActivity : AppCompatActivity() {
         binding.classroomName.text = null
     }
 
-    private fun deleteGroupsInClassroom() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val groups = ApiHelper.getGroupsInClassroom(Constants.Classroom.id)
-            if (groups != null) {
-                for (group in groups) {
-                    deleteStudentsFromGroup(group)
-                    ApiHelper.deleteGroup(group.id)
-                }
+    private suspend fun deleteGroupsInClassroom() {
+        val groups = ApiHelper.getGroupsInClassroom(Constants.Classroom.id)
+        if (groups != null) {
+            for (group in groups) {
+                deleteStudentsFromGroup(group)
+                ApiHelper.deleteGroup(group.id)
             }
         }
     }
 
-    private suspend fun deleteStudentsFromGroup(group: Group){
+    private suspend fun deleteStudentsFromGroup(group: Group) {
         val studentsGroup = ApiHelper.getStudentGroupsByGroupId(group.id)
         if (studentsGroup != null) {
             for (studentGroup in studentsGroup) {
@@ -206,15 +209,14 @@ class ClassroomsActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteStudentsInClassroom() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val students = ApiHelper.getStudentsInClassroom(Constants.Classroom.id)
-            if (students != null) {
-                for (student in students) {
-                    ApiHelper.deleteStudent(student.id)
-                }
+    private suspend fun deleteStudentsInClassroom() {
+        val students = ApiHelper.getStudentsInClassroom(Constants.Classroom.id)
+        if (students != null) {
+            for (student in students) {
+                ApiHelper.deleteStudent(student.id)
             }
         }
+
     }
 
     private fun validClassroomName(): Boolean {

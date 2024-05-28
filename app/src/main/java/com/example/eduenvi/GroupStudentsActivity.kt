@@ -35,17 +35,23 @@ class GroupStudentsActivity : AppCompatActivity() {
         binding = ActivityGroupStudentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loadGroupsToLayout()
+        loadStudentsToLayout()
+
+        binding.chipGroupIn.chipSpacingVertical = 1
+        binding.chipGroupNotIn.chipSpacingVertical = 1
 
         binding.groupName.text = Constants.Group.name
 
         binding.backButton.setOnClickListener {
             val intent = Intent(this, ClassroomGroupsActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
 
         binding.tasksButton.setOnClickListener {
             val intent = Intent(this, GroupTasksActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             startActivity(intent)
         }
 
@@ -81,7 +87,7 @@ class GroupStudentsActivity : AppCompatActivity() {
         binding.deletePanel.setOnClickListener { binding.deletePanel.visibility = View.GONE }
     }
 
-    private fun loadGroupsToLayout(){
+    private fun loadStudentsToLayout(){
         CoroutineScope(Dispatchers.IO).launch {
             val s = ApiHelper.getStudentsInGroup(Constants.Group.id)
             students = if (s == null) mutableListOf() else s as MutableList<Student>
@@ -147,7 +153,7 @@ class GroupStudentsActivity : AppCompatActivity() {
         else chip.setCloseIconResource(R.drawable.baseline_add_on_primary_24)
 
         chip.isCloseIconVisible = true
-        chip.setOnCloseIconClickListener {
+        chip.setOnClickListener {
             if (addedInGroup) {
                 chip.setCloseIconResource(R.drawable.baseline_add_on_primary_24)
                 binding.chipGroupIn.removeView(chip)

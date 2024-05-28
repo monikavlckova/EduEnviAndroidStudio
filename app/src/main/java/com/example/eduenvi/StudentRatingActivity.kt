@@ -19,12 +19,15 @@ class StudentRatingActivity : AppCompatActivity() {
         binding.studentName.text = "Vitaj ${Constants.Student.firstName}!"
 
         binding.logoutButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, LoginStudentActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
 
         binding.tasksButton.setOnClickListener {
             val intent = Intent(this, StudentActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             startActivity(intent)
         }
 

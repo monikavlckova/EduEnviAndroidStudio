@@ -1,5 +1,6 @@
 package com.example.eduenvi
 
+import androidx.appcompat.app.AppCompatActivity
 import com.example.eduenvi.models.Classroom
 import com.example.eduenvi.models.Group
 import com.example.eduenvi.models.Image
@@ -58,6 +59,7 @@ object Constants {
         "Odstrániť žiaka " + s.firstName + " " + s.lastName + " zo skupiny?"
 
     fun getDeleteGroupFromStudentString(g: Group) = "Odstrániť žiaka zo skupiny " + g.name + "?"
+    fun getDeleteTaskFromClassroomString(t: Task) = "Odstrániť úlohu " + t.name + " z triedy?"
     fun getDeleteTaskFromGroupString(t: Task) = "Odstrániť úlohu " + t.name + " zo skupiny?"
     fun getDeleteTaskFromStudentString(t: Task) = "Odstrániť žiakovi úlohu " + t.name + "?"
     fun getBackCreatingTaskNotSavedString() = "Naozaj chcete opustiť úpravu úlohy bez uloženia?"
@@ -73,13 +75,16 @@ object Constants {
     var Teacher = Teacher(0, "", "", "", "", "", null)
 
     var TaskType1Id = 1
-    //var TaskType2Id = 2
+    var TaskType2Id = 2
 
-    var TaskTypeCreatingActivity = mapOf(Pair(TaskType1Id, TaskType1CreatingActivity::class.java)/*,
-        Pair(TaskType2Id, TaskType2CreatingActivity::class.java)*/)
+    var TaskTypeCreatingActivity = mapOf(Pair(TaskType1Id, TaskType1CreatingActivity::class.java),
+        Pair(TaskType2Id, TaskType2CreatingActivity::class.java))
 
-    var TaskTypeActivity = mapOf(Pair(TaskType1Id, TaskType1Activity::class.java)/*,
-        Pair(TaskType2Id, TaskType2Activity::class.java)*/)
+    var TaskTypeActivity = mapOf(Pair(TaskType1Id, TaskType1Activity::class.java),
+        Pair(TaskType2Id, TaskType2Activity::class.java))
+
+    var TaskTypeSolutionActivity: Map<Int, Class<out AppCompatActivity>> = mapOf(Pair(TaskType1Id, TaskType1SolutionActivity::class.java),
+        Pair(TaskType2Id, TaskType2SolutionActivity::class.java))
 
     const val freeImageIndex = 0
     const val wallImageIndex = 1
@@ -89,5 +94,7 @@ object Constants {
     var ImageGridImages= mutableListOf<Image?>(null, null, null, null)
 
     var paths = mutableListOf<MutableList<Int>>()
+
+    //var taskStack: TaskStackBuilder? = null
 
 }

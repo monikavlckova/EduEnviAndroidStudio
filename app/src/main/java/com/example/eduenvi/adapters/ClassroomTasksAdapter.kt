@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.example.eduenvi.ClassroomTasksActivity
 import com.example.eduenvi.Constants
 import com.example.eduenvi.R
+import com.example.eduenvi.TaskAssignedStudentsActivity
 import com.example.eduenvi.models.Task
 import java.text.SimpleDateFormat
 
@@ -42,8 +43,7 @@ class ClassroomTasksAdapter(private val context: Activity, private val list: Lis
         }
         view?.setOnClickListener {
             Constants.Task = task
-            val intent = Intent(context, Constants.TaskTypeCreatingActivity[task.taskTypeId])
-            //TODO zmen na zoznam ziakov/skuipin, kt maju ulohu
+            val intent = Intent(context, TaskAssignedStudentsActivity::class.java)
             intent.putExtra("TASK_ID", task.id)
             context.startActivity(intent)
         }

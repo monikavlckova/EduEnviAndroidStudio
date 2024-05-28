@@ -102,6 +102,12 @@ interface ApiInterface {
         @Path("studentId") studentId: Int,
     ): Response<List<Group>>
 
+    @GET("api/Group/getByClassroomIdNotInAssignedTaskId/{classroomId}/{assignedTaskId}")
+    suspend fun getGroupsFromClassroomNotInAssignedTask(
+        @Path("classroomId") classroomId: Int,
+        @Path("assignedTaskId") assignedTaskId: Int
+    ): Response<List<Group>>
+
 
     @GET("api/GroupAssignedTask")
     suspend fun getAllGroupAssignedTasks(): Response<List<GroupAssignedTask>>
@@ -110,7 +116,10 @@ interface ApiInterface {
     suspend fun createGroupAssignedTask(@Body groupAssignedTask: GroupAssignedTask): Response<GroupAssignedTask>
 
     @DELETE("api/GroupAssignedTask/{groupId}/{assignedTaskId}")
-    suspend fun deleteGroupAssignedTask(@Path("groupId") groupId: Int, @Path("assignedTaskId") assignedTaskId: Int): Response<GroupAssignedTask>
+    suspend fun deleteGroupAssignedTask(
+        @Path("groupId") groupId: Int,
+        @Path("assignedTaskId") assignedTaskId: Int
+    ): Response<GroupAssignedTask>
 
     @GET("api/Image")
     suspend fun getAllImages(): Response<List<Image>>
@@ -164,6 +173,12 @@ interface ApiInterface {
         @Path("groupId") groupId: Int
     ): Response<List<Student>>
 
+    @GET("api/Student/getByClassroomIdNotInAssignedTaskId/{classroomId}/{assignedTaskId}")
+    suspend fun getStudentsFromClassroomNotInAssignedTask(
+        @Path("classroomId") classroomId: Int,
+        @Path("assignedTaskId") assignedTaskId: Int
+    ): Response<List<Student>>
+
 
     @GET("api/StudentAssignedTask/")
     suspend fun getAllStudentAssignedTask(): Response<List<StudentAssignedTask>>
@@ -172,7 +187,10 @@ interface ApiInterface {
     suspend fun createStudentAssignedTask(@Body studentAssignedTask: StudentAssignedTask): Response<StudentAssignedTask>
 
     @DELETE("api/StudentAssignedTask/{studentId}/{assignedTaskId}")
-    suspend fun deleteStudentAssignedTask(@Path("studentId") studentId: Int, @Path("assignedTaskId") assignedTaskId: Int): Response<StudentAssignedTask>
+    suspend fun deleteStudentAssignedTask(
+        @Path("studentId") studentId: Int,
+        @Path("assignedTaskId") assignedTaskId: Int
+    ): Response<StudentAssignedTask>
 
 
     @PUT("api/StudentGroup")

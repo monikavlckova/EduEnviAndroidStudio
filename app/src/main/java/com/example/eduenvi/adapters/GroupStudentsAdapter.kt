@@ -39,6 +39,8 @@ class GroupStudentsAdapter (private val context: Activity, private val list: Lis
         view?.setOnClickListener {
             Constants.Student = student
             val intent = Intent((context as GroupStudentsActivity), StudentTasksActivity::class.java)//TODO zmen, nechod nikam?
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             context.startActivity(intent)
         }
 

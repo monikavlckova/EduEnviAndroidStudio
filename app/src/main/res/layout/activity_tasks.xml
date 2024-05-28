@@ -36,6 +36,7 @@
             android:contentDescription="@string/addCodeDescription" />
 
         <LinearLayout style="@style/bottomNavigationLayout">
+
             <ImageButton
                 android:id="@+id/classroomsButton"
                 style="@style/navButton"
@@ -93,6 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="70dp"
+            android:layout_marginBottom="89dp"
             android:fadingEdgeLength="80dp"
             android:requiresFadingEdge="vertical">
 
@@ -206,19 +208,45 @@
                         android:layout_alignParentEnd="true"
                         android:text=""
                         android:textSize="16sp" />
-
                 </RelativeLayout>
-
-                <Button
-                    android:id="@+id/saveButton"
-                    style="@style/actionButton"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="25dp"
-                    android:text="@string/create" />
             </LinearLayout>
         </ScrollView>
+
+        <Button
+            android:id="@+id/saveButton"
+            style="@style/actionButton"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="25dp"
+            android:text="@string/save" />
+
+        <LinearLayout
+            android:id="@+id/editGraphicPartPanel"
+            style="@style/backgroundLayout"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:background="@drawable/bottom_layout_background_on_primary"
+                android:orientation="vertical">
+
+                <Button
+                    android:layout_marginTop="60dp"
+                    android:id="@+id/editGraphicPart"
+                    style="@style/actionButtonEdit"
+                    android:layout_marginHorizontal="25dp"
+                    android:text="@string/editGraphicPartTask" />
+
+                <Button
+                    android:id="@+id/closeEditGraphicPartPanel"
+                    style="@style/actionButton"
+                    android:layout_marginHorizontal="25dp"
+                    android:text="Zatvoriť bez úpravy" />
+            </LinearLayout>
+        </LinearLayout>
 
     </RelativeLayout>
 

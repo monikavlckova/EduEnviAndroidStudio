@@ -35,7 +35,9 @@ class ProfileActivity : AppCompatActivity() {
         Constants.imageManager.setImage(teacher.imageId, myContext, binding.profileImage)
 
         binding.backButton.setOnClickListener {
-            val intent = Intent(this, ClassroomsActivity::class.java)
+            val intent = Intent(this, ClassroomsActivity::class.java) //TODO co ak som otvorila z task, asi tam sa chcem vratit, ale nevadi
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
 

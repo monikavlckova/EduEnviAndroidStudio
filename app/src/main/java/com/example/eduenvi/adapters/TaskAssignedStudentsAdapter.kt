@@ -10,13 +10,12 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.eduenvi.Constants
-import com.example.eduenvi.GroupTasksActivity
 import com.example.eduenvi.R
-import com.example.eduenvi.StudentGroupsActivity
-import com.example.eduenvi.models.Group
+import com.example.eduenvi.TaskAssignedStudentsActivity
+import com.example.eduenvi.models.Student
 
-class StudentGroupsAdapter(private val context: Activity, private val list: List<Group>) :
-    ArrayAdapter<Group>(context, R.layout.grid_x_list_item, list) {
+class TaskAssignedStudentsAdapter (private val context: Activity, private val list: List<Student>) :
+    ArrayAdapter<Student>(context, R.layout.grid_x_list_item, list) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
@@ -26,21 +25,19 @@ class StudentGroupsAdapter(private val context: Activity, private val list: List
         val image = view.findViewById<ImageView>(R.id.image)
         val delete = view.findViewById<ImageButton>(R.id.delete)
 
-        val group = list[position]
-        name.text = group.name
+        val student = list[position]
+        name.text = student.firstName
 
-        Constants.imageManager.setImage(group.imageId, context, image)
+        Constants.imageManager.setImage(student.imageId, context, image)
 
         delete.setOnClickListener {
-            (context as StudentGroupsActivity).binding.deletePanel.visibility = View.VISIBLE
-            context.binding.deleteText.text = Constants.getDeleteGroupFromStudentString(group)
-            Constants.Group = group
+            (context as TaskAssignedStudentsActivity).binding.deletePanel.visibility = View.VISIBLE
+            context.binding.deleteText.text = Constants.getDeleteTaskFromStudentString(Constants.Task)
+            Constants.Student = student
         }
         view?.setOnClickListener {
-            Constants.Group = group
-            val intent = Intent((context as StudentGroupsActivity), GroupTasksActivity::class.java)//TODO zmen, nechod nikam?
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            Constants.Student = student
+            val intent = Intent(context, Constants.TaskTypeSolutionActivity[Constants.Task.taskTypeId])
             context.startActivity(intent)
         }
 

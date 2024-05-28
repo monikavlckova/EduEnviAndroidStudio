@@ -18,12 +18,12 @@
             android:contentDescription="@string/backCodeDescription" />
 
         <TextView
-            android:id="@+id/studentName"
+            android:id="@+id/taskName"
             style="@style/headline"
-            android:text="@string/firstName" />
+            android:text="@string/taskName" />
 
         <GridView
-            android:id="@+id/groupsLayout"
+            android:id="@+id/studentsLayout"
             style="@style/scrollGridView"
             android:numColumns="3"
             tools:listitem="@layout/grid_x_list_item" />
@@ -36,30 +36,30 @@
         <LinearLayout style="@style/bottomNavigationLayout">
 
             <ImageButton
-                android:id="@+id/tasksButton"
+                android:id="@+id/studentsButton"
                 style="@style/navButton"
-                android:contentDescription="@string/tasksCodeDescription"
-                android:src="@drawable/tasks_button_wrapper" />
+                android:contentDescription="@string/studentsCodeDescription"
+                android:src="@drawable/students_highlighted_button_wrapper" />
 
             <ImageButton
                 android:id="@+id/groupsButton"
                 style="@style/navButton"
                 android:contentDescription="@string/groupsCodeDescription"
-                android:src="@drawable/groups_highlighted_button_wrapper" />
+                android:src="@drawable/groups_button_wrapper" />
         </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/groupsPanel"
+        android:id="@+id/studentsPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/Surface"
         android:visibility="gone">
 
         <ImageButton
-            android:id="@+id/closeGroupsPanel"
+            android:id="@+id/closeStudentsPanel"
             style="@style/backButtonOnBackground"
-            android:contentDescription="@string/backCodeDescription" />
+            android:contentDescription="@string/closeCodeDescription" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -75,9 +75,9 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textInGroup"
+                    android:id="@+id/textInTask"
                     style="@style/chipTextView"
-                    android:text="@string/inGroup" />
+                    android:text="Majú zapísanú úlohu" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroupIn"
@@ -86,9 +86,9 @@
                     app:singleSelection="true" />
 
                 <TextView
-                    android:id="@+id/textNotInGroup"
+                    android:id="@+id/textNotInTask"
                     style="@style/chipTextView"
-                    android:text="@string/notInGroup" />
+                    android:text="Nemajú zapísanú úlohu" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroupNotIn"
